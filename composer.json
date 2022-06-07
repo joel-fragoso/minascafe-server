@@ -1,0 +1,41 @@
+{
+    "name": "minascafe/server",
+    "scripts": {
+        "dev": "php -S localhost:8888 -t public",
+        "test": "phpunit --testdox --coverage-text --coverage-html=coverage"
+    },
+    "autoload": {
+        "psr-4": {
+            "Minascafe\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Minascafe\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^8.1",
+        "ext-pdo": "*",
+        "ext-json": "*",
+        "doctrine/migrations": "^3.5",
+        "doctrine/orm": "^2.12",
+        "php-di/php-di": "^6.4",
+        "php-di/slim-bridge": "^3.2",
+        "slim/psr7": "^1.5",
+        "slim/slim": "^4.10",
+        "symfony/cache": "^6.1",
+        "vlucas/phpdotenv": "^5.4"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.8",
+        "phpunit/phpunit": "^9.5",
+        "phpspec/prophecy": "^1.15",
+        "phpspec/prophecy-phpunit": "^2.0",
+        "phpstan/phpstan": "^1.7"
+    },
+    "config": {
+        "process-timeout": 0,
+        "sort-packages": true
+    }
+}

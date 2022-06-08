@@ -28,6 +28,7 @@ final class CreateCategoryUseCaseTest extends TestCase
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
+        self::assertNotNull($createCategoryUseCaseResponse->categoryId());
         self::assertEquals($categoryName, $createCategoryUseCaseResponse->name());
     }
 

@@ -19,12 +19,14 @@ final class ShowOneCategoryUseCase
      */
     public function execute(ShowOneCategoryUseCaseRequest $showOneCategoryUseCaseRequest): ShowOneCategoryUseCaseResponse
     {
+        $categoryId = $showOneCategoryUseCaseRequest->categoryId();
+
         $findCategory = $this->categoryRepository->findById(
-            new CategoryId($showOneCategoryUseCaseRequest->id())
+            new CategoryId($categoryId)
         );
 
         if (!$findCategory) {
-            throw new CategoryNotFoundException("A categoria com id '{$showOneCategoryUseCaseRequest->id()}' não foi encontrada");
+            throw new CategoryNotFoundException("A categoria com id '{$categoryId}' não foi encontrada");
         }
 
         return new ShowOneCategoryUseCaseResponse(

@@ -6,7 +6,6 @@ namespace Minascafe\Category\Infrastructure\Persistence\Doctrine\Entity;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use JsonSerializable;
@@ -15,19 +14,19 @@ use Minascafe\Category\Infrastructure\Persistence\Doctrine\Repository\CategoryRe
 #[Entity(repositoryClass: CategoryRepository::class), Table(name: 'categories')]
 final class Category implements JsonSerializable
 {
-    #[Id, Column(type: 'integer'), GeneratedValue(strategy: 'AUTO')]
-    private ?int $id;
+    #[Id, Column(type: 'guid', length: 36)]
+    private string $id;
 
     #[Column(type: 'string', unique: true, nullable: false)]
     private string $name;
 
-    public function __construct(?int $id = null, string $name)
+    public function __construct(string $id, string $name)
     {
         $this->id = $id;
         $this->name = $name;
     }
 
-    public function getId(): ?int
+    public function getId(): string
     {
         return $this->id;
     }

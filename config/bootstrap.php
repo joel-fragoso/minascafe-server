@@ -5,8 +5,6 @@ declare(strict_types=1);
 use DI\Bridge\Slim\Bridge;
 use DI\ContainerBuilder;
 use Dotenv\Dotenv;
-use Slim\Factory\AppFactory;
-use Slim\Factory\ServerRequestCreatorFactory;
 
 chdir(dirname(__DIR__));
 require 'vendor/autoload.php';
@@ -27,9 +25,7 @@ $repositories($containerBuilder);
 
 $container = $containerBuilder->build();
 
-// AppFactory::setContainer($container);
 $app = Bridge::create($container);
-// $callableResolver = $app->getCallableResolver();
 
 $routes = require 'config/routes.php';
 $routes($app);
@@ -40,20 +36,10 @@ $displayErrorDetails = $settings['display_error_details'];
 $logError = $settings['log_error'];
 $logErrorDetails = $settings['log_error_details'];
 
-$serverRequestCreator = ServerRequestCreatorFactory::create();
-$request = $serverRequestCreator->createServerRequestFromGlobals();
-
-// $responseFactory = $app->getResponseFactory();
-// $errorHandler = new HttpErrorHandler($callableResolver, $responseFactory);
-
-// $shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails);
-// register_shutdown_function($shutdownHandler);
-
 $app->addRoutingMiddleware();
 
 $app->addBodyParsingMiddleware();
 
-$errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, $logError, $logErrorDetails);
-$errorMiddleware->setDefaultErrorHandler($errorHandler);
+$app->addErrorMiddleware($displayErrorDetails, $logError, $logErrorDetails);
 
 return $app;

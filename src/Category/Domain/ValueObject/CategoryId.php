@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Minascafe\Category\Domain\ValueObject;
 
-use Minascafe\Shared\Domain\ValueObject\IdValue;
+use Minascafe\Shared\Domain\ValueObject\UuidValue;
 
-final class CategoryId extends IdValue
+final class CategoryId extends UuidValue
 {
 }

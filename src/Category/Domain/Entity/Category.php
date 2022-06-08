@@ -29,7 +29,7 @@ final class Category
     }
 
     /**
-     * @param array<string, int|string|null> $data
+     * @param array<string, int|string> $data
      */
     public static function fromArray(array $data): self
     {

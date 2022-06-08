@@ -32,13 +32,14 @@ final class CreateCategoryUseCase
         }
 
         $category = Category::create(
-            new CategoryId(null),
+            new CategoryId(CategoryId::generate()),
             new CategoryName($categoryName)
         );
 
         $this->categoryRepository->create($category);
 
         return new CreateCategoryUseCaseResponse(
+            $category->id()->value(),
             $category->name()->value()
         );
     }

@@ -72,14 +72,14 @@ final class CategoryController
         }
     }
 
-    public function show(Request $request, Response $response, int $id): Response
+    public function show(Request $request, Response $response, string $id): Response
     {
         try {
             $entityManager = $this->container->get(EntityManagerInterface::class);
             $categoryRepository = $entityManager->getRepository(Category::class);
             $showOneCategoryUseCase = new ShowOneCategoryUseCase($categoryRepository);
 
-            $showOneCategoryUseCaseRequest = new ShowOneCategoryUseCaseRequest((int) $id);
+            $showOneCategoryUseCaseRequest = new ShowOneCategoryUseCaseRequest($id);
 
             $showOneCategoryUseCaseResponse = $showOneCategoryUseCase->execute($showOneCategoryUseCaseRequest);
 
@@ -97,7 +97,7 @@ final class CategoryController
         }
     }
 
-    public function update(Request $request, Response $response, int $id): Response
+    public function update(Request $request, Response $response, string $id): Response
     {
         try {
             ['name' => $name] = $request->getParsedBody();
@@ -106,7 +106,7 @@ final class CategoryController
             $categoryRepository = $entityManager->getRepository(Category::class);
             $updateCategoryUseCase = new UpdateCategoryUseCase($categoryRepository);
 
-            $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest((int) $id, $name);
+            $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($id, $name);
 
             $updateCategoryUseCaseResponse = $updateCategoryUseCase->execute($updateCategoryUseCaseRequest);
 

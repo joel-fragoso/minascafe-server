@@ -21,7 +21,7 @@ final class UpdateCategoryUseCase
      */
     public function execute(UpdateCategoryUseCaseRequest $updateCategoryUseCaseRequest): UpdateCategoryUseCaseResponse
     {
-        $categoryId = $updateCategoryUseCaseRequest->id();
+        $categoryId = $updateCategoryUseCaseRequest->categoryId();
         $categoryName = $updateCategoryUseCaseRequest->name();
 
         $findCategory = $this->categoryRepository->findById(new CategoryId($categoryId));

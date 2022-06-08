@@ -6,12 +6,12 @@ namespace Minascafe\Category\Application\UseCase;
 
 final class ShowOneCategoryUseCaseRequest
 {
-    public function __construct(private int $id)
+    public function __construct(private string $categoryId)
     {
     }
 
-    public function id(): int
+    public function categoryId(): string
     {
-        return $this->id;
+        return $this->categoryId;
     }
 }

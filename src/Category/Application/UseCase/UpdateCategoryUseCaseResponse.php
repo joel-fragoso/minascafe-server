@@ -8,13 +8,13 @@ use JsonSerializable;
 
 final class UpdateCategoryUseCaseResponse implements JsonSerializable
 {
-    public function __construct(private int $id, private string $name)
+    public function __construct(private string $categoryId, private string $name)
     {
     }
 
-    public function id(): int
+    public function categoryId(): string
     {
-        return $this->id;
+        return $this->categoryId;
     }
 
     public function name(): string
@@ -28,7 +28,7 @@ final class UpdateCategoryUseCaseResponse implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'id' => $this->id(),
+            'id' => $this->categoryId(),
             'name' => $this->name(),
         ];
     }

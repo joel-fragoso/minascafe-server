@@ -12,5 +12,6 @@ return function (App $app) {
         $group->post('', [CategoryController::class, 'create']);
         $group->get('/{id}', [CategoryController::class, 'show']);
         $group->put('/{id}', [CategoryController::class, 'update']);
+        $group->delete('/{id}', [CategoryController::class, 'destroy']);
     });
 };

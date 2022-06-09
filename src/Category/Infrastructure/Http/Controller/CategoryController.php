@@ -8,40 +8,49 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCase;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCaseRequest;
+use Minascafe\Category\Application\UseCase\DeleteCategoryUseCase;
+use Minascafe\Category\Application\UseCase\DeleteCategoryUseCaseRequest;
 use Minascafe\Category\Application\UseCase\ShowAllCategoriesUseCase;
 use Minascafe\Category\Application\UseCase\ShowOneCategoryUseCase;
 use Minascafe\Category\Application\UseCase\ShowOneCategoryUseCaseRequest;
 use Minascafe\Category\Application\UseCase\UpdateCategoryUseCase;
 use Minascafe\Category\Application\UseCase\UpdateCategoryUseCaseRequest;
+use Minascafe\Category\Domain\Repository\CategoryRepositoryInterface;
 use Minascafe\Category\Infrastructure\Persistence\Doctrine\Entity\Category;
+use Minascafe\Shared\Infrastructure\Http\Controller\BaseController;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-final class CategoryController
+final class CategoryController extends BaseController
 {
-    public function __construct(private ContainerInterface $container)
+    private CategoryRepositoryInterface $categoryRepository;
+
+    public function __construct(ContainerInterface $container)
     {
+        $entityManager = $container->get(EntityManagerInterface::class);
+        $this->categoryRepository = $entityManager->getRepository(Category::class);
     }
 
     public function index(Request $request, Response $response): Response
     {
         try {
-            $entityManager = $this->container->get(EntityManagerInterface::class);
-            $categoryRepository = $entityManager->getRepository(Category::class);
-            $showAllCategoriesUseCase = new ShowAllCategoriesUseCase($categoryRepository);
+            $showAllCategoriesUseCase = new ShowAllCategoriesUseCase($this->categoryRepository);
 
-            $payload = json_encode($showAllCategoriesUseCase->execute(), \JSON_PRETTY_PRINT);
+            $payload = [
+                'data' => $showAllCategoriesUseCase->execute(),
+            ];
 
-            $response->getBody()->write($payload);
-
-            return $response->withHeader('Content-type', 'application/json')->withStatus(200);
+            return $this->jsonResponse($response, $payload);
         } catch (Exception $exception) {
-            $payload = json_encode($exception->getMessage(), \JSON_PRETTY_PRINT);
+            $payload = [
+                'error' => [
+                    'code' => $exception->getCode(),
+                    'message' => $exception->getMessage(),
+                ],
+            ];
 
-            $response->getBody()->write($payload);
-
-            return $response->withHeader('Content-type', 'application/json')->withStatus($exception->getCode());
+            return $this->jsonResponse($response, $payload, $exception->getCode());
         }
     }
 
@@ -50,50 +59,52 @@ final class CategoryController
         try {
             ['name' => $name] = $request->getParsedBody();
 
-            $entityManager = $this->container->get(EntityManagerInterface::class);
-            $categoryRepository = $entityManager->getRepository(Category::class);
-            $createCategoryUseCase = new CreateCategoryUseCase($categoryRepository);
+            $createCategoryUseCase = new CreateCategoryUseCase($this->categoryRepository);
 
             $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($name);
 
             $createCategoryUseCaseResponse = $createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
-            $payload = json_encode($createCategoryUseCaseResponse, \JSON_PRETTY_PRINT);
+            $payload = [
+                'data' => $createCategoryUseCaseResponse,
+            ];
 
-            $response->getBody()->write($payload);
-
-            return $response->withHeader('Content-type', 'application/json')->withStatus(201);
+            return $this->jsonResponse($response, $payload, 201);
         } catch (Exception $exception) {
-            $payload = json_encode($exception->getMessage(), \JSON_PRETTY_PRINT);
+            $payload = [
+                'error' => [
+                    'code' => $exception->getCode(),
+                    'message' => $exception->getMessage(),
+                ],
+            ];
 
-            $response->getBody()->write($payload);
-
-            return $response->withHeader('Content-type', 'application/json')->withStatus($exception->getCode());
+            return $this->jsonResponse($response, $payload, $exception->getCode());
         }
     }
 
     public function show(Request $request, Response $response, string $id): Response
     {
         try {
-            $entityManager = $this->container->get(EntityManagerInterface::class);
-            $categoryRepository = $entityManager->getRepository(Category::class);
-            $showOneCategoryUseCase = new ShowOneCategoryUseCase($categoryRepository);
+            $showOneCategoryUseCase = new ShowOneCategoryUseCase($this->categoryRepository);
 
             $showOneCategoryUseCaseRequest = new ShowOneCategoryUseCaseRequest($id);
 
             $showOneCategoryUseCaseResponse = $showOneCategoryUseCase->execute($showOneCategoryUseCaseRequest);
 
-            $payload = json_encode($showOneCategoryUseCaseResponse, \JSON_PRETTY_PRINT);
+            $payload = [
+                'data' => $showOneCategoryUseCaseResponse,
+            ];
 
-            $response->getBody()->write($payload);
-
-            return $response->withHeader('Content-type', 'application/json')->withStatus(200);
+            return $this->jsonResponse($response, $payload);
         } catch (Exception $exception) {
-            $payload = json_encode($exception->getMessage(), \JSON_PRETTY_PRINT);
+            $payload = [
+                'error' => [
+                    'code' => $exception->getCode(),
+                    'message' => $exception->getMessage(),
+                ],
+            ];
 
-            $response->getBody()->write($payload);
-
-            return $response->withHeader('Content-type', 'application/json')->withStatus($exception->getCode());
+            return $this->jsonResponse($response, $payload, $exception->getCode());
         }
     }
 
@@ -102,25 +113,48 @@ final class CategoryController
         try {
             ['name' => $name] = $request->getParsedBody();
 
-            $entityManager = $this->container->get(EntityManagerInterface::class);
-            $categoryRepository = $entityManager->getRepository(Category::class);
-            $updateCategoryUseCase = new UpdateCategoryUseCase($categoryRepository);
+            $updateCategoryUseCase = new UpdateCategoryUseCase($this->categoryRepository);
 
             $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($id, $name);
 
             $updateCategoryUseCaseResponse = $updateCategoryUseCase->execute($updateCategoryUseCaseRequest);
 
-            $payload = json_encode($updateCategoryUseCaseResponse, \JSON_PRETTY_PRINT);
+            $payload = [
+                'data' => $updateCategoryUseCaseResponse,
+            ];
 
-            $response->getBody()->write($payload);
-
-            return $response->withHeader('Content-type', 'application/json')->withStatus(200);
+            return $this->jsonResponse($response, $payload);
         } catch (Exception $exception) {
-            $payload = json_encode($exception->getMessage(), \JSON_PRETTY_PRINT);
+            $payload = [
+                'error' => [
+                    'code' => $exception->getCode(),
+                    'message' => $exception->getMessage(),
+                ],
+            ];
 
-            $response->getBody()->write($payload);
+            return $this->jsonResponse($response, $payload, $exception->getCode());
+        }
+    }
 
-            return $response->withHeader('Content-type', 'application/json')->withStatus(400);
+    public function destroy(Request $request, Response $response, string $id): Response
+    {
+        try {
+            $deleteCategoryUseCase = new DeleteCategoryUseCase($this->categoryRepository);
+
+            $deleteCategoryUseCaseRequest = new DeleteCategoryUseCaseRequest($id);
+
+            $deleteCategoryUseCase->execute($deleteCategoryUseCaseRequest);
+
+            return $this->jsonResponse($response, [], 204);
+        } catch (Exception $exception) {
+            $payload = [
+                'error' => [
+                    'code' => $exception->getCode(),
+                    'message' => $exception->getMessage(),
+                ],
+            ];
+
+            return $this->jsonResponse($response, $payload, $exception->getCode());
         }
     }
 }

@@ -13,7 +13,7 @@ interface CategoryRepositoryInterface
     /**
      * @return Category[]
      */
-    public function all(): array;
+    public function findAllCategories(): array;
 
     public function findById(CategoryId $categoryId): ?Category;
 
@@ -22,4 +22,6 @@ interface CategoryRepositoryInterface
     public function create(Category $category): void;
 
     public function update(Category $category): void;
+
+    public function delete(Category $category): void;
 }

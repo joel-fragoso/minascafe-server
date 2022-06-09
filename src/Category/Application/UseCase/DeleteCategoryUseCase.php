@@ -8,7 +8,7 @@ use Minascafe\Category\Domain\Exception\CategoryNotFoundException;
 use Minascafe\Category\Domain\Repository\CategoryRepositoryInterface;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
 
-final class ShowOneCategoryUseCase
+final class DeleteCategoryUseCase
 {
     public function __construct(private CategoryRepositoryInterface $categoryRepository)
     {
@@ -17,21 +17,16 @@ final class ShowOneCategoryUseCase
     /**
      * @throws CategoryNotFoundException
      */
-    public function execute(ShowOneCategoryUseCaseRequest $showOneCategoryUseCaseRequest): ShowOneCategoryUseCaseResponse
+    public function execute(DeleteCategoryUseCaseRequest $deleteCategoryUseCaseRequest): void
     {
-        $categoryId = $showOneCategoryUseCaseRequest->categoryId();
+        $categoryId = $deleteCategoryUseCaseRequest->categoryId();
 
-        $findCategory = $this->categoryRepository->findById(
-            new CategoryId($categoryId)
-        );
+        $findCategory = $this->categoryRepository->findById(new CategoryId($categoryId));
 
         if (!$findCategory) {
             throw new CategoryNotFoundException("A categoria '{$categoryId}' não foi encontrada");
         }
 
-        return new ShowOneCategoryUseCaseResponse(
-            $findCategory->id()->value(),
-            $findCategory->name()->value()
-        );
+        $this->categoryRepository->delete($findCategory);
     }
 }

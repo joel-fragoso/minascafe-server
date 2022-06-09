@@ -20,9 +20,15 @@ class CategoryRepository extends EntityRepository implements CategoryRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function all(): array
+    public function findAllCategories(): array
     {
-        return $this->findAll();
+        $categories = [];
+
+        foreach ($this->findAll() as $category) {
+            $categories[] = CategoryTransform::entityToDomain($category);
+        }
+
+        return $categories;
     }
 
     public function findById(CategoryId $categoryId): ?Category
@@ -51,15 +57,30 @@ class CategoryRepository extends EntityRepository implements CategoryRepositoryI
 
     public function create(Category $category): void
     {
-        $entityManager = $this->getEntityManager();
-        $entityManager->persist(CategoryTransform::domainToEntity($category));
-        $entityManager->flush();
+        $entityCategory = CategoryTransform::domainToEntity($category);
+
+        $this->_em->persist($entityCategory);
+        $this->_em->flush();
     }
 
     public function update(Category $category): void
     {
-        $entityManager = $this->getEntityManager();
-        // $entityManager->update(CategoryTransform::domainToEntity($category));
-        $entityManager->flush();
+        $entityCategory = CategoryTransform::domainToEntity($category);
+
+        $findCategory = $this->find($entityCategory->getId());
+
+        $findCategory->setName($entityCategory->getName());
+
+        $this->_em->flush();
+    }
+
+    public function delete(Category $category): void
+    {
+        $entityCategory = CategoryTransform::domainToEntity($category);
+
+        $findCategory = $this->find($entityCategory->getId());
+
+        $this->_em->remove($findCategory);
+        $this->_em->flush();
     }
 }

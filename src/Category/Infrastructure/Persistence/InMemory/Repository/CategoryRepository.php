@@ -21,7 +21,7 @@ final class CategoryRepository implements CategoryRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function all(): array
+    public function findAllCategories(): array
     {
         return $this->categories;
     }
@@ -58,6 +58,15 @@ final class CategoryRepository implements CategoryRepositoryInterface
         foreach ($this->categories as $key => $cat) {
             if (null !== $category->id()->value() && $category->id()->value() === $cat->id()->value()) {
                 $this->categories[$key] = $category;
+            }
+        }
+    }
+
+    public function delete(Category $category): void
+    {
+        foreach ($this->categories as $key => $cat) {
+            if ($category->id()->value() === $cat->id()->value()) {
+                unset($this->categories[$key]);
             }
         }
     }

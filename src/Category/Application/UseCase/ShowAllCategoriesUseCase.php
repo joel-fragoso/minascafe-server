@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Minascafe\Category\Application\UseCase;
 
-use Minascafe\Category\Domain\Entity\Category;
 use Minascafe\Category\Domain\Repository\CategoryRepositoryInterface;
 
 final class ShowAllCategoriesUseCase
@@ -13,11 +12,10 @@ final class ShowAllCategoriesUseCase
     {
     }
 
-    /**
-     * @return Category[]
-     */
-    public function execute(): array
+    public function execute(): ShowAllCategoriesUseCaseResponse
     {
-        return $this->categoryRepository->all();
+        $categories = $this->categoryRepository->findAllCategories();
+
+        return new ShowAllCategoriesUseCaseResponse($categories);
     }
 }

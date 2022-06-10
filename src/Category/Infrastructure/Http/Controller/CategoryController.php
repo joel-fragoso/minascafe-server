@@ -24,21 +24,20 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 final class CategoryController extends BaseController
 {
-    private CategoryRepositoryInterface $categoryRepository;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $entityManager = $container->get(EntityManagerInterface::class);
-        $this->categoryRepository = $entityManager->getRepository(Category::class);
-    }
+	public function __construct(
+		private ShowAllCategoriesUseCase $showAllCategoriesUseCase, 
+		private CreateCategoryUseCase $createCategoryUseCase,
+		private ShowOneCategoryUseCase $showOneCategoryUseCase,
+		private UpdateCategoryUseCase $updateCategoryUseCase,
+		private DeleteCategoryUseCase $deleteCategoryUseCase
+	) {
+	}
 
     public function index(Request $request, Response $response): Response
     {
         try {
-            $showAllCategoriesUseCase = new ShowAllCategoriesUseCase($this->categoryRepository);
-
             $payload = [
-                'data' => $showAllCategoriesUseCase->execute(),
+                'data' => $this->showAllCategoriesUseCase->execute(),
             ];
 
             return $this->jsonResponse($response, $payload);
@@ -59,11 +58,9 @@ final class CategoryController extends BaseController
         try {
             ['name' => $name] = $request->getParsedBody();
 
-            $createCategoryUseCase = new CreateCategoryUseCase($this->categoryRepository);
-
             $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($name);
-
-            $createCategoryUseCaseResponse = $createCategoryUseCase->execute($createCategoryUseCaseRequest);
+			
+            $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
             $payload = [
                 'data' => $createCategoryUseCaseResponse,
@@ -85,11 +82,9 @@ final class CategoryController extends BaseController
     public function show(Request $request, Response $response, string $id): Response
     {
         try {
-            $showOneCategoryUseCase = new ShowOneCategoryUseCase($this->categoryRepository);
-
             $showOneCategoryUseCaseRequest = new ShowOneCategoryUseCaseRequest($id);
 
-            $showOneCategoryUseCaseResponse = $showOneCategoryUseCase->execute($showOneCategoryUseCaseRequest);
+            $showOneCategoryUseCaseResponse = $this->showOneCategoryUseCase->execute($showOneCategoryUseCaseRequest);
 
             $payload = [
                 'data' => $showOneCategoryUseCaseResponse,
@@ -113,11 +108,9 @@ final class CategoryController extends BaseController
         try {
             ['name' => $name] = $request->getParsedBody();
 
-            $updateCategoryUseCase = new UpdateCategoryUseCase($this->categoryRepository);
-
             $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($id, $name);
 
-            $updateCategoryUseCaseResponse = $updateCategoryUseCase->execute($updateCategoryUseCaseRequest);
+            $updateCategoryUseCaseResponse = $this->updateCategoryUseCase->execute($updateCategoryUseCaseRequest);
 
             $payload = [
                 'data' => $updateCategoryUseCaseResponse,
@@ -139,11 +132,9 @@ final class CategoryController extends BaseController
     public function destroy(Request $request, Response $response, string $id): Response
     {
         try {
-            $deleteCategoryUseCase = new DeleteCategoryUseCase($this->categoryRepository);
+			$deleteCategoryUseCaseRequest = new DeleteCategoryUseCaseRequest($id);
 
-            $deleteCategoryUseCaseRequest = new DeleteCategoryUseCaseRequest($id);
-
-            $deleteCategoryUseCase->execute($deleteCategoryUseCaseRequest);
+            $this->deleteCategoryUseCase->execute($deleteCategoryUseCaseRequest);
 
             return $this->jsonResponse($response, [], 204);
         } catch (Exception $exception) {

@@ -26,26 +26,22 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 final class ProductController extends BaseController
 {
-    private CategoryRepositoryInterface $categoryRepository;
-
-    private ProductRepositoryInterface $productRepository;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $entityManager = $container->get(EntityManagerInterface::class);
-        $this->categoryRepository = $entityManager->getRepository(EntityCategory::class);
-        $this->productRepository = $entityManager->getRepository(EntityProduct::class);
+    public function __construct(
+		private readonly ShowAllProductsUseCase $showAllProductsUseCase,
+		private readonly CreateProductUseCase $createProductUseCase,
+		private readonly ShowOneProductUseCase $showOneProductUseCase,
+		private readonly UpdateProductUseCase $updateProductUseCase,
+		private readonly DeleteProductUseCase $deleteProductUseCase
+	) {
     }
 
     public function index(Request $request, Response $response): Response
     {
         try {
-            $showAllProductsUseCase = new ShowAllProductsUseCase($this->productRepository);
-
-            $showAllProductsUseCaseResponse = $showAllProductsUseCase->execute();
+            $showAllProductsUseCaseResponse = $this->showAllProductsUseCase->execute();
 
             $payload = [
-                'data', $showAllProductsUseCaseResponse,
+                'data' => $showAllProductsUseCaseResponse,
             ];
 
             return $this->jsonResponse($response, $payload);
@@ -66,11 +62,9 @@ final class ProductController extends BaseController
         try {
             ['categoryId' => $categoryId, 'name' => $name] = $request->getParsedBody();
 
-            $createProductUseCase = new CreateProductUseCase($this->categoryRepository, $this->productRepository);
-
             $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $name);
 
-            $createProductUseCaseResponse = $createProductUseCase->execute($createProductUseCaseRequest);
+            $createProductUseCaseResponse = $this->createProductUseCase->execute($createProductUseCaseRequest);
 
             $payload = [
                 'data' => $createProductUseCaseResponse,
@@ -92,11 +86,9 @@ final class ProductController extends BaseController
     public function show(Request $request, Response $response, string $id): Response
     {
         try {
-            $showOneProductUseCase = new ShowOneProductUseCase($this->productRepository);
-
             $showOneProductUseCaseRequest = new ShowOneProductUseCaseRequest($id);
 
-            $showOneProductUseCaseResponse = $showOneProductUseCase->execute($showOneProductUseCaseRequest);
+            $showOneProductUseCaseResponse = $this->showOneProductUseCase->execute($showOneProductUseCaseRequest);
 
             $payload = [
                 'data' => $showOneProductUseCaseResponse,
@@ -120,11 +112,9 @@ final class ProductController extends BaseController
         try {
             ['categoryId' => $categoryId, 'name' => $name] = $request->getParsedBody();
 
-            $updateProductUseCase = new UpdateProductUseCase($this->categoryRepository, $this->productRepository);
-
             $updateProductUseCaseRequest = new UpdateProductUseCaseRequest($id, $categoryId, $name);
 
-            $updateProductUseCaseResponse = $updateProductUseCase->execute($updateProductUseCaseRequest);
+            $updateProductUseCaseResponse = $this->updateProductUseCase->execute($updateProductUseCaseRequest);
 
             $payload = [
                 'data' => $updateProductUseCaseResponse,
@@ -146,11 +136,9 @@ final class ProductController extends BaseController
     public function destroy(Request $request, Response $response, string $id): Response
     {
         try {
-            $deleteProductUseCase = new DeleteProductUseCase($this->productRepository);
-
             $deleteProductUseCaseRequest = new DeleteProductUseCaseRequest($id);
 
-            $deleteProductUseCase->execute($deleteProductUseCaseRequest);
+			$this->deleteProductUseCase->execute($deleteProductUseCaseRequest);
 
             $payload = [];
 

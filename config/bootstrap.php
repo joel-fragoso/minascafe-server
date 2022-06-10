@@ -23,6 +23,9 @@ $dependencies($containerBuilder);
 $repositories = require 'config/repositories.php';
 $repositories($containerBuilder);
 
+$useCases = require 'config/use-cases.php';
+$useCases($containerBuilder);
+
 $container = $containerBuilder->build();
 
 $app = Bridge::create($container);

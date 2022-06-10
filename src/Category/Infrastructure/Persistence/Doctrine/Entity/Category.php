@@ -8,11 +8,10 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
-use JsonSerializable;
 use Minascafe\Category\Infrastructure\Persistence\Doctrine\Repository\CategoryRepository;
 
 #[Entity(repositoryClass: CategoryRepository::class), Table(name: 'categories')]
-final class Category implements JsonSerializable
+final class Category
 {
     #[Id, Column(type: 'guid', length: 36)]
     private string $id;
@@ -44,16 +43,5 @@ final class Category implements JsonSerializable
     public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * @return array<string, int|string>
-     */
-    public function jsonSerialize(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'name' => $this->getName(),
-        ];
     }
 }

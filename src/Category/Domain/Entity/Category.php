@@ -9,7 +9,7 @@ use Minascafe\Category\Domain\ValueObject\CategoryName;
 
 final class Category
 {
-    public function __construct(private CategoryId $id, private CategoryName $name)
+    private function __construct(private CategoryId $id, private CategoryName $name)
     {
     }
 
@@ -29,7 +29,7 @@ final class Category
     }
 
     /**
-     * @param array<string, int|string> $data
+     * @param array<string, string> $data
      */
     public static function fromArray(array $data): self
     {
@@ -40,7 +40,7 @@ final class Category
     }
 
     /**
-     * @return array<string, int|string|null>
+     * @return array<string, string>
      */
     public function toArray(): array
     {

@@ -44,13 +44,34 @@ final class UpdateCategoryUseCaseTest extends TestCase
 
     public function testNaoDeveSerCapazDeAtualizarUmaCategoriaQueNaoExiste(): void
     {
+        self::expectException(CategoryNotFoundException::class);
+
         $categoryId = '00000000-0000-0000-0000-000000000000';
         $categoryName = 'Categoria';
 
         $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($categoryId, $categoryName);
 
-        self::expectException(CategoryNotFoundException::class);
-
         $this->updateCategoryUseCase->execute($updateCategoryUseCaseRequest);
+    }
+
+    public function testDeveSerCapazDeRetornarUmJsonSerializado(): void
+    {
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria');
+
+        $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
+
+        $categoryId = $createCategoryUseCaseResponse->categoryId();
+        $categoryName = 'Categoria 2';
+
+        $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($categoryId, $categoryName);
+
+        $updateCategoryUseCaseResponse = $this->updateCategoryUseCase->execute($updateCategoryUseCaseRequest);
+
+        $expectedJsonSerialize = json_encode([
+            'id' => $updateCategoryUseCaseResponse->categoryId(),
+            'name' => $updateCategoryUseCaseResponse->name(),
+        ]);
+
+        self::assertEquals($expectedJsonSerialize, json_encode($updateCategoryUseCaseResponse));
     }
 }

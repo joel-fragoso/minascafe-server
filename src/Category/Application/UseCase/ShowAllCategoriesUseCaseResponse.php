@@ -21,7 +21,7 @@ final class ShowAllCategoriesUseCaseResponse implements JsonSerializable
      */
     public function categories(): array
     {
-        return $this->categories();
+        return $this->categories;
     }
 
     public function jsonSerialize(): mixed

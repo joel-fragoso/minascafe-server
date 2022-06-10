@@ -34,14 +34,30 @@ final class CreateCategoryUseCaseTest extends TestCase
 
     public function testNaoDeveSerCapazDeCriarUmaCategoriaComOMesmoNome(): void
     {
+        self::expectException(DuplicateCategoryException::class);
+
         $categoryName = 'Categoria';
 
         $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName);
 
         $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
-        self::expectException(DuplicateCategoryException::class);
-
         $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
+    }
+
+    public function testDeveSerCapazDeRetornarUmJsonSerializado(): void
+    {
+        $categoryName = 'Categoria';
+
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName);
+
+        $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
+
+        $expectedJsonSerialize = json_encode([
+            'id' => $createCategoryUseCaseResponse->categoryId(),
+            'name' => $createCategoryUseCaseResponse->name(),
+        ]);
+
+        self::assertEquals($expectedJsonSerialize, json_encode($createCategoryUseCaseResponse));
     }
 }

@@ -17,6 +17,7 @@ return function (ContainerBuilder $containerBuilder) {
                 'cache_dir' => __DIR__.'/../var/cache/doctrine',
                 'metadata_dirs' => [
                     __DIR__.'/../src/Category/Infrastructure/Persistence/Doctrine/Entity',
+                    __DIR__.'/../src/Product/Infrastructure/Persistence/Doctrine/Entity',
                 ],
                 'connection' => [
                     'driver' => $_ENV['DOCTRINE_DRIVER'],

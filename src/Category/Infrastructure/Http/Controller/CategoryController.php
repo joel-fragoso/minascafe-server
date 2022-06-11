@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Minascafe\Category\Infrastructure\Http\Controller;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCase;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCaseRequest;
@@ -15,23 +14,20 @@ use Minascafe\Category\Application\UseCase\ShowOneCategoryUseCase;
 use Minascafe\Category\Application\UseCase\ShowOneCategoryUseCaseRequest;
 use Minascafe\Category\Application\UseCase\UpdateCategoryUseCase;
 use Minascafe\Category\Application\UseCase\UpdateCategoryUseCaseRequest;
-use Minascafe\Category\Domain\Repository\CategoryRepositoryInterface;
-use Minascafe\Category\Infrastructure\Persistence\Doctrine\Entity\Category;
 use Minascafe\Shared\Infrastructure\Http\Controller\BaseController;
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 final class CategoryController extends BaseController
 {
-	public function __construct(
-		private ShowAllCategoriesUseCase $showAllCategoriesUseCase, 
-		private CreateCategoryUseCase $createCategoryUseCase,
-		private ShowOneCategoryUseCase $showOneCategoryUseCase,
-		private UpdateCategoryUseCase $updateCategoryUseCase,
-		private DeleteCategoryUseCase $deleteCategoryUseCase
-	) {
-	}
+    public function __construct(
+        private ShowAllCategoriesUseCase $showAllCategoriesUseCase,
+        private CreateCategoryUseCase $createCategoryUseCase,
+        private ShowOneCategoryUseCase $showOneCategoryUseCase,
+        private UpdateCategoryUseCase $updateCategoryUseCase,
+        private DeleteCategoryUseCase $deleteCategoryUseCase
+    ) {
+    }
 
     public function index(Request $request, Response $response): Response
     {
@@ -59,7 +55,7 @@ final class CategoryController extends BaseController
             ['name' => $name] = $request->getParsedBody();
 
             $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($name);
-			
+
             $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
             $payload = [
@@ -132,7 +128,7 @@ final class CategoryController extends BaseController
     public function destroy(Request $request, Response $response, string $id): Response
     {
         try {
-			$deleteCategoryUseCaseRequest = new DeleteCategoryUseCaseRequest($id);
+            $deleteCategoryUseCaseRequest = new DeleteCategoryUseCaseRequest($id);
 
             $this->deleteCategoryUseCase->execute($deleteCategoryUseCaseRequest);
 

@@ -8,6 +8,7 @@ use Minascafe\Category\Infrastructure\Persistence\Doctrine\Transform\CategoryTra
 use Minascafe\Product\Domain\Entity\Product as DomainProduct;
 use Minascafe\Product\Domain\ValueObject\ProductId;
 use Minascafe\Product\Domain\ValueObject\ProductName;
+use Minascafe\Product\Domain\ValueObject\ProductPrice;
 use Minascafe\Product\Infrastructure\Persistence\Doctrine\Entity\Product as EntityProduct;
 
 final class ProductTransform
@@ -17,7 +18,8 @@ final class ProductTransform
         return DomainProduct::create(
             new ProductId($entityProduct->getId()),
             CategoryTransform::entityToDomain($entityProduct->getCategory()),
-            new ProductName($entityProduct->getName())
+            new ProductName($entityProduct->getName()),
+            new ProductPrice($entityProduct->getPrice())
         );
     }
 
@@ -26,7 +28,8 @@ final class ProductTransform
         return new EntityProduct(
             $domainProduct->id()->value(),
             CategoryTransform::domainToEntity($domainProduct->category()),
-            $domainProduct->name()->value()
+            $domainProduct->name()->value(),
+            $domainProduct->price()->value()
         );
     }
 }

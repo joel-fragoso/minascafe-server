@@ -9,8 +9,12 @@ use Minascafe\Category\Domain\Entity\Category;
 
 final class ShowOneProductUseCaseResponse implements JsonSerializable
 {
-    public function __construct(private string $productId, private Category $category, private string $name)
-    {
+    public function __construct(
+        private string $productId,
+        private Category $category,
+        private string $name,
+        private float $price
+    ) {
     }
 
     public function productId(): string
@@ -28,14 +32,20 @@ final class ShowOneProductUseCaseResponse implements JsonSerializable
         return $this->name;
     }
 
+    public function price(): float
+    {
+        return $this->price;
+    }
+
     /**
-     * @return array<string, string|array<string, string>>
+     * @return array<string, string|float|array<string, string>>
      */
     public function jsonSerialize(): array
     {
         return [
             'id' => $this->productId(),
             'name' => $this->name(),
+            'price' => $this->price(),
             'category' => $this->category()->toArray(),
         ];
     }

@@ -25,11 +25,15 @@ final class Product
     #[Column(type: 'string', unique: true, nullable: false)]
     private string $name;
 
-    public function __construct(string $id, Category $category, string $name)
+    #[Column(type: 'decimal', precision: 10, scale: 2, nullable: false)]
+    private float $price;
+
+    public function __construct(string $id, Category $category, string $name, float $price)
     {
         $this->id = $id;
         $this->category = $category;
         $this->name = $name;
+        $this->price = $price;
     }
 
     public function setId(string $id): void
@@ -60,5 +64,15 @@ final class Product
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setPrice(float $price): void
+    {
+        $this->price = $price;
+    }
+
+    public function getPrice(): float
+    {
+        return $this->price;
     }
 }

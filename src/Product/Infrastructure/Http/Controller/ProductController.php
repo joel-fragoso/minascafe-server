@@ -54,9 +54,13 @@ final class ProductController extends BaseController
     public function create(Request $request, Response $response): Response
     {
         try {
-            ['categoryId' => $categoryId, 'name' => $name] = $request->getParsedBody();
+            [
+                'categoryId' => $categoryId,
+                'name' => $name,
+                'price' => $price
+            ] = $request->getParsedBody();
 
-            $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $name);
+            $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $name, $price);
 
             $createProductUseCaseResponse = $this->createProductUseCase->execute($createProductUseCaseRequest);
 
@@ -104,9 +108,9 @@ final class ProductController extends BaseController
     public function update(Request $request, Response $response, string $id): Response
     {
         try {
-            ['categoryId' => $categoryId, 'name' => $name] = $request->getParsedBody();
+            ['categoryId' => $categoryId, 'name' => $name, 'price' => $price] = $request->getParsedBody();
 
-            $updateProductUseCaseRequest = new UpdateProductUseCaseRequest($id, $categoryId, $name);
+            $updateProductUseCaseRequest = new UpdateProductUseCaseRequest($id, $categoryId, $name, $price);
 
             $updateProductUseCaseResponse = $this->updateProductUseCase->execute($updateProductUseCaseRequest);
 

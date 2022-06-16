@@ -12,6 +12,7 @@ use Minascafe\Product\Domain\Exception\ProductNotFoundException;
 use Minascafe\Product\Domain\Repository\ProductRepositoryInterface;
 use Minascafe\Product\Domain\ValueObject\ProductId;
 use Minascafe\Product\Domain\ValueObject\ProductName;
+use Minascafe\Product\Domain\ValueObject\ProductPrice;
 
 final class UpdateProductUseCase
 {
@@ -26,6 +27,7 @@ final class UpdateProductUseCase
         $productId = $updateProductUseCaseRequest->productId();
         $categoryId = $updateProductUseCaseRequest->categoryId();
         $productName = $updateProductUseCaseRequest->name();
+        $productPrice = $updateProductUseCaseRequest->price();
 
         $findCategory = $this->categoryRepository->findById(new CategoryId($categoryId));
 
@@ -42,7 +44,8 @@ final class UpdateProductUseCase
         $product = Product::create(
             new ProductId($findProduct->id()->value()),
             $findCategory,
-            new ProductName($productName)
+            new ProductName($productName),
+            new ProductPrice($productPrice)
         );
 
         $this->productRepository->update($product);
@@ -50,7 +53,8 @@ final class UpdateProductUseCase
         return new UpdateProductUseCaseResponse(
             $product->id()->value(),
             $product->category(),
-            $product->name()->value()
+            $product->name()->value(),
+            $product->price()->value()
         );
     }
 }

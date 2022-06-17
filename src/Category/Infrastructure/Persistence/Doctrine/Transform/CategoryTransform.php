@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Minascafe\Category\Infrastructure\Persistence\Doctrine\Transform;
 
 use Minascafe\Category\Domain\Entity\Category as DomainCategory;
+use Minascafe\Category\Domain\ValueObject\CategoryIcon;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
 use Minascafe\Category\Domain\ValueObject\CategoryName;
 use Minascafe\Category\Infrastructure\Persistence\Doctrine\Entity\Category as EntityCategory;
@@ -15,7 +16,8 @@ final class CategoryTransform
     {
         return DomainCategory::create(
             new CategoryId($entityCategory->getId()),
-            new CategoryName($entityCategory->getName())
+            new CategoryName($entityCategory->getName()),
+            new CategoryIcon($entityCategory->getIcon())
         );
     }
 
@@ -23,7 +25,8 @@ final class CategoryTransform
     {
         return new EntityCategory(
             $domainCategory->id()->value(),
-            $domainCategory->name()->value()
+            $domainCategory->name()->value(),
+            $domainCategory->icon()->value()
         );
     }
 }

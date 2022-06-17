@@ -52,9 +52,9 @@ final class CategoryController extends BaseController
     public function create(Request $request, Response $response): Response
     {
         try {
-            ['name' => $name] = $request->getParsedBody();
+            ['name' => $name, 'icon' => $icon] = $request->getParsedBody();
 
-            $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($name);
+            $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($name, $icon);
 
             $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -102,9 +102,9 @@ final class CategoryController extends BaseController
     public function update(Request $request, Response $response, string $id): Response
     {
         try {
-            ['name' => $name] = $request->getParsedBody();
+            ['name' => $name, 'icon' => $icon] = $request->getParsedBody();
 
-            $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($id, $name);
+            $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($id, $name, $icon);
 
             $updateCategoryUseCaseResponse = $this->updateCategoryUseCase->execute($updateCategoryUseCaseRequest);
 

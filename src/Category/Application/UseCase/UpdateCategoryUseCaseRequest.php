@@ -6,7 +6,7 @@ namespace Minascafe\Category\Application\UseCase;
 
 final class UpdateCategoryUseCaseRequest
 {
-    public function __construct(private string $categoryId, private string $name)
+    public function __construct(private string $categoryId, private string $name, private string $icon)
     {
     }
 
@@ -18,5 +18,10 @@ final class UpdateCategoryUseCaseRequest
     public function name(): string
     {
         return $this->name;
+    }
+
+    public function icon(): string
+    {
+        return $this->icon;
     }
 }

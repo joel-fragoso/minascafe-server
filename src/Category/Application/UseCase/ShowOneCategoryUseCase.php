@@ -31,7 +31,8 @@ final class ShowOneCategoryUseCase
 
         return new ShowOneCategoryUseCaseResponse(
             $findCategory->id()->value(),
-            $findCategory->name()->value()
+            $findCategory->name()->value(),
+            $findCategory->icon()->value()
         );
     }
 }

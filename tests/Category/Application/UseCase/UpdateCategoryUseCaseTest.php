@@ -27,19 +27,21 @@ final class UpdateCategoryUseCaseTest extends TestCase
 
     public function testDeveSerCapazDeAtualizarUmaCategoria(): void
     {
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria');
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone');
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
         $categoryId = $createCategoryUseCaseResponse->categoryId();
         $categoryName = 'Categoria 2';
+        $categoryIcon = 'NomeDoIcone2';
 
-        $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($categoryId, $categoryName);
+        $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($categoryId, $categoryName, $categoryIcon);
 
         $updateCategoryUseCaseResponse = $this->updateCategoryUseCase->execute($updateCategoryUseCaseRequest);
 
         self::assertEquals($categoryId, $updateCategoryUseCaseResponse->categoryId());
         self::assertEquals($categoryName, $updateCategoryUseCaseResponse->name());
+        self::assertEquals($categoryIcon, $updateCategoryUseCaseResponse->icon());
     }
 
     public function testNaoDeveSerCapazDeAtualizarUmaCategoriaQueNaoExiste(): void
@@ -48,28 +50,31 @@ final class UpdateCategoryUseCaseTest extends TestCase
 
         $categoryId = '00000000-0000-0000-0000-000000000000';
         $categoryName = 'Categoria';
+        $categoryIcon = 'NomeDoIcone';
 
-        $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($categoryId, $categoryName);
+        $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($categoryId, $categoryName, $categoryIcon);
 
         $this->updateCategoryUseCase->execute($updateCategoryUseCaseRequest);
     }
 
     public function testDeveSerCapazDeRetornarUmJsonSerializado(): void
     {
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria');
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone');
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
         $categoryId = $createCategoryUseCaseResponse->categoryId();
         $categoryName = 'Categoria 2';
+        $categoryIcon = 'NomeDoIcone2';
 
-        $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($categoryId, $categoryName);
+        $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($categoryId, $categoryName, $categoryIcon);
 
         $updateCategoryUseCaseResponse = $this->updateCategoryUseCase->execute($updateCategoryUseCaseRequest);
 
         $expectedJsonSerialize = json_encode([
             'id' => $updateCategoryUseCaseResponse->categoryId(),
             'name' => $updateCategoryUseCaseResponse->name(),
+            'icon' => $updateCategoryUseCaseResponse->icon(),
         ]);
 
         self::assertEquals($expectedJsonSerialize, json_encode($updateCategoryUseCaseResponse));

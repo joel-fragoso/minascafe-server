@@ -24,15 +24,15 @@ final class ShowAllCategoriesUseCaseResponse implements JsonSerializable
         return $this->categories;
     }
 
+    /**
+     * @return array<int, string|array<string, string>>
+     */
     public function jsonSerialize(): mixed
     {
         $categories = [];
 
         foreach ($this->categories as $category) {
-            $categories[] = [
-                'id' => $category->id()->value(),
-                'name' => $category->name()->value(),
-            ];
+            $categories[] = $category->toArray();
         }
 
         return $categories;

@@ -8,7 +8,7 @@ use JsonSerializable;
 
 final class ShowOneCategoryUseCaseResponse implements JsonSerializable
 {
-    public function __construct(private string $categoryId, private string $name)
+    public function __construct(private string $categoryId, private string $name, private string $icon)
     {
     }
 
@@ -22,6 +22,11 @@ final class ShowOneCategoryUseCaseResponse implements JsonSerializable
         return $this->name;
     }
 
+    public function icon(): string
+    {
+        return $this->icon;
+    }
+
     /**
      * @return array<string, int|string>
      */
@@ -30,6 +35,7 @@ final class ShowOneCategoryUseCaseResponse implements JsonSerializable
         return [
             'id' => $this->categoryId(),
             'name' => $this->name(),
+            'icon' => $this->icon(),
         ];
     }
 }

@@ -23,13 +23,15 @@ final class CreateCategoryUseCaseTest extends TestCase
     public function testDeveSerCapazDeCriarUmaCategoria(): void
     {
         $categoryName = 'Categoria';
+        $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
         self::assertNotNull($createCategoryUseCaseResponse->categoryId());
         self::assertEquals($categoryName, $createCategoryUseCaseResponse->name());
+        self::assertEquals($categoryIcon, $createCategoryUseCaseResponse->icon());
     }
 
     public function testNaoDeveSerCapazDeCriarUmaCategoriaComOMesmoNome(): void
@@ -37,8 +39,9 @@ final class CreateCategoryUseCaseTest extends TestCase
         self::expectException(DuplicateCategoryException::class);
 
         $categoryName = 'Categoria';
+        $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
 
         $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -48,14 +51,16 @@ final class CreateCategoryUseCaseTest extends TestCase
     public function testDeveSerCapazDeRetornarUmJsonSerializado(): void
     {
         $categoryName = 'Categoria';
+        $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
         $expectedJsonSerialize = json_encode([
             'id' => $createCategoryUseCaseResponse->categoryId(),
             'name' => $createCategoryUseCaseResponse->name(),
+            'icon' => $createCategoryUseCaseResponse->icon(),
         ]);
 
         self::assertEquals($expectedJsonSerialize, json_encode($createCategoryUseCaseResponse));

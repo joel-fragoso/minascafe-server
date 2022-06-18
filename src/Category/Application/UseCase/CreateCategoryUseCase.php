@@ -7,6 +7,7 @@ namespace Minascafe\Category\Application\UseCase;
 use Minascafe\Category\Domain\Entity\Category;
 use Minascafe\Category\Domain\Exception\DuplicateCategoryException;
 use Minascafe\Category\Domain\Repository\CategoryRepositoryInterface;
+use Minascafe\Category\Domain\ValueObject\CategoryIcon;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
 use Minascafe\Category\Domain\ValueObject\CategoryName;
 
@@ -22,6 +23,7 @@ final class CreateCategoryUseCase
     public function execute(CreateCategoryUseCaseRequest $createCategoryUseCaseRequest): CreateCategoryUseCaseResponse
     {
         $categoryName = $createCategoryUseCaseRequest->name();
+        $categoryIcon = $createCategoryUseCaseRequest->icon();
 
         $findCategory = $this->categoryRepository->findByName(
             new CategoryName($categoryName)
@@ -33,14 +35,16 @@ final class CreateCategoryUseCase
 
         $category = Category::create(
             new CategoryId(CategoryId::generate()),
-            new CategoryName($categoryName)
+            new CategoryName($categoryName),
+            new CategoryIcon($categoryIcon)
         );
 
         $this->categoryRepository->create($category);
 
         return new CreateCategoryUseCaseResponse(
             $category->id()->value(),
-            $category->name()->value()
+            $category->name()->value(),
+            $category->icon()->value()
         );
     }
 }

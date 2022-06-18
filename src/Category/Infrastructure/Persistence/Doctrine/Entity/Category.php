@@ -19,10 +19,14 @@ final class Category
     #[Column(type: 'string', unique: true, nullable: false)]
     private string $name;
 
-    public function __construct(string $id, string $name)
+    #[Column(type: 'string', nullable: false)]
+    private string $icon;
+
+    public function __construct(string $id, string $name, string $icon)
     {
         $this->id = $id;
         $this->name = $name;
+        $this->icon = $icon;
     }
 
     public function setId(string $id): void
@@ -43,5 +47,15 @@ final class Category
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setIcon(string $icon): void
+    {
+        $this->icon = $icon;
+    }
+
+    public function getIcon(): string
+    {
+        return $this->icon;
     }
 }

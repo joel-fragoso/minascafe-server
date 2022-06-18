@@ -26,14 +26,16 @@ final class ShowAllCategoriesUseCaseTest extends TestCase
     public function testDeveSerCapazDeListarTodasAsCategorias(): void
     {
         $categoryName1 = 'Categoria 1';
+        $categoryIcon1 = 'NomeDoIcone1';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName1);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName1, $categoryIcon1);
 
         $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
         $categoryName2 = 'Categoria 2';
+        $categoryIcon2 = 'NomeDoIcone2';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName2);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName2, $categoryIcon2);
 
         $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -46,14 +48,16 @@ final class ShowAllCategoriesUseCaseTest extends TestCase
     public function testDeveSerCapazDeRetornarUmJsonSerializado(): void
     {
         $categoryName1 = 'Categoria 1';
+        $categoryIcon1 = 'NomeDoIcone1';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName1);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName1, $categoryIcon1);
 
         $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
         $categoryName2 = 'Categoria 2';
+        $categoryIcon2 = 'NomeDoIcone2';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName2);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName2, $categoryIcon2);
 
         $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -62,10 +66,7 @@ final class ShowAllCategoriesUseCaseTest extends TestCase
         $categories = [];
 
         foreach ($showAllCategoriesUseCaseResponse->categories() as $category) {
-            $categories[] = [
-                'id' => $category->id()->value(),
-                'name' => $category->name()->value(),
-            ];
+            $categories[] = $category->toArray();
         }
 
         $expectedJsonSerialize = json_encode($categories);

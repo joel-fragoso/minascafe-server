@@ -31,8 +31,9 @@ final class DeleteCategoryUseCaseTest extends TestCase
     public function testDeveSerCapazDeRemoverUmaCategoria(): void
     {
         $categoryName = 'Categoria';
+        $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 

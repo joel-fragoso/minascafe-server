@@ -70,6 +70,7 @@ class CategoryRepository extends EntityRepository implements CategoryRepositoryI
         $findCategory = $this->find($entityCategory->getId());
 
         $findCategory->setName($entityCategory->getName());
+        $findCategory->setIcon($entityCategory->getIcon());
 
         $this->_em->flush();
     }

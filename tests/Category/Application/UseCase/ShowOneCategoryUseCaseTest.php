@@ -28,8 +28,9 @@ final class ShowOneCategoryUseCaseTest extends TestCase
     public function testDeveSerCapazDeEncontrarUmaCategoria(): void
     {
         $categoryName = 'Categoria';
+        $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -41,6 +42,7 @@ final class ShowOneCategoryUseCaseTest extends TestCase
 
         self::assertEquals($categoryId, $showOneCategoryUseCaseResponse->categoryId());
         self::assertEquals($categoryName, $showOneCategoryUseCaseResponse->name());
+        self::assertEquals($categoryIcon, $showOneCategoryUseCaseResponse->icon());
     }
 
     public function testNaoDeveSerCapazDeEncontrarUmaCategoriaQueNaoExiste(): void
@@ -57,8 +59,9 @@ final class ShowOneCategoryUseCaseTest extends TestCase
     public function testDeveSerCapazDeRetornarUmJsonSerializado(): void
     {
         $categoryName = 'Categoria';
+        $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -71,6 +74,7 @@ final class ShowOneCategoryUseCaseTest extends TestCase
         $expectedJsonSerialize = json_encode([
             'id' => $showOneCategoryUseCaseResponse->categoryId(),
             'name' => $showOneCategoryUseCaseResponse->name(),
+            'icon' => $showOneCategoryUseCaseResponse->icon(),
         ]);
 
         self::assertEquals($expectedJsonSerialize, json_encode($showOneCategoryUseCaseResponse));

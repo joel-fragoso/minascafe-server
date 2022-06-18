@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Minascafe\Category\Domain\Entity;
 
+use Minascafe\Category\Domain\ValueObject\CategoryIcon;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
 use Minascafe\Category\Domain\ValueObject\CategoryName;
 
 final class Category
 {
-    private function __construct(private CategoryId $id, private CategoryName $name)
+    private function __construct(private CategoryId $id, private CategoryName $name, private CategoryIcon $icon)
     {
     }
 
-    public static function create(CategoryId $id, CategoryName $name): self
+    public static function create(CategoryId $id, CategoryName $name, CategoryIcon $icon): self
     {
-        return new self($id, $name);
+        return new self($id, $name, $icon);
     }
 
     public function id(): CategoryId
@@ -28,6 +29,11 @@ final class Category
         return $this->name;
     }
 
+    public function icon(): CategoryIcon
+    {
+        return $this->icon;
+    }
+
     /**
      * @param array<string, string> $data
      */
@@ -35,7 +41,8 @@ final class Category
     {
         return new self(
             new CategoryId($data['id']),
-            new CategoryName($data['name'])
+            new CategoryName($data['name']),
+            new CategoryIcon($data['icon'])
         );
     }
 
@@ -47,6 +54,7 @@ final class Category
         return [
             'id' => $this->id()->value(),
             'name' => $this->name()->value(),
+            'icon' => $this->icon()->value(),
         ];
     }
 }

@@ -30,6 +30,9 @@ $container = $containerBuilder->build();
 
 $app = Bridge::create($container);
 
+$middleware = require 'config/middleware.php';
+$middleware($app);
+
 $routes = require 'config/routes.php';
 $routes($app);
 

@@ -17,6 +17,8 @@ use Minascafe\Product\Application\UseCase\UpdateProductUseCaseRequest;
 use Minascafe\Shared\Infrastructure\Http\Controller\BaseController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Selective\Validation\Exception\ValidationException;
+use Selective\Validation\ValidationResult;
 
 final class ProductController extends BaseController
 {
@@ -60,6 +62,24 @@ final class ProductController extends BaseController
                 'price' => $price
             ] = $request->getParsedBody();
 
+            $validation = new ValidationResult();
+
+            if (empty($categoryId)) {
+                $validation->addError('categoryId', "O campo 'categoryId' é obrigatório");
+            }
+
+            if (empty($name)) {
+                $validation->addError('name', "O campo 'name' é obrigatório");
+            }
+
+            if (empty($price)) {
+                $validation->addError('price', "O campo 'price' é obrigatório");
+            }
+
+            if ($validation->fails()) {
+                throw new ValidationException('Validation error', $validation);
+            }
+
             $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $name, $price);
 
             $createProductUseCaseResponse = $this->createProductUseCase->execute($createProductUseCaseRequest);
@@ -69,6 +89,23 @@ final class ProductController extends BaseController
             ];
 
             return $this->jsonResponse($response, $payload);
+        } catch (ValidationException $exception) {
+            $validationResult = $exception->getValidationResult();
+
+            $messages = [];
+
+            foreach ($validationResult->getErrors() as $error) {
+                $messages[] = $error->getMessage();
+            }
+
+            $payload = [
+                'error' => [
+                    'code' => $exception->getCode(),
+                    'message' => $messages,
+                ],
+            ];
+
+            return $this->jsonResponse($response, $payload, $exception->getCode());
         } catch (Exception $exception) {
             $payload = [
                 'error' => [
@@ -108,7 +145,29 @@ final class ProductController extends BaseController
     public function update(Request $request, Response $response, string $id): Response
     {
         try {
-            ['categoryId' => $categoryId, 'name' => $name, 'price' => $price] = $request->getParsedBody();
+            [
+                'categoryId' => $categoryId,
+                'name' => $name,
+                'price' => $price
+            ] = $request->getParsedBody();
+
+            $validation = new ValidationResult();
+
+            if (empty($categoryId)) {
+                $validation->addError('categoryId', "O campo 'categoryId' é obrigatório");
+            }
+
+            if (empty($name)) {
+                $validation->addError('name', "O campo 'name' é obrigatório");
+            }
+
+            if (empty($price)) {
+                $validation->addError('price', "O campo 'price' é obrigatório");
+            }
+
+            if ($validation->fails()) {
+                throw new ValidationException('Validation error', $validation);
+            }
 
             $updateProductUseCaseRequest = new UpdateProductUseCaseRequest($id, $categoryId, $name, $price);
 
@@ -119,6 +178,23 @@ final class ProductController extends BaseController
             ];
 
             return $this->jsonResponse($response, $payload);
+        } catch (ValidationException $exception) {
+            $validationResult = $exception->getValidationResult();
+
+            $messages = [];
+
+            foreach ($validationResult->getErrors() as $error) {
+                $messages[] = $error->getMessage();
+            }
+
+            $payload = [
+                'error' => [
+                    'code' => $exception->getCode(),
+                    'message' => $messages,
+                ],
+            ];
+
+            return $this->jsonResponse($response, $payload, $exception->getCode());
         } catch (Exception $exception) {
             $payload = [
                 'error' => [

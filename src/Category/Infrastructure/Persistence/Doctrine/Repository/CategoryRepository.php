@@ -24,7 +24,7 @@ class CategoryRepository extends EntityRepository implements CategoryRepositoryI
     {
         $categories = [];
 
-        foreach ($this->findAll() as $category) {
+        foreach ($this->findBy([], ['name' => 'ASC']) as $category) {
             $categories[] = CategoryTransform::entityToDomain($category);
         }
 

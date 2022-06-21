@@ -25,7 +25,7 @@ final class ProductRepository extends EntityRepository implements ProductReposit
     {
         $products = [];
 
-        foreach ($this->findAll() as $product) {
+        foreach ($this->findBy([], ['name' => 'ASC']) as $product) {
             $products[] = ProductTransform::entityToDomain($product);
         }
 

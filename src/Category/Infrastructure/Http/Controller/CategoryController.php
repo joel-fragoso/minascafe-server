@@ -17,6 +17,8 @@ use Minascafe\Category\Application\UseCase\UpdateCategoryUseCaseRequest;
 use Minascafe\Shared\Infrastructure\Http\Controller\BaseController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Selective\Validation\Exception\ValidationException;
+use Selective\Validation\ValidationResult;
 
 final class CategoryController extends BaseController
 {
@@ -54,6 +56,20 @@ final class CategoryController extends BaseController
         try {
             ['name' => $name, 'icon' => $icon] = $request->getParsedBody();
 
+            $validation = new ValidationResult();
+
+            if (empty($name)) {
+                $validation->addError('name', "O campo 'name' é obrigatório");
+            }
+
+            if (empty($icon)) {
+                $validation->addError('icon', "O campo 'icon' é obrigatório");
+            }
+
+            if ($validation->fails()) {
+                throw new ValidationException('Validation error', $validation);
+            }
+
             $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($name, $icon);
 
             $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
@@ -63,6 +79,23 @@ final class CategoryController extends BaseController
             ];
 
             return $this->jsonResponse($response, $payload, 201);
+        } catch (ValidationException $exception) {
+            $validationResult = $exception->getValidationResult();
+
+            $messages = [];
+
+            foreach ($validationResult->getErrors() as $error) {
+                $messages[] = $error->getMessage();
+            }
+
+            $payload = [
+                'error' => [
+                    'code' => $exception->getCode(),
+                    'message' => $messages,
+                ],
+            ];
+
+            return $this->jsonResponse($response, $payload, $exception->getCode());
         } catch (Exception $exception) {
             $payload = [
                 'error' => [
@@ -104,6 +137,20 @@ final class CategoryController extends BaseController
         try {
             ['name' => $name, 'icon' => $icon] = $request->getParsedBody();
 
+            $validation = new ValidationResult();
+
+            if (empty($name)) {
+                $validation->addError('name', "O campo 'name' é obrigatório");
+            }
+
+            if (empty($icon)) {
+                $validation->addError('icon', "O campo 'icon' é obrigatório");
+            }
+
+            if ($validation->fails()) {
+                throw new ValidationException('Validation error', $validation);
+            }
+
             $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($id, $name, $icon);
 
             $updateCategoryUseCaseResponse = $this->updateCategoryUseCase->execute($updateCategoryUseCaseRequest);
@@ -113,6 +160,23 @@ final class CategoryController extends BaseController
             ];
 
             return $this->jsonResponse($response, $payload);
+        } catch (ValidationException $exception) {
+            $validationResult = $exception->getValidationResult();
+
+            $messages = [];
+
+            foreach ($validationResult->getErrors() as $error) {
+                $messages[] = $error->getMessage();
+            }
+
+            $payload = [
+                'error' => [
+                    'code' => $exception->getCode(),
+                    'message' => $messages,
+                ],
+            ];
+
+            return $this->jsonResponse($response, $payload, $exception->getCode());
         } catch (Exception $exception) {
             $payload = [
                 'error' => [

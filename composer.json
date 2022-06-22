@@ -11,6 +11,8 @@
         ],
         "migrations:diff": "@php bin/doctrine-migrations migrations:diff",
         "migrations:migrate": "@php bin/doctrine-migrations migration:migrate",
+        "cs-check": "php-cs-fixer fix --diff --dry-run",
+        "analyse": "phpstan",
         "test": "phpunit --testdox --coverage-text --coverage-html=coverage"
     },
     "autoload": {

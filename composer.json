@@ -1,5 +1,6 @@
 {
     "name": "minascafe/server",
+    "description": "API do Minas Café",
     "license": "proprietary",
     "scripts": {
         "dev": "php -S localhost:8888 -t public",

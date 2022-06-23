@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Minascafe\Product\Domain\Entity;
 
 use Minascafe\Category\Domain\Entity\Category;
+use Minascafe\Product\Domain\ValueObject\ProductActive;
 use Minascafe\Product\Domain\ValueObject\ProductId;
 use Minascafe\Product\Domain\ValueObject\ProductName;
 use Minascafe\Product\Domain\ValueObject\ProductPrice;
@@ -15,13 +16,19 @@ final class Product
         private ProductId $id,
         private Category $category,
         private ProductName $name,
-        private ProductPrice $price
+        private ProductPrice $price,
+        private ProductActive $active
     ) {
     }
 
-    public static function create(ProductId $id, Category $category, ProductName $name, ProductPrice $price): self
-    {
-        return new self($id, $category, $name, $price);
+    public static function create(
+        ProductId $id,
+        Category $category,
+        ProductName $name,
+        ProductPrice $price,
+        ProductActive $active
+    ): self {
+        return new self($id, $category, $name, $price, $active);
     }
 
     public function id(): ProductId
@@ -44,8 +51,13 @@ final class Product
         return $this->price;
     }
 
+    public function isActive(): ProductActive
+    {
+        return $this->active;
+    }
+
     /**
-     * @param array<string, string|float|array<string, string>> $data
+     * @param array<string, string|float|bool|array<string, string|bool>> $data
      */
     public static function fromArray(array $data): self
     {
@@ -53,12 +65,13 @@ final class Product
             new ProductId($data['id']),
             Category::fromArray($data['category']),
             new ProductName($data['name']),
-            new ProductPrice($data['price'])
+            new ProductPrice($data['price']),
+            new ProductActive($data['active'])
         );
     }
 
     /**
-     * @return array<string, string|float|array<string, string>>
+     * @return array<string, string|float|bool|array<string, string|bool>>
      */
     public function toArray(): array
     {
@@ -67,6 +80,7 @@ final class Product
             'category' => $this->category()->toArray(),
             'name' => $this->name()->value(),
             'price' => $this->price()->value(),
+            'active' => $this->isActive()->value(),
         ];
     }
 }

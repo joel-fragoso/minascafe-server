@@ -13,7 +13,8 @@
         "migrations:migrate": "@php bin/doctrine-migrations migration:migrate",
         "cs-check": "php-cs-fixer fix --diff --dry-run",
         "analyse": "phpstan",
-        "test": "phpunit --testdox --coverage-text --coverage-html=coverage"
+        "test": "phpunit --testdox",
+        "test:coverage": "phpunit --coverage-text --coverage-html=coverage"
     },
     "autoload": {
         "psr-4": {
@@ -31,6 +32,7 @@
         "ext-pdo": "*",
         "doctrine/migrations": "^3.5",
         "doctrine/orm": "^2.12",
+        "doctrine/sql-formatter": "^1.1",
         "php-di/php-di": "^6.4",
         "php-di/slim-bridge": "^3.2",
         "ramsey/uuid": "^4.3",

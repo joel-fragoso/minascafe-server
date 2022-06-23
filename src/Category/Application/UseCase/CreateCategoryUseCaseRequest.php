@@ -6,7 +6,7 @@ namespace Minascafe\Category\Application\UseCase;
 
 final class CreateCategoryUseCaseRequest
 {
-    public function __construct(private string $name, private string $icon)
+    public function __construct(private string $name, private string $icon, private bool $active)
     {
     }
 
@@ -18,5 +18,10 @@ final class CreateCategoryUseCaseRequest
     public function icon(): string
     {
         return $this->icon;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
     }
 }

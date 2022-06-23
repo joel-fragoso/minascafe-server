@@ -17,14 +17,36 @@ use Minascafe\Category\Infrastructure\Persistence\Doctrine\Transform\CategoryTra
  */
 class CategoryRepository extends EntityRepository implements CategoryRepositoryInterface
 {
+    private const CATEGORY_ACTIVE = 1;
+    private const CATEGORY_INACTIVE = 0;
+
     /**
      * {@inheritdoc}
      */
-    public function findAllCategories(): array
-    {
+    public function findAll(
+        ?int $active = null,
+        ?string $order = null,
+        ?int $limit = null,
+        ?int $offset = null
+    ): array {
+        $criteria = [];
+        $orderBy = null;
+
+        if (self::CATEGORY_ACTIVE === $active) {
+            $criteria['active'] = $active;
+        } elseif (self::CATEGORY_INACTIVE === $active) {
+            $criteria['active'] = $active;
+        }
+
+        if ($order) {
+            $orderBy[$order] = 'ASC';
+        }
+
+        $findCategory = $this->findBy($criteria, $orderBy, $limit, $offset);
+
         $categories = [];
 
-        foreach ($this->findBy([], ['name' => 'ASC']) as $category) {
+        foreach ($findCategory as $category) {
             $categories[] = CategoryTransform::entityToDomain($category);
         }
 
@@ -71,6 +93,7 @@ class CategoryRepository extends EntityRepository implements CategoryRepositoryI
 
         $findCategory->setName($entityCategory->getName());
         $findCategory->setIcon($entityCategory->getIcon());
+        $findCategory->setActive($entityCategory->isActive());
 
         $this->_em->flush();
     }

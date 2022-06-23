@@ -6,8 +6,12 @@ namespace Minascafe\Product\Application\UseCase;
 
 final class CreateProductUseCaseRequest
 {
-    public function __construct(private string $categoryId, private string $name, private float $price)
-    {
+    public function __construct(
+        private string $categoryId,
+        private string $name,
+        private float $price,
+        private bool $active
+    ) {
     }
 
     public function categoryId(): string
@@ -23,5 +27,10 @@ final class CreateProductUseCaseRequest
     public function price(): float
     {
         return $this->price;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
     }
 }

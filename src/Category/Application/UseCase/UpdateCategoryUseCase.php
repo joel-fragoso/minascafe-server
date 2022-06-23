@@ -7,6 +7,7 @@ namespace Minascafe\Category\Application\UseCase;
 use Minascafe\Category\Domain\Entity\Category;
 use Minascafe\Category\Domain\Exception\CategoryNotFoundException;
 use Minascafe\Category\Domain\Repository\CategoryRepositoryInterface;
+use Minascafe\Category\Domain\ValueObject\CategoryActive;
 use Minascafe\Category\Domain\ValueObject\CategoryIcon;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
 use Minascafe\Category\Domain\ValueObject\CategoryName;
@@ -25,6 +26,7 @@ final class UpdateCategoryUseCase
         $categoryId = $updateCategoryUseCaseRequest->categoryId();
         $categoryName = $updateCategoryUseCaseRequest->name();
         $categoryIcon = $updateCategoryUseCaseRequest->icon();
+        $categoryActive = $updateCategoryUseCaseRequest->isActive();
 
         $findCategory = $this->categoryRepository->findById(new CategoryId($categoryId));
 
@@ -35,7 +37,8 @@ final class UpdateCategoryUseCase
         $category = Category::create(
             new CategoryId($findCategory->id()->value()),
             new CategoryName($categoryName),
-            new CategoryIcon($categoryIcon)
+            new CategoryIcon($categoryIcon),
+            new CategoryActive($categoryActive)
         );
 
         $this->categoryRepository->update($category);
@@ -43,7 +46,8 @@ final class UpdateCategoryUseCase
         return new UpdateCategoryUseCaseResponse(
             $category->id()->value(),
             $category->name()->value(),
-            $category->icon()->value()
+            $category->icon()->value(),
+            $category->isActive()->value()
         );
     }
 }

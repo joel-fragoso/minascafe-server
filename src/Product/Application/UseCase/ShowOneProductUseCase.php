@@ -28,7 +28,8 @@ final class ShowOneProductUseCase
             $findProduct->id()->value(),
             $findProduct->category(),
             $findProduct->name()->value(),
-            $findProduct->price()->value()
+            $findProduct->price()->value(),
+            $findProduct->isActive()->value()
         );
     }
 }

@@ -12,9 +12,15 @@ final class ShowAllCategoriesUseCase
     {
     }
 
-    public function execute(): ShowAllCategoriesUseCaseResponse
-    {
-        $categories = $this->categoryRepository->findAllCategories();
+    public function execute(
+        ShowAllCategoriesUseCaseRequest $showAllCategoriesUseCaseRequest
+    ): ShowAllCategoriesUseCaseResponse {
+        $categories = $this->categoryRepository->findAll(
+            $showAllCategoriesUseCaseRequest->active(),
+            $showAllCategoriesUseCaseRequest->order(),
+            $showAllCategoriesUseCaseRequest->limit(),
+            $showAllCategoriesUseCaseRequest->offset()
+        );
 
         return new ShowAllCategoriesUseCaseResponse($categories);
     }

@@ -12,9 +12,15 @@ final class ShowAllProductsUseCase
     {
     }
 
-    public function execute(): ShowAllProductsUseCaseResponse
-    {
-        $products = $this->productRepository->findAllProducts();
+    public function execute(
+        ShowAllProductsUseCaseRequest $showAllProductsUseCaseRequest
+    ): ShowAllProductsUseCaseResponse {
+        $products = $this->productRepository->findAll(
+            $showAllProductsUseCaseRequest->active(),
+            $showAllProductsUseCaseRequest->order(),
+            $showAllProductsUseCaseRequest->limit(),
+            $showAllProductsUseCaseRequest->offset()
+        );
 
         return new ShowAllProductsUseCaseResponse($products);
     }

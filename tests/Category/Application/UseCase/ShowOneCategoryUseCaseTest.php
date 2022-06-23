@@ -30,7 +30,7 @@ final class ShowOneCategoryUseCaseTest extends TestCase
         $categoryName = 'Categoria';
         $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -61,7 +61,7 @@ final class ShowOneCategoryUseCaseTest extends TestCase
         $categoryName = 'Categoria';
         $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -75,6 +75,7 @@ final class ShowOneCategoryUseCaseTest extends TestCase
             'id' => $showOneCategoryUseCaseResponse->categoryId(),
             'name' => $showOneCategoryUseCaseResponse->name(),
             'icon' => $showOneCategoryUseCaseResponse->icon(),
+            'active' => $showOneCategoryUseCaseResponse->isActive(),
         ]);
 
         self::assertEquals($expectedJsonSerialize, json_encode($showOneCategoryUseCaseResponse));

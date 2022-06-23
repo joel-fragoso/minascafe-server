@@ -28,12 +28,16 @@ final class Product
     #[Column(type: 'decimal', precision: 10, scale: 2, nullable: false)]
     private float $price;
 
-    public function __construct(string $id, Category $category, string $name, float $price)
+    #[Column(type: 'boolean', nullable: false, options: ['default' => 0])]
+    private bool $active;
+
+    public function __construct(string $id, Category $category, string $name, float $price, bool $active)
     {
         $this->id = $id;
         $this->category = $category;
         $this->name = $name;
         $this->price = $price;
+        $this->active = $active;
     }
 
     public function setId(string $id): void
@@ -74,5 +78,15 @@ final class Product
     public function getPrice(): float
     {
         return $this->price;
+    }
+
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
     }
 }

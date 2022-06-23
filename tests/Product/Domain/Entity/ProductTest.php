@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Minascafe\Tests\Product\Domain\Entity;
 
 use Minascafe\Category\Domain\Entity\Category;
+use Minascafe\Category\Domain\ValueObject\CategoryActive;
 use Minascafe\Category\Domain\ValueObject\CategoryIcon;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
 use Minascafe\Category\Domain\ValueObject\CategoryName;
 use Minascafe\Product\Domain\Entity\Product;
+use Minascafe\Product\Domain\ValueObject\ProductActive;
 use Minascafe\Product\Domain\ValueObject\ProductId;
 use Minascafe\Product\Domain\ValueObject\ProductName;
 use Minascafe\Product\Domain\ValueObject\ProductPrice;
@@ -25,20 +27,23 @@ final class ProductTest extends TestCase
         $category = Category::create(
             new CategoryId(CategoryId::generate()),
             new CategoryName('Categoria'),
-            new CategoryIcon('NomeDoIcone')
+            new CategoryIcon('NomeDoIcone'),
+            new CategoryActive(true)
         );
 
         $product = Product::create(
             new ProductId($productId),
             $category,
             new ProductName($productName),
-            new ProductPrice($productPrice)
+            new ProductPrice($productPrice),
+            new ProductActive(true)
         );
 
         self::assertEquals($productId, $product->id()->value());
         self::assertEquals($category, $product->category());
         self::assertEquals($productName, $product->name()->value());
         self::assertEquals($productPrice, $product->price()->value());
+        self::assertTrue($product->isActive()->value());
     }
 
     public function testDeveSerCapazDeInstanciarUmProdutoPeloArray(): void
@@ -51,10 +56,12 @@ final class ProductTest extends TestCase
             'id' => $productId,
             'name' => $productName,
             'price' => $productPrice,
+            'active' => true,
             'category' => [
                 'id' => CategoryId::generate(),
                 'name' => 'Categoria',
                 'icon' => 'NomeDoIcone',
+                'active' => true,
             ],
         ];
 
@@ -64,6 +71,7 @@ final class ProductTest extends TestCase
         self::assertEquals('Categoria', $product->category()->name()->value());
         self::assertEquals($productName, $product->name()->value());
         self::assertEquals($productPrice, $product->price()->value());
+        self::assertTrue($product->isActive()->value());
     }
 
     public function testDeveSerCapazDeRetornarUmArrayDeProduto(): void
@@ -75,14 +83,16 @@ final class ProductTest extends TestCase
         $category = Category::create(
             new CategoryId(CategoryId::generate()),
             new CategoryName('Categoria'),
-            new CategoryIcon('NomeDoIcone')
+            new CategoryIcon('NomeDoIcone'),
+            new CategoryActive(true)
         );
 
         $product = Product::create(
             new ProductId($productId),
             $category,
             new ProductName($productName),
-            new ProductPrice($productPrice)
+            new ProductPrice($productPrice),
+            new ProductActive(true)
         );
 
         $productData = $product->toArray();
@@ -91,5 +101,6 @@ final class ProductTest extends TestCase
         self::assertEquals($productId, $productData['id']);
         self::assertEquals($productName, $productData['name']);
         self::assertEquals($productPrice, $productData['price']);
+        self::assertTrue($productData['active']);
     }
 }

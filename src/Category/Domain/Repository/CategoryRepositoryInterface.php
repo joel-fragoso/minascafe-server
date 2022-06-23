@@ -13,7 +13,12 @@ interface CategoryRepositoryInterface
     /**
      * @return Category[]
      */
-    public function findAllCategories(): array;
+    public function findAll(
+        ?int $active = null,
+        ?string $order = null,
+        ?int $limit = null,
+        ?int $offset = null
+    ): array;
 
     public function findById(CategoryId $categoryId): ?Category;
 

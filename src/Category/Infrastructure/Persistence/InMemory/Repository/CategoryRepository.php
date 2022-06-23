@@ -11,6 +11,9 @@ use Minascafe\Category\Domain\ValueObject\CategoryName;
 
 final class CategoryRepository implements CategoryRepositoryInterface
 {
+    private const CATEGORY_ACTIVE = 1;
+    private const CATEGORY_INACTIVE = 0;
+
     /**
      * @param Category[] $categories
      */
@@ -21,8 +24,34 @@ final class CategoryRepository implements CategoryRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findAllCategories(): array
-    {
+    public function findAll(
+        ?int $active = null,
+        ?string $order = null,
+        ?int $limit = null,
+        ?int $offset = null
+    ): array {
+        if (self::CATEGORY_ACTIVE === $active) {
+            $categories = [];
+
+            foreach ($this->categories as $category) {
+                if ((bool) self::CATEGORY_ACTIVE === $category->isActive()->value()) {
+                    $categories[] = $category;
+                }
+            }
+
+            return $categories;
+        } elseif (self::CATEGORY_INACTIVE === $active) {
+            $categories = [];
+
+            foreach ($this->categories as $category) {
+                if ((bool) self::CATEGORY_INACTIVE === $category->isActive()->value()) {
+                    $categories[] = $category;
+                }
+            }
+
+            return $categories;
+        }
+
         return $this->categories;
     }
 

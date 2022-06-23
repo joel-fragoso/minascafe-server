@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Minascafe\Tests\Category\Domain\Entity;
 
 use Minascafe\Category\Domain\Entity\Category;
+use Minascafe\Category\Domain\ValueObject\CategoryActive;
 use Minascafe\Category\Domain\ValueObject\CategoryIcon;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
 use Minascafe\Category\Domain\ValueObject\CategoryName;
@@ -21,12 +22,14 @@ final class CategoryTest extends TestCase
         $category = Category::create(
             new CategoryId($categoryId),
             new CategoryName($categoryName),
-            new CategoryIcon($categoryIcon)
+            new CategoryIcon($categoryIcon),
+            new CategoryActive(true)
         );
 
         self::assertEquals($categoryId, $category->id()->value());
         self::assertEquals($categoryName, $category->name()->value());
         self::assertEquals($categoryIcon, $category->icon()->value());
+        self::assertTrue($category->isActive()->value());
     }
 
     public function testDeveSerCapazDeInstanciarUmaCategoriaPeloArray(): void
@@ -39,6 +42,7 @@ final class CategoryTest extends TestCase
             'id' => $categoryId,
             'name' => $categoryName,
             'icon' => $categoryIcon,
+            'active' => true,
         ];
 
         $category = Category::fromArray($payload);
@@ -46,6 +50,7 @@ final class CategoryTest extends TestCase
         self::assertEquals($categoryId, $category->id()->value());
         self::assertEquals($categoryName, $category->name()->value());
         self::assertEquals($categoryIcon, $category->icon()->value());
+        self::assertTrue($category->isActive()->value());
     }
 
     public function testDeveSerCapazDeRetornarUmArrayDeCategoria(): void
@@ -57,7 +62,8 @@ final class CategoryTest extends TestCase
         $category = Category::create(
             new CategoryId($categoryId),
             new CategoryName($categoryName),
-            new CategoryIcon($categoryIcon)
+            new CategoryIcon($categoryIcon),
+            new CategoryActive(true)
         );
 
         $categoryData = $category->toArray();
@@ -66,5 +72,6 @@ final class CategoryTest extends TestCase
         self::assertEquals($categoryId, $categoryData['id']);
         self::assertEquals($categoryName, $categoryData['name']);
         self::assertEquals($categoryIcon, $categoryData['icon']);
+        self::assertTrue($categoryData['active']);
     }
 }

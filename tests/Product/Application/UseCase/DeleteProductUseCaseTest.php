@@ -40,7 +40,7 @@ final class DeleteProductUseCaseTest extends TestCase
         $categoryName = 'Categoria';
         $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -48,11 +48,11 @@ final class DeleteProductUseCaseTest extends TestCase
         $productName = 'Produto';
         $productPrice = 1.00;
 
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice, true);
 
         $createProductUseCaseResponse = $this->createProductUseCase->execute($createProductUseCaseRequest);
 
-        self::assertCount(1, $this->inMemoryProductRepository->findAllProducts());
+        self::assertCount(1, $this->inMemoryProductRepository->findAll());
 
         $productId = $createProductUseCaseResponse->productId();
 
@@ -60,7 +60,7 @@ final class DeleteProductUseCaseTest extends TestCase
 
         $this->deleteProductUseCase->execute($deleteProductUseCaseRequest);
 
-        self::assertCount(0, $this->inMemoryProductRepository->findAllProducts());
+        self::assertCount(0, $this->inMemoryProductRepository->findAll());
     }
 
     public function testNaoDeveSerCapazDeRemoverUmProdutoQueNaoExiste(): void

@@ -38,7 +38,7 @@ final class ShowOneProductUseCaseTest extends TestCase
         $categoryName = 'Categoria';
         $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -46,7 +46,7 @@ final class ShowOneProductUseCaseTest extends TestCase
         $productName = 'Produto';
         $productPrice = 1.00;
 
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice, true);
 
         $createProductUseCaseResponse = $this->createProductUseCase->execute($createProductUseCaseRequest);
 
@@ -78,7 +78,7 @@ final class ShowOneProductUseCaseTest extends TestCase
         $categoryName = 'Categoria';
         $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -86,7 +86,7 @@ final class ShowOneProductUseCaseTest extends TestCase
         $productName = 'Produto';
         $productPrice = 1.00;
 
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice, true);
 
         $createProductUseCaseResponse = $this->createProductUseCase->execute($createProductUseCaseRequest);
 
@@ -100,6 +100,7 @@ final class ShowOneProductUseCaseTest extends TestCase
             'id' => $showOneProductUseCaseResponse->productId(),
             'name' => $showOneProductUseCaseResponse->name(),
             'price' => $showOneProductUseCaseResponse->price(),
+            'active' => $showOneProductUseCaseResponse->isActive(),
             'category' => $showOneProductUseCaseResponse->category()->toArray(),
         ]);
 

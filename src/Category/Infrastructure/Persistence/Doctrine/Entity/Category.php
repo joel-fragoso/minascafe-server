@@ -22,11 +22,15 @@ final class Category
     #[Column(type: 'string', nullable: false)]
     private string $icon;
 
-    public function __construct(string $id, string $name, string $icon)
+    #[Column(type: 'boolean', nullable: false, options: ['default' => 0])]
+    private bool $active;
+
+    public function __construct(string $id, string $name, string $icon, bool $active)
     {
         $this->id = $id;
         $this->name = $name;
         $this->icon = $icon;
+        $this->active = $active;
     }
 
     public function setId(string $id): void
@@ -57,5 +61,15 @@ final class Category
     public function getIcon(): string
     {
         return $this->icon;
+    }
+
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
     }
 }

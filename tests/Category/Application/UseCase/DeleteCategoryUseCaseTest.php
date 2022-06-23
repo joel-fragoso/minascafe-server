@@ -33,11 +33,11 @@ final class DeleteCategoryUseCaseTest extends TestCase
         $categoryName = 'Categoria';
         $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
-        self::assertCount(1, $this->inMemoryCategoryRepository->findAllCategories());
+        self::assertCount(1, $this->inMemoryCategoryRepository->findAll());
 
         $categoryId = $createCategoryUseCaseResponse->categoryId();
 
@@ -45,7 +45,7 @@ final class DeleteCategoryUseCaseTest extends TestCase
 
         $this->deleteCategoryUseCase->execute($deleteCategoryUseCaseRequest);
 
-        self::assertCount(0, $this->inMemoryCategoryRepository->findAllCategories());
+        self::assertCount(0, $this->inMemoryCategoryRepository->findAll());
     }
 
     public function testNaoDeveSerCapazDeRemoverUmaCategoriaQueNaoExiste(): void

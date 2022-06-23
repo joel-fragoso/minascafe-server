@@ -18,14 +18,36 @@ use Minascafe\Product\Infrastructure\Persistence\Doctrine\Transform\ProductTrans
  */
 final class ProductRepository extends EntityRepository implements ProductRepositoryInterface
 {
+    private const PRODUCT_ACTIVE = 1;
+    private const PRODUCT_INACTIVE = 0;
+
     /**
      * {@inheritdoc}
      */
-    public function findAllProducts(): array
-    {
+    public function findAll(
+        ?int $active = null,
+        ?string $order = null,
+        ?int $limit = null,
+        ?int $offset = null
+    ): array {
+        $criteria = [];
+        $orderBy = null;
+
+        if (self::PRODUCT_ACTIVE === $active) {
+            $criteria['active'] = $active;
+        } elseif (self::PRODUCT_INACTIVE === $active) {
+            $criteria['active'] = $active;
+        }
+
+        if ($order) {
+            $orderBy[$order] = 'ASC';
+        }
+
+        $findProducts = $this->findBy($criteria, $orderBy, $limit, $offset);
+
         $products = [];
 
-        foreach ($this->findBy([], ['name' => 'ASC']) as $product) {
+        foreach ($findProducts as $product) {
             $products[] = ProductTransform::entityToDomain($product);
         }
 
@@ -77,6 +99,7 @@ final class ProductRepository extends EntityRepository implements ProductReposit
         $findProduct->setCategory($findCategory);
         $findProduct->setName($entityProduct->getName());
         $findProduct->setPrice($entityProduct->getPrice());
+        $findProduct->setActive($entityProduct->isActive());
 
         $this->_em->flush();
     }

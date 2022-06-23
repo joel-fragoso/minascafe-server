@@ -11,6 +11,9 @@ use Minascafe\Product\Domain\ValueObject\ProductName;
 
 final class ProductRepository implements ProductRepositoryInterface
 {
+    private const PRODUCT_ACTIVE = 1;
+    private const PRODUCT_INACTIVE = 0;
+
     /**
      * @param Product[] $products
      */
@@ -21,8 +24,34 @@ final class ProductRepository implements ProductRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findAllProducts(): array
-    {
+    public function findAll(
+        ?int $active = null,
+        ?string $order = null,
+        ?int $limit = null,
+        ?int $offset = null
+    ): array {
+        if (self::PRODUCT_ACTIVE === $active) {
+            $products = [];
+
+            foreach ($this->products as $product) {
+                if ((bool) self::PRODUCT_ACTIVE === $product->isActive()->value()) {
+                    $products[] = $product;
+                }
+            }
+
+            return $products;
+        } elseif (self::PRODUCT_INACTIVE === $active) {
+            $products = [];
+
+            foreach ($this->products as $product) {
+                if ((bool) self::PRODUCT_INACTIVE === $product->isActive()->value()) {
+                    $products[] = $product;
+                }
+            }
+
+            return $products;
+        }
+
         return $this->products;
     }
 

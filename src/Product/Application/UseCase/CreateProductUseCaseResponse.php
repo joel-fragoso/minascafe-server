@@ -13,7 +13,8 @@ final class CreateProductUseCaseResponse implements JsonSerializable
         private string $productId,
         private Category $category,
         private string $name,
-        private float $price
+        private float $price,
+        private bool $active
     ) {
     }
 
@@ -37,8 +38,13 @@ final class CreateProductUseCaseResponse implements JsonSerializable
         return $this->price;
     }
 
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
     /**
-     * @return array<string, string|float|array<string, string>>
+     * @return array<string, string|float|bool|array<string, string>>
      */
     public function jsonSerialize(): array
     {
@@ -46,6 +52,7 @@ final class CreateProductUseCaseResponse implements JsonSerializable
             'id' => $this->productId(),
             'name' => $this->name(),
             'price' => $this->price(),
+            'active' => $this->isActive(),
             'category' => $this->category()->toArray(),
         ];
     }

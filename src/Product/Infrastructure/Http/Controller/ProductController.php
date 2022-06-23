@@ -10,6 +10,7 @@ use Minascafe\Product\Application\UseCase\CreateProductUseCaseRequest;
 use Minascafe\Product\Application\UseCase\DeleteProductUseCase;
 use Minascafe\Product\Application\UseCase\DeleteProductUseCaseRequest;
 use Minascafe\Product\Application\UseCase\ShowAllProductsUseCase;
+use Minascafe\Product\Application\UseCase\ShowAllProductsUseCaseRequest;
 use Minascafe\Product\Application\UseCase\ShowOneProductUseCase;
 use Minascafe\Product\Application\UseCase\ShowOneProductUseCaseRequest;
 use Minascafe\Product\Application\UseCase\UpdateProductUseCase;
@@ -34,7 +35,16 @@ final class ProductController extends BaseController
     public function index(Request $request, Response $response): Response
     {
         try {
-            $showAllProductsUseCaseResponse = $this->showAllProductsUseCase->execute();
+            $queryParams = $request->getQueryParams();
+
+            $active = isset($queryParams['active']) ? (int) $queryParams['active'] : null;
+            $order = isset($queryParams['order']) ? $queryParams['order'] : null;
+            $limit = isset($queryParams['limit']) ? (int) $queryParams['limit'] : null;
+            $offset = isset($queryParams['offset']) ? (int) $queryParams['offset'] : null;
+
+            $showAllProductsUseCaseRequest = new ShowAllProductsUseCaseRequest($active, $order, $limit, $offset);
+
+            $showAllProductsUseCaseResponse = $this->showAllProductsUseCase->execute($showAllProductsUseCaseRequest);
 
             $payload = [
                 'data' => $showAllProductsUseCaseResponse,
@@ -59,7 +69,8 @@ final class ProductController extends BaseController
             [
                 'categoryId' => $categoryId,
                 'name' => $name,
-                'price' => $price
+                'price' => $price,
+                'active' => $active,
             ] = $request->getParsedBody();
 
             $validation = new ValidationResult();
@@ -76,11 +87,15 @@ final class ProductController extends BaseController
                 $validation->addError('price', "O campo 'price' é obrigatório");
             }
 
+            if ('' === $active) {
+                $validation->addError('active', "O campo 'active' é obrigatório");
+            }
+
             if ($validation->fails()) {
                 throw new ValidationException('Validation error', $validation);
             }
 
-            $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $name, $price);
+            $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $name, $price, $active);
 
             $createProductUseCaseResponse = $this->createProductUseCase->execute($createProductUseCaseRequest);
 
@@ -148,7 +163,8 @@ final class ProductController extends BaseController
             [
                 'categoryId' => $categoryId,
                 'name' => $name,
-                'price' => $price
+                'price' => $price,
+                'active' => $active,
             ] = $request->getParsedBody();
 
             $validation = new ValidationResult();
@@ -165,11 +181,15 @@ final class ProductController extends BaseController
                 $validation->addError('price', "O campo 'price' é obrigatório");
             }
 
+            if ('' === $active) {
+                $validation->addError('active', "O campo 'active' é obrigatório");
+            }
+
             if ($validation->fails()) {
                 throw new ValidationException('Validation error', $validation);
             }
 
-            $updateProductUseCaseRequest = new UpdateProductUseCaseRequest($id, $categoryId, $name, $price);
+            $updateProductUseCaseRequest = new UpdateProductUseCaseRequest($id, $categoryId, $name, $price, $active);
 
             $updateProductUseCaseResponse = $this->updateProductUseCase->execute($updateProductUseCaseRequest);
 

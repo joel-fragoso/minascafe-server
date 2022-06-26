@@ -8,8 +8,8 @@
 [Como Limpar Cache](#️como-limpar-o-cache-do-doctrine-orm) |
 [Como Executar as Migrações](#como-executar-as-migrações) |
 [Como Executar Analisador](#como-executar-o-analisador-de-código) |
-[Como Executar Estilizador](#como-executar-o-estilizador-de-código)
-[Como Executar Testes](#como-executar-suite-de-testes)
+[Como Executar Estilizador](#como-executar-o-estilizador-de-código) |
+[Como Executar Testes](#como-executar-suite-de-testes) |
 [Como Executar Coverage](#como-executar-suite-de-testes-com-coverage)
 
 ---

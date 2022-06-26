@@ -16,15 +16,6 @@ return function (App $app) {
         return $response;
     });
 
-    $app->add(function (Request $request, $handler) {
-        $response = $handler->handle($request);
-
-        return $response
-            ->withHeader('Access-Control-Allow-Origin', $_ENV['APP_WEB_URL'])
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-    });
-
     $app->group('/categorias', function (RouteCollectorProxy $group) {
         $group->get('', [CategoryController::class, 'index']);
         $group->post('', [CategoryController::class, 'create']);

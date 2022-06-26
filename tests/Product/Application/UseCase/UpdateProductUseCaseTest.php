@@ -38,7 +38,7 @@ final class UpdateProductUseCaseTest extends TestCase
         $categoryName = 'Categoria';
         $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -46,7 +46,7 @@ final class UpdateProductUseCaseTest extends TestCase
         $productName1 = 'Produto 1';
         $productPrice1 = 1.00;
 
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId1, $productName1, $productPrice1);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId1, $productName1, $productPrice1, false);
 
         $createProductUseCaseResponse = $this->createProductUseCase->execute($createProductUseCaseRequest);
 
@@ -55,7 +55,7 @@ final class UpdateProductUseCaseTest extends TestCase
         $productName2 = 'Product 2';
         $productPrice2 = 2.00;
 
-        $updateProductUseCaseRequest = new UpdateProductUseCaseRequest($productId, $categoryId2, $productName2, $productPrice2);
+        $updateProductUseCaseRequest = new UpdateProductUseCaseRequest($productId, $categoryId2, $productName2, $productPrice2, true);
 
         $updateProductUseCaseResponse = $this->updateProductUseCase->execute($updateProductUseCaseRequest);
 
@@ -63,6 +63,7 @@ final class UpdateProductUseCaseTest extends TestCase
         self::assertEquals($categoryId2, $updateProductUseCaseResponse->category()->id()->value());
         self::assertEquals($productName2, $updateProductUseCaseResponse->name());
         self::assertEquals($productPrice2, $updateProductUseCaseResponse->price());
+        self::assertTrue($updateProductUseCaseResponse->isActive());
     }
 
     public function testNaoDeveSerCapazDeAtualizarUmProdutoSemCategoria(): void
@@ -74,7 +75,7 @@ final class UpdateProductUseCaseTest extends TestCase
         $productName = 'Product';
         $productPrice = 1.00;
 
-        $updateProductUseCaseRequest = new UpdateProductUseCaseRequest($productId, $categoryId, $productName, $productPrice);
+        $updateProductUseCaseRequest = new UpdateProductUseCaseRequest($productId, $categoryId, $productName, $productPrice, true);
 
         $this->updateProductUseCase->execute($updateProductUseCaseRequest);
     }
@@ -86,7 +87,7 @@ final class UpdateProductUseCaseTest extends TestCase
         $categoryName = 'Categoria';
         $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -95,7 +96,7 @@ final class UpdateProductUseCaseTest extends TestCase
         $productName = 'Product';
         $productPrice = 1.00;
 
-        $updateProductUseCaseRequest = new UpdateProductUseCaseRequest($productId, $categoryId, $productName, $productPrice);
+        $updateProductUseCaseRequest = new UpdateProductUseCaseRequest($productId, $categoryId, $productName, $productPrice, true);
 
         $this->updateProductUseCase->execute($updateProductUseCaseRequest);
     }
@@ -105,7 +106,7 @@ final class UpdateProductUseCaseTest extends TestCase
         $categoryName = 'Categoria';
         $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -113,7 +114,7 @@ final class UpdateProductUseCaseTest extends TestCase
         $productName1 = 'Produto 1';
         $productPrice1 = 1.00;
 
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId1, $productName1, $productPrice1);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId1, $productName1, $productPrice1, true);
 
         $createProductUseCaseResponse = $this->createProductUseCase->execute($createProductUseCaseRequest);
 
@@ -122,7 +123,7 @@ final class UpdateProductUseCaseTest extends TestCase
         $productName2 = 'Product 2';
         $productPrice2 = 2.00;
 
-        $updateProductUseCaseRequest = new UpdateProductUseCaseRequest($productId, $categoryId2, $productName2, $productPrice2);
+        $updateProductUseCaseRequest = new UpdateProductUseCaseRequest($productId, $categoryId2, $productName2, $productPrice2, true);
 
         $updateProductUseCaseResponse = $this->updateProductUseCase->execute($updateProductUseCaseRequest);
 
@@ -130,6 +131,7 @@ final class UpdateProductUseCaseTest extends TestCase
             'id' => $updateProductUseCaseResponse->productId(),
             'name' => $updateProductUseCaseResponse->name(),
             'price' => $updateProductUseCaseResponse->price(),
+            'active' => $updateProductUseCaseResponse->isActive(),
             'category' => $updateProductUseCaseResponse->category()->toArray(),
         ]);
 

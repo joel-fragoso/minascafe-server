@@ -8,8 +8,12 @@ use JsonSerializable;
 
 final class CreateCategoryUseCaseResponse implements JsonSerializable
 {
-    public function __construct(private string $categoryId, private string $name, private string $icon)
-    {
+    public function __construct(
+        private string $categoryId,
+        private string $name,
+        private string $icon,
+        private bool $active
+    ) {
     }
 
     public function categoryId(): string
@@ -27,8 +31,13 @@ final class CreateCategoryUseCaseResponse implements JsonSerializable
         return $this->icon;
     }
 
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
     /**
-     * @return array<string, string>
+     * @return array<string, string|bool>
      */
     public function jsonSerialize(): array
     {
@@ -36,6 +45,7 @@ final class CreateCategoryUseCaseResponse implements JsonSerializable
             'id' => $this->categoryId(),
             'name' => $this->name(),
             'icon' => $this->icon(),
+            'active' => $this->isActive(),
         ];
     }
 }

@@ -13,7 +13,12 @@ interface ProductRepositoryInterface
     /**
      * @return Product[]
      */
-    public function findAllProducts(): array;
+    public function findAll(
+        ?int $active = null,
+        ?string $orderBy = null,
+        ?int $limit = null,
+        ?int $offset = null
+    ): array;
 
     public function findById(ProductId $productId): ?Product;
 

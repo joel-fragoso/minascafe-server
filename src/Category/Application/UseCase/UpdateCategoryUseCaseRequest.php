@@ -6,8 +6,12 @@ namespace Minascafe\Category\Application\UseCase;
 
 final class UpdateCategoryUseCaseRequest
 {
-    public function __construct(private string $categoryId, private string $name, private string $icon)
-    {
+    public function __construct(
+        private string $categoryId,
+        private string $name,
+        private string $icon,
+        private bool $active
+    ) {
     }
 
     public function categoryId(): string
@@ -23,5 +27,10 @@ final class UpdateCategoryUseCaseRequest
     public function icon(): string
     {
         return $this->icon;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
     }
 }

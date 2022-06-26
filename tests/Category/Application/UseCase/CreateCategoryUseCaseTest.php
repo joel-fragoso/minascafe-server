@@ -25,13 +25,14 @@ final class CreateCategoryUseCaseTest extends TestCase
         $categoryName = 'Categoria';
         $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
         self::assertNotNull($createCategoryUseCaseResponse->categoryId());
         self::assertEquals($categoryName, $createCategoryUseCaseResponse->name());
         self::assertEquals($categoryIcon, $createCategoryUseCaseResponse->icon());
+        self::assertTrue($createCategoryUseCaseResponse->isActive());
     }
 
     public function testNaoDeveSerCapazDeCriarUmaCategoriaComOMesmoNome(): void
@@ -41,7 +42,7 @@ final class CreateCategoryUseCaseTest extends TestCase
         $categoryName = 'Categoria';
         $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
 
         $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -53,7 +54,7 @@ final class CreateCategoryUseCaseTest extends TestCase
         $categoryName = 'Categoria';
         $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -61,6 +62,7 @@ final class CreateCategoryUseCaseTest extends TestCase
             'id' => $createCategoryUseCaseResponse->categoryId(),
             'name' => $createCategoryUseCaseResponse->name(),
             'icon' => $createCategoryUseCaseResponse->icon(),
+            'active' => $createCategoryUseCaseResponse->isActive(),
         ]);
 
         self::assertEquals($expectedJsonSerialize, json_encode($createCategoryUseCaseResponse));

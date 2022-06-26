@@ -10,6 +10,7 @@ use Minascafe\Category\Domain\ValueObject\CategoryId;
 use Minascafe\Product\Domain\Entity\Product;
 use Minascafe\Product\Domain\Exception\DuplicateProductException;
 use Minascafe\Product\Domain\Repository\ProductRepositoryInterface;
+use Minascafe\Product\Domain\ValueObject\ProductActive;
 use Minascafe\Product\Domain\ValueObject\ProductId;
 use Minascafe\Product\Domain\ValueObject\ProductName;
 use Minascafe\Product\Domain\ValueObject\ProductPrice;
@@ -31,6 +32,7 @@ final class CreateProductUseCase
         $categoryId = $createProductUseCaseRequest->categoryId();
         $productName = $createProductUseCaseRequest->name();
         $productPrice = $createProductUseCaseRequest->price();
+        $productActive = $createProductUseCaseRequest->isActive();
 
         $findCategory = $this->categoryRepository->findById(new CategoryId($categoryId));
 
@@ -48,7 +50,8 @@ final class CreateProductUseCase
             new ProductId(ProductId::generate()),
             $findCategory,
             new ProductName($productName),
-            new ProductPrice($productPrice)
+            new ProductPrice($productPrice),
+            new ProductActive($productActive)
         );
 
         $this->productRepository->create($product);
@@ -57,7 +60,8 @@ final class CreateProductUseCase
             $product->id()->value(),
             $product->category(),
             $product->name()->value(),
-            $product->price()->value()
+            $product->price()->value(),
+            $product->isActive()->value()
         );
     }
 }

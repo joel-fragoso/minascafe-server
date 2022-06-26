@@ -10,7 +10,8 @@ final class UpdateProductUseCaseRequest
         private string $productId,
         private string $categoryId,
         private string $name,
-        private float $price
+        private float $price,
+        private bool $active
     ) {
     }
 
@@ -32,5 +33,10 @@ final class UpdateProductUseCaseRequest
     public function price(): float
     {
         return $this->price;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
     }
 }

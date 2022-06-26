@@ -34,7 +34,7 @@ final class CreateProductUseCaseTest extends TestCase
         $categoryName = 'Categoria';
         $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -42,7 +42,7 @@ final class CreateProductUseCaseTest extends TestCase
         $productName = 'Produto';
         $productPrice = 1.00;
 
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice, true);
 
         $createProductUseCaseResponse = $this->createProductUseCase->execute($createProductUseCaseRequest);
 
@@ -50,6 +50,7 @@ final class CreateProductUseCaseTest extends TestCase
         self::assertInstanceOf(Category::class, $createProductUseCaseResponse->category());
         self::assertEquals($productName, $createProductUseCaseResponse->name());
         self::assertEquals($productPrice, $createProductUseCaseResponse->price());
+        self::assertTrue($createProductUseCaseResponse->isActive());
     }
 
     public function testNaoDeveSerCapazDeCriarUmProdutoSemCategoria(): void
@@ -60,7 +61,7 @@ final class CreateProductUseCaseTest extends TestCase
         $productName = 'Produto';
         $productPrice = 1.00;
 
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice, true);
 
         $this->createProductUseCase->execute($createProductUseCaseRequest);
     }
@@ -72,7 +73,7 @@ final class CreateProductUseCaseTest extends TestCase
         $categoryName = 'Categoria';
         $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -80,7 +81,7 @@ final class CreateProductUseCaseTest extends TestCase
         $productName = 'Produto';
         $productPrice = 1.00;
 
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice, true);
 
         $this->createProductUseCase->execute($createProductUseCaseRequest);
 
@@ -92,7 +93,7 @@ final class CreateProductUseCaseTest extends TestCase
         $categoryName = 'Categoria';
         $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -100,7 +101,7 @@ final class CreateProductUseCaseTest extends TestCase
         $productName = 'Produto';
         $productPrice = 1.00;
 
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice, true);
 
         $createProductUseCaseResponse = $this->createProductUseCase->execute($createProductUseCaseRequest);
 
@@ -108,6 +109,7 @@ final class CreateProductUseCaseTest extends TestCase
             'id' => $createProductUseCaseResponse->productId(),
             'name' => $createProductUseCaseResponse->name(),
             'price' => $createProductUseCaseResponse->price(),
+            'active' => $createProductUseCaseResponse->isActive(),
             'category' => $createProductUseCaseResponse->category()->toArray(),
         ]);
 

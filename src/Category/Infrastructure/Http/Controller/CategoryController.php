@@ -10,6 +10,7 @@ use Minascafe\Category\Application\UseCase\CreateCategoryUseCaseRequest;
 use Minascafe\Category\Application\UseCase\DeleteCategoryUseCase;
 use Minascafe\Category\Application\UseCase\DeleteCategoryUseCaseRequest;
 use Minascafe\Category\Application\UseCase\ShowAllCategoriesUseCase;
+use Minascafe\Category\Application\UseCase\ShowAllCategoriesUseCaseRequest;
 use Minascafe\Category\Application\UseCase\ShowOneCategoryUseCase;
 use Minascafe\Category\Application\UseCase\ShowOneCategoryUseCaseRequest;
 use Minascafe\Category\Application\UseCase\UpdateCategoryUseCase;
@@ -34,8 +35,19 @@ final class CategoryController extends BaseController
     public function index(Request $request, Response $response): Response
     {
         try {
+            $queryParams = $request->getQueryParams();
+
+            $active = isset($queryParams['active']) ? (int) $queryParams['active'] : null;
+            $order = isset($queryParams['order']) ? $queryParams['order'] : null;
+            $limit = isset($queryParams['limit']) ? (int) $queryParams['limit'] : null;
+            $offset = isset($queryParams['offset']) ? (int) $queryParams['offset'] : null;
+
+            $showAllCategoriesUseCaseRequest = new ShowAllCategoriesUseCaseRequest($active, $order, $limit, $offset);
+
+            $showAllCategoriesUseCaseResponse = $this->showAllCategoriesUseCase->execute($showAllCategoriesUseCaseRequest);
+
             $payload = [
-                'data' => $this->showAllCategoriesUseCase->execute(),
+                'data' => $showAllCategoriesUseCaseResponse,
             ];
 
             return $this->jsonResponse($response, $payload);
@@ -54,7 +66,7 @@ final class CategoryController extends BaseController
     public function create(Request $request, Response $response): Response
     {
         try {
-            ['name' => $name, 'icon' => $icon] = $request->getParsedBody();
+            ['name' => $name, 'icon' => $icon, 'active' => $active] = $request->getParsedBody();
 
             $validation = new ValidationResult();
 
@@ -66,11 +78,15 @@ final class CategoryController extends BaseController
                 $validation->addError('icon', "O campo 'icon' é obrigatório");
             }
 
+            if (empty($active)) {
+                $validation->addError('active', "O campo 'active' é obrigatório");
+            }
+
             if ($validation->fails()) {
                 throw new ValidationException('Validation error', $validation);
             }
 
-            $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($name, $icon);
+            $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($name, $icon, $active);
 
             $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -135,7 +151,7 @@ final class CategoryController extends BaseController
     public function update(Request $request, Response $response, string $id): Response
     {
         try {
-            ['name' => $name, 'icon' => $icon] = $request->getParsedBody();
+            ['name' => $name, 'icon' => $icon, 'active' => $active] = $request->getParsedBody();
 
             $validation = new ValidationResult();
 
@@ -147,11 +163,15 @@ final class CategoryController extends BaseController
                 $validation->addError('icon', "O campo 'icon' é obrigatório");
             }
 
+            if (empty($active)) {
+                $validation->addError('active', "O campo 'active' é obrigatório");
+            }
+
             if ($validation->fails()) {
                 throw new ValidationException('Validation error', $validation);
             }
 
-            $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($id, $name, $icon);
+            $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($id, $name, $icon, $active);
 
             $updateCategoryUseCaseResponse = $this->updateCategoryUseCase->execute($updateCategoryUseCaseRequest);
 

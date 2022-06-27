@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Minascafe\Tests\Product\Application\UseCase;
 
+use DateTimeImmutable;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCase;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCaseRequest;
 use Minascafe\Category\Domain\Entity\Category;
@@ -31,10 +32,7 @@ final class CreateProductUseCaseTest extends TestCase
 
     public function testDeveSerCapazDeCriarUmProduto(): void
     {
-        $categoryName = 'Categoria';
-        $categoryIcon = 'NomeDoIcone';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone');
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -57,11 +55,12 @@ final class CreateProductUseCaseTest extends TestCase
     {
         self::expectException(CategoryNotFoundException::class);
 
-        $categoryId = '00000000-0000-0000-0000-000000000000';
-        $productName = 'Produto';
-        $productPrice = 1.00;
-
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice, true);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest(
+            '00000000-0000-0000-0000-000000000000',
+            'Produto',
+            1.00,
+            true
+        );
 
         $this->createProductUseCase->execute($createProductUseCaseRequest);
     }
@@ -70,18 +69,16 @@ final class CreateProductUseCaseTest extends TestCase
     {
         self::expectException(DuplicateProductException::class);
 
-        $categoryName = 'Categoria';
-        $categoryIcon = 'NomeDoIcone';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone');
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
-        $categoryId = $createCategoryUseCaseResponse->categoryId();
-        $productName = 'Produto';
-        $productPrice = 1.00;
-
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice, true);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest(
+            $createCategoryUseCaseResponse->categoryId(),
+            'Produto',
+            1.00,
+            true
+        );
 
         $this->createProductUseCase->execute($createProductUseCaseRequest);
 
@@ -90,18 +87,11 @@ final class CreateProductUseCaseTest extends TestCase
 
     public function testDeveSerCapazDeRetornarUmJsonSerializado(): void
     {
-        $categoryName = 'Categoria';
-        $categoryIcon = 'NomeDoIcone';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone');
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
-        $categoryId = $createCategoryUseCaseResponse->categoryId();
-        $productName = 'Produto';
-        $productPrice = 1.00;
-
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice, true);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest($createCategoryUseCaseResponse->categoryId(), 'Produto', 1.00, true);
 
         $createProductUseCaseResponse = $this->createProductUseCase->execute($createProductUseCaseRequest);
 
@@ -110,6 +100,7 @@ final class CreateProductUseCaseTest extends TestCase
             'name' => $createProductUseCaseResponse->name(),
             'price' => $createProductUseCaseResponse->price(),
             'active' => $createProductUseCaseResponse->isActive(),
+            'createdAt' => $createProductUseCaseResponse->createdAt()->format(DateTimeImmutable::ATOM),
             'category' => $createProductUseCaseResponse->category()->toArray(),
         ]);
 

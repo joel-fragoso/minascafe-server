@@ -87,7 +87,7 @@ final class ProductController extends BaseController
                 $validation->addError('price', "O campo 'price' é obrigatório");
             }
 
-            if ('' === $active) {
+            if (null !== $active && '' === $active) {
                 $validation->addError('active', "O campo 'active' é obrigatório");
             }
 
@@ -169,19 +169,19 @@ final class ProductController extends BaseController
 
             $validation = new ValidationResult();
 
-            if (empty($categoryId)) {
+            if (null !== $categoryId && '' === $categoryId) {
                 $validation->addError('categoryId', "O campo 'categoryId' é obrigatório");
             }
 
-            if (empty($name)) {
+            if (null !== $name && '' === $name) {
                 $validation->addError('name', "O campo 'name' é obrigatório");
             }
 
-            if (empty($price)) {
+            if (null !== $price && '' === $price) {
                 $validation->addError('price', "O campo 'price' é obrigatório");
             }
 
-            if ('' === $active) {
+            if (null !== $active && '' === $active) {
                 $validation->addError('active', "O campo 'active' é obrigatório");
             }
 

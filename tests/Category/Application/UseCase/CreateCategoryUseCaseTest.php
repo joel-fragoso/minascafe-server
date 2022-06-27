@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Minascafe\Tests\Category\Application\UseCase;
 
+use DateTimeImmutable;
+use DateTimeInterface;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCase;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCaseRequest;
 use Minascafe\Category\Domain\Exception\DuplicateCategoryException;
@@ -25,7 +27,7 @@ final class CreateCategoryUseCaseTest extends TestCase
         $categoryName = 'Categoria';
         $categoryIcon = 'NomeDoIcone';
 
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon);
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -33,16 +35,14 @@ final class CreateCategoryUseCaseTest extends TestCase
         self::assertEquals($categoryName, $createCategoryUseCaseResponse->name());
         self::assertEquals($categoryIcon, $createCategoryUseCaseResponse->icon());
         self::assertTrue($createCategoryUseCaseResponse->isActive());
+        self::assertInstanceOf(DateTimeInterface::class, $createCategoryUseCaseResponse->createdAt());
     }
 
     public function testNaoDeveSerCapazDeCriarUmaCategoriaComOMesmoNome(): void
     {
         self::expectException(DuplicateCategoryException::class);
 
-        $categoryName = 'Categoria';
-        $categoryIcon = 'NomeDoIcone';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone');
 
         $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -51,10 +51,7 @@ final class CreateCategoryUseCaseTest extends TestCase
 
     public function testDeveSerCapazDeRetornarUmJsonSerializado(): void
     {
-        $categoryName = 'Categoria';
-        $categoryIcon = 'NomeDoIcone';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone');
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -63,6 +60,7 @@ final class CreateCategoryUseCaseTest extends TestCase
             'name' => $createCategoryUseCaseResponse->name(),
             'icon' => $createCategoryUseCaseResponse->icon(),
             'active' => $createCategoryUseCaseResponse->isActive(),
+            'createdAt' => $createCategoryUseCaseResponse->createdAt()->format(DateTimeImmutable::ATOM),
         ]);
 
         self::assertEquals($expectedJsonSerialize, json_encode($createCategoryUseCaseResponse));

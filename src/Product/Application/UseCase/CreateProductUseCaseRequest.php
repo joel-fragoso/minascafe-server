@@ -10,7 +10,7 @@ final class CreateProductUseCaseRequest
         private string $categoryId,
         private string $name,
         private float $price,
-        private bool $active
+        private ?bool $active = null
     ) {
     }
 
@@ -29,7 +29,7 @@ final class CreateProductUseCaseRequest
         return $this->price;
     }
 
-    public function isActive(): bool
+    public function isActive(): ?bool
     {
         return $this->active;
     }

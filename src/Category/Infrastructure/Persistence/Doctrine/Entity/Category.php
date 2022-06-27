@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Minascafe\Category\Infrastructure\Persistence\Doctrine\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
@@ -16,21 +17,25 @@ final class Category
     #[Id, Column(type: 'guid', length: 36)]
     private string $id;
 
-    #[Column(type: 'string', unique: true, nullable: false)]
+    #[Column(type: 'string', unique: true, length: 45)]
     private string $name;
 
-    #[Column(type: 'string', nullable: false)]
+    #[Column(type: 'string', length: 45)]
     private string $icon;
 
-    #[Column(type: 'boolean', nullable: false, options: ['default' => 0])]
+    #[Column(type: 'boolean', options: ['default' => 0])]
     private bool $active;
 
-    public function __construct(string $id, string $name, string $icon, bool $active)
+    #[Column(type: 'datetime', nullable: true)]
+    private DateTimeInterface $createdAt;
+
+    public function __construct(string $id, string $name, string $icon, bool $active, DateTimeInterface $createdAt)
     {
         $this->id = $id;
         $this->name = $name;
         $this->icon = $icon;
         $this->active = $active;
+        $this->createdAt = $createdAt;
     }
 
     public function setId(string $id): void
@@ -71,5 +76,15 @@ final class Category
     public function isActive(): bool
     {
         return $this->active;
+    }
+
+    public function setCreatedAt(DateTimeInterface $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function getCreatedAt(): DateTimeInterface
+    {
+        return $this->createdAt;
     }
 }

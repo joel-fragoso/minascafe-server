@@ -8,10 +8,10 @@ final class UpdateProductUseCaseRequest
 {
     public function __construct(
         private string $productId,
-        private string $categoryId,
-        private string $name,
-        private float $price,
-        private bool $active
+        private ?string $categoryId = null,
+        private ?string $name = null,
+        private ?float $price = null,
+        private ?bool $active = null
     ) {
     }
 
@@ -20,22 +20,22 @@ final class UpdateProductUseCaseRequest
         return $this->productId;
     }
 
-    public function categoryId(): string
+    public function categoryId(): ?string
     {
         return $this->categoryId;
     }
 
-    public function name(): string
+    public function name(): ?string
     {
         return $this->name;
     }
 
-    public function price(): float
+    public function price(): ?float
     {
         return $this->price;
     }
 
-    public function isActive(): bool
+    public function isActive(): ?bool
     {
         return $this->active;
     }

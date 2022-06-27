@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Minascafe\Product\Application\UseCase;
 
+use DateTimeImmutable;
 use JsonSerializable;
 use Minascafe\Product\Domain\Entity\Product;
 
@@ -25,14 +26,17 @@ final class ShowAllProductsUseCaseResponse implements JsonSerializable
     }
 
     /**
-     * @return array<int, string|array<string, string>>
+     * @return array<int, mixed>
      */
     public function jsonSerialize(): array
     {
         $products = [];
 
         foreach ($this->products as $product) {
-            $products[] = $product->toArray();
+            $products[] = [
+                ...$product->toArray(),
+                'createdAt' => $product->toArray()['createdAt']->format(DateTimeImmutable::ATOM),
+            ];
         }
 
         return $products;

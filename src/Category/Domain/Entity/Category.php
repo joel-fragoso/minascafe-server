@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Minascafe\Category\Domain\Entity;
 
 use Minascafe\Category\Domain\ValueObject\CategoryActive;
+use Minascafe\Category\Domain\ValueObject\CategoryCreatedAt;
 use Minascafe\Category\Domain\ValueObject\CategoryIcon;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
 use Minascafe\Category\Domain\ValueObject\CategoryName;
@@ -15,13 +16,19 @@ final class Category
         private CategoryId $id,
         private CategoryName $name,
         private CategoryIcon $icon,
-        private CategoryActive $active
+        private CategoryActive $active,
+        private CategoryCreatedAt $createdAt
     ) {
     }
 
-    public static function create(CategoryId $id, CategoryName $name, CategoryIcon $icon, CategoryActive $active): self
-    {
-        return new self($id, $name, $icon, $active);
+    public static function create(
+        CategoryId $id,
+        CategoryName $name,
+        CategoryIcon $icon,
+        CategoryActive $active,
+        CategoryCreatedAt $createdAt
+    ): self {
+        return new self($id, $name, $icon, $active, $createdAt);
     }
 
     public function id(): CategoryId
@@ -44,8 +51,13 @@ final class Category
         return $this->active;
     }
 
+    public function createdAt(): CategoryCreatedAt
+    {
+        return $this->createdAt;
+    }
+
     /**
-     * @param array<string, string|bool> $data
+     * @param array<string, mixed> $data
      */
     public static function fromArray(array $data): self
     {
@@ -53,12 +65,13 @@ final class Category
             new CategoryId($data['id']),
             new CategoryName($data['name']),
             new CategoryIcon($data['icon']),
-            new CategoryActive($data['active'])
+            new CategoryActive($data['active']),
+            new CategoryCreatedAt($data['createdAt'])
         );
     }
 
     /**
-     * @return array<string, string|bool>
+     * @return array<string, mixed>
      */
     public function toArray(): array
     {
@@ -67,6 +80,7 @@ final class Category
             'name' => $this->name()->value(),
             'icon' => $this->icon()->value(),
             'active' => $this->isActive()->value(),
+            'createdAt' => $this->createdAt()->value(),
         ];
     }
 }

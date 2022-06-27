@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Minascafe\Tests\Product\Application\UseCase;
 
+use DateTimeImmutable;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCase;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCaseRequest;
 use Minascafe\Category\Domain\Entity\Category;
@@ -29,16 +30,16 @@ final class ShowOneProductUseCaseTest extends TestCase
         $inMemoryCategoryRepository = new CategoryRepository();
         $inMemoryProductRepository = new ProductRepository();
         $this->createCategoryUseCase = new CreateCategoryUseCase($inMemoryCategoryRepository);
-        $this->createProductUseCase = new CreateProductUseCase($inMemoryCategoryRepository, $inMemoryProductRepository);
+        $this->createProductUseCase = new CreateProductUseCase(
+            $inMemoryCategoryRepository,
+            $inMemoryProductRepository
+        );
         $this->showOneProductUseCase = new ShowOneProductUseCase($inMemoryProductRepository);
     }
 
     public function testDeveSerCapazDeEncontrarUmProduto(): void
     {
-        $categoryName = 'Categoria';
-        $categoryIcon = 'NomeDoIcone';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone');
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -66,27 +67,23 @@ final class ShowOneProductUseCaseTest extends TestCase
     {
         self::expectException(ProductNotFoundException::class);
 
-        $productId = '00000000-0000-0000-0000-000000000000';
-
-        $showOneProductUseCaseRequest = new ShowOneProductUseCaseRequest($productId);
+        $showOneProductUseCaseRequest = new ShowOneProductUseCaseRequest('00000000-0000-0000-0000-000000000000');
 
         $this->showOneProductUseCase->execute($showOneProductUseCaseRequest);
     }
 
     public function testDeveSerCapazDeRetornarUmJsonSerializado(): void
     {
-        $categoryName = 'Categoria';
-        $categoryIcon = 'NomeDoIcone';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone');
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
-        $categoryId = $createCategoryUseCaseResponse->categoryId();
-        $productName = 'Produto';
-        $productPrice = 1.00;
-
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice, true);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest(
+            $createCategoryUseCaseResponse->categoryId(),
+            'Produto',
+            1.00,
+            true
+        );
 
         $createProductUseCaseResponse = $this->createProductUseCase->execute($createProductUseCaseRequest);
 
@@ -101,6 +98,7 @@ final class ShowOneProductUseCaseTest extends TestCase
             'name' => $showOneProductUseCaseResponse->name(),
             'price' => $showOneProductUseCaseResponse->price(),
             'active' => $showOneProductUseCaseResponse->isActive(),
+            'createdAt' => $showOneProductUseCaseResponse->createdAt()->format(DateTimeImmutable::ATOM),
             'category' => $showOneProductUseCaseResponse->category()->toArray(),
         ]);
 

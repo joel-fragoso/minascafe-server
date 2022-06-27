@@ -78,7 +78,7 @@ final class CategoryController extends BaseController
                 $validation->addError('icon', "O campo 'icon' é obrigatório");
             }
 
-            if (empty($active)) {
+            if (null !== $active && '' === $active) {
                 $validation->addError('active', "O campo 'active' é obrigatório");
             }
 
@@ -155,15 +155,15 @@ final class CategoryController extends BaseController
 
             $validation = new ValidationResult();
 
-            if (empty($name)) {
+            if (null !== $name && '' === $name) {
                 $validation->addError('name', "O campo 'name' é obrigatório");
             }
 
-            if (empty($icon)) {
+            if (null !== $icon && '' === $icon) {
                 $validation->addError('icon', "O campo 'icon' é obrigatório");
             }
 
-            if (empty($active)) {
+            if (null !== $active && '' === $active) {
                 $validation->addError('active', "O campo 'active' é obrigatório");
             }
 

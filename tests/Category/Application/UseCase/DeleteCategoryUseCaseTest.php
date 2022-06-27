@@ -30,10 +30,7 @@ final class DeleteCategoryUseCaseTest extends TestCase
 
     public function testDeveSerCapazDeRemoverUmaCategoria(): void
     {
-        $categoryName = 'Categoria';
-        $categoryIcon = 'NomeDoIcone';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone');
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -52,9 +49,7 @@ final class DeleteCategoryUseCaseTest extends TestCase
     {
         self::expectException(CategoryNotFoundException::class);
 
-        $categoryId = '00000000-0000-0000-0000-000000000000';
-
-        $deleteCategoryUseCaseRequest = new DeleteCategoryUseCaseRequest($categoryId);
+        $deleteCategoryUseCaseRequest = new DeleteCategoryUseCaseRequest('00000000-0000-0000-0000-000000000000');
 
         $this->deleteCategoryUseCase->execute($deleteCategoryUseCaseRequest);
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Minascafe\Product\Application\UseCase;
 
-use DateTimeImmutable;
 use DateTimeInterface;
 use JsonSerializable;
 use Minascafe\Category\Domain\Entity\Category;
@@ -61,7 +60,7 @@ final class ShowOneProductUseCaseResponse implements JsonSerializable
             'name' => $this->name(),
             'price' => $this->price(),
             'active' => $this->isActive(),
-            'createdAt' => $this->createdAt()->format(DateTimeImmutable::ATOM),
+            'createdAt' => $this->createdAt(),
             'category' => $this->category()->toArray(),
         ];
     }

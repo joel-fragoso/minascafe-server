@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Minascafe\Category\Application\UseCase;
 
-use DateTimeImmutable;
 use DateTimeInterface;
 use JsonSerializable;
 
@@ -54,7 +53,7 @@ final class UpdateCategoryUseCaseResponse implements JsonSerializable
             'name' => $this->name(),
             'icon' => $this->icon(),
             'active' => $this->isActive(),
-            'createdAt' => $this->createdAt()->format(DateTimeImmutable::ATOM),
+            'createdAt' => $this->createdAt(),
         ];
     }
 }

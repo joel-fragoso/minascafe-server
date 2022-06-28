@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Minascafe\Category\Application\UseCase;
 
-use DateTimeImmutable;
 use JsonSerializable;
 use Minascafe\Category\Domain\Entity\Category;
 
@@ -33,10 +32,7 @@ final class ShowAllCategoriesUseCaseResponse implements JsonSerializable
         $categories = [];
 
         foreach ($this->categories as $category) {
-            $categories[] = [
-                ...$category->toArray(),
-                'createdAt' => $category->toArray()['createdAt']->format(DateTimeImmutable::ATOM),
-            ];
+            $categories[] = $category->toArray();
         }
 
         return $categories;

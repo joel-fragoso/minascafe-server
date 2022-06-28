@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Minascafe\Tests\Category\Application\UseCase;
 
-use DateTimeImmutable;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCase;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCaseRequest;
 use Minascafe\Category\Application\UseCase\ShowAllCategoriesUseCase;
@@ -96,10 +95,7 @@ final class ShowAllCategoriesUseCaseTest extends TestCase
         $categories = [];
 
         foreach ($showAllCategoriesUseCaseResponse->categories() as $category) {
-            $categories[] = [
-                ...$category->toArray(),
-                'createdAt' => $category->toArray()['createdAt']->format(DateTimeImmutable::ATOM),
-            ];
+            $categories[] = $category->toArray();
         }
 
         $expectedJsonSerialize = json_encode($categories);

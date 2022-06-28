@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Minascafe\Tests\Category\Application\UseCase;
 
-use DateTimeImmutable;
 use DateTimeInterface;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCase;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCaseRequest;
@@ -74,7 +73,7 @@ final class ShowOneCategoryUseCaseTest extends TestCase
             'name' => $showOneCategoryUseCaseResponse->name(),
             'icon' => $showOneCategoryUseCaseResponse->icon(),
             'active' => $showOneCategoryUseCaseResponse->isActive(),
-            'createdAt' => $showOneCategoryUseCaseResponse->createdAt()->format(DateTimeImmutable::ATOM),
+            'createdAt' => $showOneCategoryUseCaseResponse->createdAt(),
         ]);
 
         self::assertEquals($expectedJsonSerialize, json_encode($showOneCategoryUseCaseResponse));

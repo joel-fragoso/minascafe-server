@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Minascafe\Tests\Product\Application\UseCase;
 
-use DateTimeImmutable;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCase;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCaseRequest;
 use Minascafe\Category\Domain\Entity\Category;
@@ -100,7 +99,7 @@ final class CreateProductUseCaseTest extends TestCase
             'name' => $createProductUseCaseResponse->name(),
             'price' => $createProductUseCaseResponse->price(),
             'active' => $createProductUseCaseResponse->isActive(),
-            'createdAt' => $createProductUseCaseResponse->createdAt()->format(DateTimeImmutable::ATOM),
+            'createdAt' => $createProductUseCaseResponse->createdAt(),
             'category' => $createProductUseCaseResponse->category()->toArray(),
         ]);
 

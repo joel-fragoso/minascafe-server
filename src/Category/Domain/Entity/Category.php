@@ -8,6 +8,7 @@ use Minascafe\Category\Domain\ValueObject\CategoryActive;
 use Minascafe\Category\Domain\ValueObject\CategoryIcon;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
 use Minascafe\Category\Domain\ValueObject\CategoryName;
+use Minascafe\Category\Domain\ValueObject\CategoryUpdatedAt;
 
 final class Category
 {
@@ -15,13 +16,19 @@ final class Category
         private CategoryId $id,
         private CategoryName $name,
         private CategoryIcon $icon,
-        private CategoryActive $active
+        private CategoryActive $active,
+        private CategoryUpdatedAt $updatedAt
     ) {
     }
 
-    public static function create(CategoryId $id, CategoryName $name, CategoryIcon $icon, CategoryActive $active): self
-    {
-        return new self($id, $name, $icon, $active);
+    public static function create(
+        CategoryId $id,
+        CategoryName $name,
+        CategoryIcon $icon,
+        CategoryActive $active,
+        CategoryUpdatedAt $updatedAt
+    ): self {
+        return new self($id, $name, $icon, $active, $updatedAt);
     }
 
     public function id(): CategoryId
@@ -44,8 +51,13 @@ final class Category
         return $this->active;
     }
 
+    public function updatedAt(): CategoryUpdatedAt
+    {
+        return $this->updatedAt;
+    }
+
     /**
-     * @param array<string, string|bool> $data
+     * @param array<string, mixed> $data
      */
     public static function fromArray(array $data): self
     {
@@ -53,12 +65,13 @@ final class Category
             new CategoryId($data['id']),
             new CategoryName($data['name']),
             new CategoryIcon($data['icon']),
-            new CategoryActive($data['active'])
+            new CategoryActive($data['active']),
+            new CategoryUpdatedAt($data['updatedAt'])
         );
     }
 
     /**
-     * @return array<string, string|bool>
+     * @return array<string, mixed>
      */
     public function toArray(): array
     {
@@ -67,6 +80,7 @@ final class Category
             'name' => $this->name()->value(),
             'icon' => $this->icon()->value(),
             'active' => $this->isActive()->value(),
+            'updatedAt' => $this->updatedAt()->value(),
         ];
     }
 }

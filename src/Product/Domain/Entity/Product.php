@@ -9,6 +9,7 @@ use Minascafe\Product\Domain\ValueObject\ProductActive;
 use Minascafe\Product\Domain\ValueObject\ProductId;
 use Minascafe\Product\Domain\ValueObject\ProductName;
 use Minascafe\Product\Domain\ValueObject\ProductPrice;
+use Minascafe\Product\Domain\ValueObject\ProductUpdatedAt;
 
 final class Product
 {
@@ -17,7 +18,8 @@ final class Product
         private Category $category,
         private ProductName $name,
         private ProductPrice $price,
-        private ProductActive $active
+        private ProductActive $active,
+        private ProductUpdatedAt $updatedAt
     ) {
     }
 
@@ -26,9 +28,10 @@ final class Product
         Category $category,
         ProductName $name,
         ProductPrice $price,
-        ProductActive $active
+        ProductActive $active,
+        ProductUpdatedAt $updatedAt
     ): self {
-        return new self($id, $category, $name, $price, $active);
+        return new self($id, $category, $name, $price, $active, $updatedAt);
     }
 
     public function id(): ProductId
@@ -56,8 +59,13 @@ final class Product
         return $this->active;
     }
 
+    public function updatedAt(): ProductUpdatedAt
+    {
+        return $this->updatedAt;
+    }
+
     /**
-     * @param array<string, string|float|bool|array<string, string|bool>> $data
+     * @param array<string, mixed> $data
      */
     public static function fromArray(array $data): self
     {
@@ -66,12 +74,13 @@ final class Product
             Category::fromArray($data['category']),
             new ProductName($data['name']),
             new ProductPrice($data['price']),
-            new ProductActive($data['active'])
+            new ProductActive($data['active']),
+            new ProductUpdatedAt($data['updatedAt'])
         );
     }
 
     /**
-     * @return array<string, string|float|bool|array<string, string|bool>>
+     * @return array<string, mixed>
      */
     public function toArray(): array
     {
@@ -81,6 +90,7 @@ final class Product
             'name' => $this->name()->value(),
             'price' => $this->price()->value(),
             'active' => $this->isActive()->value(),
+            'updatedAt' => $this->updatedAt()->value(),
         ];
     }
 }

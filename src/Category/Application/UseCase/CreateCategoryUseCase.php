@@ -11,6 +11,7 @@ use Minascafe\Category\Domain\ValueObject\CategoryActive;
 use Minascafe\Category\Domain\ValueObject\CategoryIcon;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
 use Minascafe\Category\Domain\ValueObject\CategoryName;
+use Minascafe\Category\Domain\ValueObject\CategoryUpdatedAt;
 
 final class CreateCategoryUseCase
 {
@@ -39,7 +40,8 @@ final class CreateCategoryUseCase
             new CategoryId(CategoryId::generate()),
             new CategoryName($categoryName),
             new CategoryIcon($categoryIcon),
-            new CategoryActive($categoryActive)
+            new CategoryActive($categoryActive),
+            new CategoryUpdatedAt(null)
         );
 
         $this->categoryRepository->create($category);
@@ -48,7 +50,8 @@ final class CreateCategoryUseCase
             $category->id()->value(),
             $category->name()->value(),
             $category->icon()->value(),
-            $category->isActive()->value()
+            $category->isActive()->value(),
+            $category->updatedAt()->value()
         );
     }
 }

@@ -10,6 +10,7 @@ use Minascafe\Product\Domain\ValueObject\ProductActive;
 use Minascafe\Product\Domain\ValueObject\ProductId;
 use Minascafe\Product\Domain\ValueObject\ProductName;
 use Minascafe\Product\Domain\ValueObject\ProductPrice;
+use Minascafe\Product\Domain\ValueObject\ProductUpdatedAt;
 use Minascafe\Product\Infrastructure\Persistence\Doctrine\Entity\Product as EntityProduct;
 
 final class ProductTransform
@@ -21,7 +22,8 @@ final class ProductTransform
             CategoryTransform::entityToDomain($entityProduct->getCategory()),
             new ProductName($entityProduct->getName()),
             new ProductPrice($entityProduct->getPrice()),
-            new ProductActive($entityProduct->isActive())
+            new ProductActive($entityProduct->isActive()),
+            new ProductUpdatedAt($entityProduct->getUpdatedAt())
         );
     }
 
@@ -32,7 +34,8 @@ final class ProductTransform
             CategoryTransform::domainToEntity($domainProduct->category()),
             $domainProduct->name()->value(),
             $domainProduct->price()->value(),
-            $domainProduct->isActive()->value()
+            $domainProduct->isActive()->value(),
+            $domainProduct->updatedAt()->value()
         );
     }
 }

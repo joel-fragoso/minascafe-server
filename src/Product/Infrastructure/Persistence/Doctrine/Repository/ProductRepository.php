@@ -100,6 +100,7 @@ final class ProductRepository extends EntityRepository implements ProductReposit
         $findProduct->setName($entityProduct->getName());
         $findProduct->setPrice($entityProduct->getPrice());
         $findProduct->setActive($entityProduct->isActive());
+        $findProduct->setUpdatedAt($entityProduct->getUpdatedAt());
 
         $this->_em->flush();
     }

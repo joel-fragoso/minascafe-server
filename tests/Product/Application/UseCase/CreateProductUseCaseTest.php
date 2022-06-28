@@ -110,6 +110,7 @@ final class CreateProductUseCaseTest extends TestCase
             'name' => $createProductUseCaseResponse->name(),
             'price' => $createProductUseCaseResponse->price(),
             'active' => $createProductUseCaseResponse->isActive(),
+            'updatedAt' => $createProductUseCaseResponse->updatedAt(),
             'category' => $createProductUseCaseResponse->category()->toArray(),
         ]);
 

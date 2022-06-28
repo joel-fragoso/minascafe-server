@@ -14,6 +14,7 @@ use Minascafe\Product\Domain\ValueObject\ProductActive;
 use Minascafe\Product\Domain\ValueObject\ProductId;
 use Minascafe\Product\Domain\ValueObject\ProductName;
 use Minascafe\Product\Domain\ValueObject\ProductPrice;
+use Minascafe\Product\Domain\ValueObject\ProductUpdatedAt;
 
 final class CreateProductUseCase
 {
@@ -51,7 +52,8 @@ final class CreateProductUseCase
             $findCategory,
             new ProductName($productName),
             new ProductPrice($productPrice),
-            new ProductActive($productActive)
+            new ProductActive($productActive),
+            new ProductUpdatedAt(null)
         );
 
         $this->productRepository->create($product);
@@ -61,7 +63,8 @@ final class CreateProductUseCase
             $product->category(),
             $product->name()->value(),
             $product->price()->value(),
-            $product->isActive()->value()
+            $product->isActive()->value(),
+            $product->updatedAt()->value()
         );
     }
 }

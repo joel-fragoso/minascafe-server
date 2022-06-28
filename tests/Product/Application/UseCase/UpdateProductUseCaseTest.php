@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Minascafe\Tests\Product\Application\UseCase;
 
+use DateTimeInterface;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCase;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCaseRequest;
 use Minascafe\Category\Domain\Exception\CategoryNotFoundException;
@@ -64,6 +65,7 @@ final class UpdateProductUseCaseTest extends TestCase
         self::assertEquals($productName2, $updateProductUseCaseResponse->name());
         self::assertEquals($productPrice2, $updateProductUseCaseResponse->price());
         self::assertTrue($updateProductUseCaseResponse->isActive());
+        self::assertInstanceOf(DateTimeInterface::class, $updateProductUseCaseResponse->updatedAt());
     }
 
     public function testNaoDeveSerCapazDeAtualizarUmProdutoSemCategoria(): void
@@ -132,6 +134,7 @@ final class UpdateProductUseCaseTest extends TestCase
             'name' => $updateProductUseCaseResponse->name(),
             'price' => $updateProductUseCaseResponse->price(),
             'active' => $updateProductUseCaseResponse->isActive(),
+            'updatedAt' => $updateProductUseCaseResponse->updatedAt(),
             'category' => $updateProductUseCaseResponse->category()->toArray(),
         ]);
 

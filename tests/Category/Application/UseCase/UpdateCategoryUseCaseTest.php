@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Minascafe\Tests\Category\Application\UseCase;
 
+use DateTimeInterface;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCase;
 use Minascafe\Category\Application\UseCase\CreateCategoryUseCaseRequest;
 use Minascafe\Category\Application\UseCase\UpdateCategoryUseCase;
@@ -42,6 +43,7 @@ final class UpdateCategoryUseCaseTest extends TestCase
         self::assertEquals($categoryId, $updateCategoryUseCaseResponse->categoryId());
         self::assertEquals($categoryName, $updateCategoryUseCaseResponse->name());
         self::assertEquals($categoryIcon, $updateCategoryUseCaseResponse->icon());
+        self::assertInstanceOf(DateTimeInterface::class, $updateCategoryUseCaseResponse->updatedAt());
     }
 
     public function testNaoDeveSerCapazDeAtualizarUmaCategoriaQueNaoExiste(): void
@@ -76,6 +78,7 @@ final class UpdateCategoryUseCaseTest extends TestCase
             'name' => $updateCategoryUseCaseResponse->name(),
             'icon' => $updateCategoryUseCaseResponse->icon(),
             'active' => $updateCategoryUseCaseResponse->isActive(),
+            'updatedAt' => $updateCategoryUseCaseResponse->updatedAt(),
         ]);
 
         self::assertEquals($expectedJsonSerialize, json_encode($updateCategoryUseCaseResponse));

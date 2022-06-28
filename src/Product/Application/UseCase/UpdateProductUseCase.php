@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Minascafe\Product\Application\UseCase;
 
+use DateTimeImmutable;
 use Minascafe\Category\Domain\Exception\CategoryNotFoundException;
 use Minascafe\Category\Domain\Repository\CategoryRepositoryInterface;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
@@ -14,6 +15,7 @@ use Minascafe\Product\Domain\ValueObject\ProductActive;
 use Minascafe\Product\Domain\ValueObject\ProductId;
 use Minascafe\Product\Domain\ValueObject\ProductName;
 use Minascafe\Product\Domain\ValueObject\ProductPrice;
+use Minascafe\Product\Domain\ValueObject\ProductUpdatedAt;
 
 final class UpdateProductUseCase
 {
@@ -48,7 +50,8 @@ final class UpdateProductUseCase
             $findCategory,
             new ProductName($productName),
             new ProductPrice($productPrice),
-            new ProductActive($productActive)
+            new ProductActive($productActive),
+            new ProductUpdatedAt(new DateTimeImmutable())
         );
 
         $this->productRepository->update($product);
@@ -58,7 +61,8 @@ final class UpdateProductUseCase
             $product->category(),
             $product->name()->value(),
             $product->price()->value(),
-            $product->isActive()->value()
+            $product->isActive()->value(),
+            $product->updatedAt()->value()
         );
     }
 }

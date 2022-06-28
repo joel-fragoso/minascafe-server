@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Minascafe\Product\Infrastructure\Persistence\Doctrine\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
@@ -31,13 +32,23 @@ final class Product
     #[Column(type: 'boolean', nullable: false, options: ['default' => 0])]
     private bool $active;
 
-    public function __construct(string $id, Category $category, string $name, float $price, bool $active)
-    {
+    #[Column(type: 'datetime', nullable: true)]
+    private ?DateTimeInterface $updatedAt;
+
+    public function __construct(
+        string $id,
+        Category $category,
+        string $name,
+        float $price,
+        bool $active,
+        ?DateTimeInterface $updatedAt
+    ) {
         $this->id = $id;
         $this->category = $category;
         $this->name = $name;
         $this->price = $price;
         $this->active = $active;
+        $this->updatedAt = $updatedAt;
     }
 
     public function setId(string $id): void
@@ -88,5 +99,15 @@ final class Product
     public function isActive(): bool
     {
         return $this->active;
+    }
+
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    public function getUpdatedAt(): ?DateTimeInterface
+    {
+        return $this->updatedAt;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Minascafe\Product\Application\UseCase;
 
+use DateTimeInterface;
 use JsonSerializable;
 use Minascafe\Category\Domain\Entity\Category;
 
@@ -14,7 +15,8 @@ final class ShowOneProductUseCaseResponse implements JsonSerializable
         private Category $category,
         private string $name,
         private float $price,
-        private bool $active
+        private bool $active,
+        private ?DateTimeInterface $updatedAt
     ) {
     }
 
@@ -43,8 +45,13 @@ final class ShowOneProductUseCaseResponse implements JsonSerializable
         return $this->active;
     }
 
+    public function updatedAt(): ?DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
     /**
-     * @return array<string, string|float|bool|array<string, string>>
+     * @return array<string, mixed>
      */
     public function jsonSerialize(): array
     {
@@ -53,6 +60,7 @@ final class ShowOneProductUseCaseResponse implements JsonSerializable
             'name' => $this->name(),
             'price' => $this->price(),
             'active' => $this->isActive(),
+            'updatedAt' => $this->updatedAt(),
             'category' => $this->category()->toArray(),
         ];
     }

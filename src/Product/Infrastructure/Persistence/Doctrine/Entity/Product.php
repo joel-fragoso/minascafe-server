@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Minascafe\Product\Infrastructure\Persistence\Doctrine\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
@@ -22,22 +23,32 @@ final class Product
     #[ManyToOne(targetEntity: Category::class, fetch: 'EAGER'), JoinColumn(name: 'category_id', referencedColumnName: 'id', nullable: false)]
     private Category $category;
 
-    #[Column(type: 'string', unique: true, nullable: false)]
+    #[Column(type: 'string', unique: true, length: 45)]
     private string $name;
 
-    #[Column(type: 'decimal', precision: 10, scale: 2, nullable: false)]
+    #[Column(type: 'decimal', precision: 10, scale: 2)]
     private float $price;
 
-    #[Column(type: 'boolean', nullable: false, options: ['default' => 0])]
+    #[Column(type: 'boolean', options: ['default' => 0])]
     private bool $active;
 
-    public function __construct(string $id, Category $category, string $name, float $price, bool $active)
-    {
+    #[Column(type: 'datetime', nullable: true)]
+    private DateTimeInterface $createdAt;
+
+    public function __construct(
+        string $id,
+        Category $category,
+        string $name,
+        float $price,
+        bool $active,
+        DateTimeInterface $createdAt
+    ) {
         $this->id = $id;
         $this->category = $category;
         $this->name = $name;
         $this->price = $price;
         $this->active = $active;
+        $this->createdAt = $createdAt;
     }
 
     public function setId(string $id): void
@@ -88,5 +99,10 @@ final class Product
     public function isActive(): bool
     {
         return $this->active;
+    }
+
+    public function getCreatedAt(): DateTimeInterface
+    {
+        return $this->createdAt;
     }
 }

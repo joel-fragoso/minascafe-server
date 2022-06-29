@@ -33,7 +33,8 @@ final class ShowOneCategoryUseCase
             $findCategory->id()->value(),
             $findCategory->name()->value(),
             $findCategory->icon()->value(),
-            $findCategory->isActive()->value()
+            $findCategory->isActive()->value(),
+            $findCategory->createdAt()->value()
         );
     }
 }

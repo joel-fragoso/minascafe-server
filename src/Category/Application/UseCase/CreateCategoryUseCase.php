@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Minascafe\Category\Application\UseCase;
 
+use DateTimeImmutable;
 use Minascafe\Category\Domain\Entity\Category;
 use Minascafe\Category\Domain\Exception\DuplicateCategoryException;
 use Minascafe\Category\Domain\Repository\CategoryRepositoryInterface;
 use Minascafe\Category\Domain\ValueObject\CategoryActive;
+use Minascafe\Category\Domain\ValueObject\CategoryCreatedAt;
 use Minascafe\Category\Domain\ValueObject\CategoryIcon;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
 use Minascafe\Category\Domain\ValueObject\CategoryName;
@@ -24,8 +26,6 @@ final class CreateCategoryUseCase
     public function execute(CreateCategoryUseCaseRequest $createCategoryUseCaseRequest): CreateCategoryUseCaseResponse
     {
         $categoryName = $createCategoryUseCaseRequest->name();
-        $categoryIcon = $createCategoryUseCaseRequest->icon();
-        $categoryActive = $createCategoryUseCaseRequest->isActive();
 
         $findCategory = $this->categoryRepository->findByName(
             new CategoryName($categoryName)
@@ -38,8 +38,9 @@ final class CreateCategoryUseCase
         $category = Category::create(
             new CategoryId(CategoryId::generate()),
             new CategoryName($categoryName),
-            new CategoryIcon($categoryIcon),
-            new CategoryActive($categoryActive)
+            new CategoryIcon($createCategoryUseCaseRequest->icon()),
+            new CategoryActive($createCategoryUseCaseRequest->isActive() ?? true),
+            new CategoryCreatedAt(new DateTimeImmutable())
         );
 
         $this->categoryRepository->create($category);
@@ -48,7 +49,8 @@ final class CreateCategoryUseCase
             $category->id()->value(),
             $category->name()->value(),
             $category->icon()->value(),
-            $category->isActive()->value()
+            $category->isActive()->value(),
+            $category->createdAt()->value()
         );
     }
 }

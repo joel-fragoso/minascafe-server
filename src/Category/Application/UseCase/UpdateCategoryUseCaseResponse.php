@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Minascafe\Category\Application\UseCase;
 
+use DateTimeInterface;
 use JsonSerializable;
 
 final class UpdateCategoryUseCaseResponse implements JsonSerializable
@@ -12,7 +13,8 @@ final class UpdateCategoryUseCaseResponse implements JsonSerializable
         private string $categoryId,
         private string $name,
         private string $icon,
-        private bool $active
+        private bool $active,
+        private DateTimeInterface $createdAt
     ) {
     }
 
@@ -36,8 +38,13 @@ final class UpdateCategoryUseCaseResponse implements JsonSerializable
         return $this->active;
     }
 
+    public function createdAt(): DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
     /**
-     * @return array<string, int|string|bool>
+     * @return array<string, mixed>
      */
     public function jsonSerialize(): array
     {
@@ -46,6 +53,7 @@ final class UpdateCategoryUseCaseResponse implements JsonSerializable
             'name' => $this->name(),
             'icon' => $this->icon(),
             'active' => $this->isActive(),
+            'createdAt' => $this->createdAt(),
         ];
     }
 }

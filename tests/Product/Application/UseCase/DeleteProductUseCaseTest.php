@@ -37,18 +37,11 @@ final class DeleteProductUseCaseTest extends TestCase
 
     public function testDeveSerCapazDeRemoverUmProduto(): void
     {
-        $categoryName = 'Categoria';
-        $categoryIcon = 'NomeDoIcone';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone');
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
-        $categoryId = $createCategoryUseCaseResponse->categoryId();
-        $productName = 'Produto';
-        $productPrice = 1.00;
-
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId, $productName, $productPrice, true);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest($createCategoryUseCaseResponse->categoryId(), 'Produto', 1.00, true);
 
         $createProductUseCaseResponse = $this->createProductUseCase->execute($createProductUseCaseRequest);
 
@@ -67,9 +60,7 @@ final class DeleteProductUseCaseTest extends TestCase
     {
         self::expectException(ProductNotFoundException::class);
 
-        $productId = '00000000-0000-0000-0000-000000000000';
-
-        $deleteProductUseCaseRequest = new DeleteProductUseCaseRequest($productId);
+        $deleteProductUseCaseRequest = new DeleteProductUseCaseRequest('00000000-0000-0000-0000-000000000000');
 
         $this->deleteProductUseCase->execute($deleteProductUseCaseRequest);
     }

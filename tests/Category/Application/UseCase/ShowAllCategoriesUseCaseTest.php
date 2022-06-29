@@ -26,17 +26,11 @@ final class ShowAllCategoriesUseCaseTest extends TestCase
 
     public function testDeveSerCapazDeListarTodasAsCategorias(): void
     {
-        $categoryName1 = 'Categoria 1';
-        $categoryIcon1 = 'NomeDoIcone1';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName1, $categoryIcon1, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria 1', 'NomeDoIcone1');
 
         $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
-        $categoryName2 = 'Categoria 2';
-        $categoryIcon2 = 'NomeDoIcone2';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName2, $categoryIcon2, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria 2', 'NomeDoIcone2');
 
         $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -50,17 +44,11 @@ final class ShowAllCategoriesUseCaseTest extends TestCase
 
     public function testDeveSerCapazDeListarTodasAsCategoriasAtivas(): void
     {
-        $categoryName1 = 'Categoria 1';
-        $categoryIcon1 = 'NomeDoIcone1';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName1, $categoryIcon1, false);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria 1', 'NomeDoIcone1', false);
 
         $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
-        $categoryName2 = 'Categoria 2';
-        $categoryIcon2 = 'NomeDoIcone2';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName2, $categoryIcon2, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria 2', 'NomeDoIcone2', true);
 
         $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -74,17 +62,11 @@ final class ShowAllCategoriesUseCaseTest extends TestCase
 
     public function testDeveSerCapazDeListarTodasAsCategoriasInativas(): void
     {
-        $categoryName1 = 'Categoria 1';
-        $categoryIcon1 = 'NomeDoIcone1';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName1, $categoryIcon1, false);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria 1', 'NomeDoIcone1', false);
 
         $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
-        $categoryName2 = 'Categoria 2';
-        $categoryIcon2 = 'NomeDoIcone2';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName2, $categoryIcon2, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria 2', 'NomeDoIcone2', true);
 
         $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -98,17 +80,11 @@ final class ShowAllCategoriesUseCaseTest extends TestCase
 
     public function testDeveSerCapazDeRetornarUmJsonSerializado(): void
     {
-        $categoryName1 = 'Categoria 1';
-        $categoryIcon1 = 'NomeDoIcone1';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName1, $categoryIcon1, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria 1', 'NomeDoIcone1', false);
 
         $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
-        $categoryName2 = 'Categoria 2';
-        $categoryIcon2 = 'NomeDoIcone2';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName2, $categoryIcon2, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria 2', 'NomeDoIcone2', true);
 
         $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 

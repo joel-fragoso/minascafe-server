@@ -17,24 +17,34 @@ final class Category
     #[Id, Column(type: 'guid', length: 36)]
     private string $id;
 
-    #[Column(type: 'string', unique: true, nullable: false)]
+    #[Column(type: 'string', unique: true, length: 45)]
     private string $name;
 
-    #[Column(type: 'string', nullable: false)]
+    #[Column(type: 'string', length: 45)]
     private string $icon;
 
-    #[Column(type: 'boolean', nullable: false, options: ['default' => 0])]
+    #[Column(type: 'boolean', options: ['default' => 0])]
     private bool $active;
+
+    #[Column(type: 'datetime', nullable: true)]
+    private DateTimeInterface $createdAt;
 
     #[Column(type: 'datetime', nullable: true)]
     private ?DateTimeInterface $updatedAt;
 
-    public function __construct(string $id, string $name, string $icon, bool $active, ?DateTimeInterface $updatedAt)
-    {
+    public function __construct(
+        string $id,
+        string $name,
+        string $icon,
+        bool $active,
+        DateTimeInterface $createdAt,
+        ?DateTimeInterface $updatedAt
+    ) {
         $this->id = $id;
         $this->name = $name;
         $this->icon = $icon;
         $this->active = $active;
+        $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
     }
 
@@ -76,6 +86,16 @@ final class Category
     public function isActive(): bool
     {
         return $this->active;
+    }
+
+    public function setCreatedAt(DateTimeInterface $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function getCreatedAt(): DateTimeInterface
+    {
+        return $this->createdAt;
     }
 
     public function setUpdatedAt(?DateTimeInterface $updatedAt): void

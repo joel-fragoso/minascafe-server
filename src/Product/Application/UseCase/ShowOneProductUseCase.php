@@ -30,6 +30,7 @@ final class ShowOneProductUseCase
             $findProduct->name()->value(),
             $findProduct->price()->value(),
             $findProduct->isActive()->value(),
+            $findProduct->createdAt()->value(),
             $findProduct->updatedAt()->value()
         );
     }

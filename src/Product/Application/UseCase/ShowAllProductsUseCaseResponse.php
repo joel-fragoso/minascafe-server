@@ -25,7 +25,7 @@ final class ShowAllProductsUseCaseResponse implements JsonSerializable
     }
 
     /**
-     * @return array<int, string|array<string, string>>
+     * @return array<int, mixed>
      */
     public function jsonSerialize(): array
     {

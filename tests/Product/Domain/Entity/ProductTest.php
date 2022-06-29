@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Minascafe\Tests\Product\Domain\Entity;
 
+use DateTimeImmutable;
 use Minascafe\Category\Domain\Entity\Category;
 use Minascafe\Category\Domain\ValueObject\CategoryActive;
+use Minascafe\Category\Domain\ValueObject\CategoryCreatedAt;
 use Minascafe\Category\Domain\ValueObject\CategoryIcon;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
 use Minascafe\Category\Domain\ValueObject\CategoryName;
 use Minascafe\Category\Domain\ValueObject\CategoryUpdatedAt;
 use Minascafe\Product\Domain\Entity\Product;
 use Minascafe\Product\Domain\ValueObject\ProductActive;
+use Minascafe\Product\Domain\ValueObject\ProductCreatedAt;
 use Minascafe\Product\Domain\ValueObject\ProductId;
 use Minascafe\Product\Domain\ValueObject\ProductName;
 use Minascafe\Product\Domain\ValueObject\ProductPrice;
@@ -25,12 +28,14 @@ final class ProductTest extends TestCase
         $productId = ProductId::generate();
         $productName = 'Produto';
         $productPrice = 1.00;
+        $productCreatedAt = new DateTimeImmutable();
 
         $category = Category::create(
             new CategoryId(CategoryId::generate()),
             new CategoryName('Categoria'),
             new CategoryIcon('NomeDoIcone'),
             new CategoryActive(true),
+            new CategoryCreatedAt(new DateTimeImmutable()),
             new CategoryUpdatedAt(null)
         );
 
@@ -40,6 +45,7 @@ final class ProductTest extends TestCase
             new ProductName($productName),
             new ProductPrice($productPrice),
             new ProductActive(true),
+            new ProductCreatedAt($productCreatedAt),
             new ProductUpdatedAt(null)
         );
 
@@ -48,6 +54,7 @@ final class ProductTest extends TestCase
         self::assertEquals($productName, $product->name()->value());
         self::assertEquals($productPrice, $product->price()->value());
         self::assertTrue($product->isActive()->value());
+        self::assertEquals($productCreatedAt, $product->createdAt()->value());
         self::assertNull($product->updatedAt()->value());
     }
 
@@ -56,18 +63,21 @@ final class ProductTest extends TestCase
         $productId = ProductId::generate();
         $productName = 'Produto';
         $productPrice = 1.00;
+        $productCreatedAt = new DateTimeImmutable();
 
         $payload = [
             'id' => $productId,
             'name' => $productName,
             'price' => $productPrice,
             'active' => true,
+            'createdAt' => $productCreatedAt,
             'updatedAt' => null,
             'category' => [
                 'id' => CategoryId::generate(),
                 'name' => 'Categoria',
                 'icon' => 'NomeDoIcone',
                 'active' => true,
+                'createdAt' => new DateTimeImmutable(),
                 'updatedAt' => null,
             ],
         ];
@@ -79,6 +89,7 @@ final class ProductTest extends TestCase
         self::assertEquals($productName, $product->name()->value());
         self::assertEquals($productPrice, $product->price()->value());
         self::assertTrue($product->isActive()->value());
+        self::assertEquals($productCreatedAt, $product->createdAt()->value());
         self::assertNull($product->updatedAt()->value());
     }
 
@@ -87,12 +98,14 @@ final class ProductTest extends TestCase
         $productId = ProductId::generate();
         $productName = 'Produto';
         $productPrice = 1.00;
+        $productCreatedAt = new DateTimeImmutable();
 
         $category = Category::create(
             new CategoryId(CategoryId::generate()),
             new CategoryName('Categoria'),
             new CategoryIcon('NomeDoIcone'),
             new CategoryActive(true),
+            new CategoryCreatedAt(new DateTimeImmutable()),
             new CategoryUpdatedAt(null)
         );
 
@@ -102,6 +115,7 @@ final class ProductTest extends TestCase
             new ProductName($productName),
             new ProductPrice($productPrice),
             new ProductActive(true),
+            new ProductCreatedAt($productCreatedAt),
             new ProductUpdatedAt(null)
         );
 
@@ -112,6 +126,7 @@ final class ProductTest extends TestCase
         self::assertEquals($productName, $productData['name']);
         self::assertEquals($productPrice, $productData['price']);
         self::assertTrue($productData['active']);
+        self::assertEquals($productCreatedAt, $productData['createdAt']);
         self::assertNull($productData['updatedAt']);
     }
 }

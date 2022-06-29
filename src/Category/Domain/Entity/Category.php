@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Minascafe\Category\Domain\Entity;
 
 use Minascafe\Category\Domain\ValueObject\CategoryActive;
+use Minascafe\Category\Domain\ValueObject\CategoryCreatedAt;
 use Minascafe\Category\Domain\ValueObject\CategoryIcon;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
 use Minascafe\Category\Domain\ValueObject\CategoryName;
@@ -17,6 +18,7 @@ final class Category
         private CategoryName $name,
         private CategoryIcon $icon,
         private CategoryActive $active,
+        private CategoryCreatedAt $createdAt,
         private CategoryUpdatedAt $updatedAt
     ) {
     }
@@ -26,9 +28,10 @@ final class Category
         CategoryName $name,
         CategoryIcon $icon,
         CategoryActive $active,
+        CategoryCreatedAt $createdAt,
         CategoryUpdatedAt $updatedAt
     ): self {
-        return new self($id, $name, $icon, $active, $updatedAt);
+        return new self($id, $name, $icon, $active, $createdAt, $updatedAt);
     }
 
     public function id(): CategoryId
@@ -51,6 +54,11 @@ final class Category
         return $this->active;
     }
 
+    public function createdAt(): CategoryCreatedAt
+    {
+        return $this->createdAt;
+    }
+
     public function updatedAt(): CategoryUpdatedAt
     {
         return $this->updatedAt;
@@ -66,6 +74,7 @@ final class Category
             new CategoryName($data['name']),
             new CategoryIcon($data['icon']),
             new CategoryActive($data['active']),
+            new CategoryCreatedAt($data['createdAt']),
             new CategoryUpdatedAt($data['updatedAt'])
         );
     }
@@ -80,6 +89,7 @@ final class Category
             'name' => $this->name()->value(),
             'icon' => $this->icon()->value(),
             'active' => $this->isActive()->value(),
+            'createdAt' => $this->createdAt()->value(),
             'updatedAt' => $this->updatedAt()->value(),
         ];
     }

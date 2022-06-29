@@ -6,6 +6,7 @@ namespace Minascafe\Product\Domain\Entity;
 
 use Minascafe\Category\Domain\Entity\Category;
 use Minascafe\Product\Domain\ValueObject\ProductActive;
+use Minascafe\Product\Domain\ValueObject\ProductCreatedAt;
 use Minascafe\Product\Domain\ValueObject\ProductId;
 use Minascafe\Product\Domain\ValueObject\ProductName;
 use Minascafe\Product\Domain\ValueObject\ProductPrice;
@@ -19,6 +20,7 @@ final class Product
         private ProductName $name,
         private ProductPrice $price,
         private ProductActive $active,
+        private ProductCreatedAt $createdAt,
         private ProductUpdatedAt $updatedAt
     ) {
     }
@@ -29,9 +31,10 @@ final class Product
         ProductName $name,
         ProductPrice $price,
         ProductActive $active,
+        ProductCreatedAt $createdAt,
         ProductUpdatedAt $updatedAt
     ): self {
-        return new self($id, $category, $name, $price, $active, $updatedAt);
+        return new self($id, $category, $name, $price, $active, $createdAt, $updatedAt);
     }
 
     public function id(): ProductId
@@ -59,6 +62,11 @@ final class Product
         return $this->active;
     }
 
+    public function createdAt(): ProductCreatedAt
+    {
+        return $this->createdAt;
+    }
+
     public function updatedAt(): ProductUpdatedAt
     {
         return $this->updatedAt;
@@ -75,6 +83,7 @@ final class Product
             new ProductName($data['name']),
             new ProductPrice($data['price']),
             new ProductActive($data['active']),
+            new ProductCreatedAt($data['createdAt']),
             new ProductUpdatedAt($data['updatedAt'])
         );
     }
@@ -90,6 +99,7 @@ final class Product
             'name' => $this->name()->value(),
             'price' => $this->price()->value(),
             'active' => $this->isActive()->value(),
+            'createdAt' => $this->createdAt()->value(),
             'updatedAt' => $this->updatedAt()->value(),
         ];
     }

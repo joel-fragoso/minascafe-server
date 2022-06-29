@@ -7,6 +7,7 @@ namespace Minascafe\Product\Infrastructure\Persistence\Doctrine\Transform;
 use Minascafe\Category\Infrastructure\Persistence\Doctrine\Transform\CategoryTransform;
 use Minascafe\Product\Domain\Entity\Product as DomainProduct;
 use Minascafe\Product\Domain\ValueObject\ProductActive;
+use Minascafe\Product\Domain\ValueObject\ProductCreatedAt;
 use Minascafe\Product\Domain\ValueObject\ProductId;
 use Minascafe\Product\Domain\ValueObject\ProductName;
 use Minascafe\Product\Domain\ValueObject\ProductPrice;
@@ -23,6 +24,7 @@ final class ProductTransform
             new ProductName($entityProduct->getName()),
             new ProductPrice($entityProduct->getPrice()),
             new ProductActive($entityProduct->isActive()),
+            new ProductCreatedAt($entityProduct->getCreatedAt()),
             new ProductUpdatedAt($entityProduct->getUpdatedAt())
         );
     }
@@ -35,6 +37,7 @@ final class ProductTransform
             $domainProduct->name()->value(),
             $domainProduct->price()->value(),
             $domainProduct->isActive()->value(),
+            $domainProduct->createdAt()->value(),
             $domainProduct->updatedAt()->value()
         );
     }

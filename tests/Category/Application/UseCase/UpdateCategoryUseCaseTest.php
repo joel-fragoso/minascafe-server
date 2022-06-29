@@ -28,7 +28,7 @@ final class UpdateCategoryUseCaseTest extends TestCase
 
     public function testDeveSerCapazDeAtualizarUmaCategoria(): void
     {
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone', true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone');
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
@@ -36,13 +36,19 @@ final class UpdateCategoryUseCaseTest extends TestCase
         $categoryName = 'Categoria 2';
         $categoryIcon = 'NomeDoIcone2';
 
-        $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($categoryId, $categoryName, $categoryIcon, true);
+        $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest(
+            $categoryId,
+            $categoryName,
+            $categoryIcon,
+            true,
+        );
 
         $updateCategoryUseCaseResponse = $this->updateCategoryUseCase->execute($updateCategoryUseCaseRequest);
 
         self::assertEquals($categoryId, $updateCategoryUseCaseResponse->categoryId());
         self::assertEquals($categoryName, $updateCategoryUseCaseResponse->name());
         self::assertEquals($categoryIcon, $updateCategoryUseCaseResponse->icon());
+        self::assertEquals($createCategoryUseCaseResponse->createdAt(), $updateCategoryUseCaseResponse->createdAt());
         self::assertInstanceOf(DateTimeInterface::class, $updateCategoryUseCaseResponse->updatedAt());
     }
 
@@ -50,26 +56,28 @@ final class UpdateCategoryUseCaseTest extends TestCase
     {
         self::expectException(CategoryNotFoundException::class);
 
-        $categoryId = '00000000-0000-0000-0000-000000000000';
-        $categoryName = 'Categoria';
-        $categoryIcon = 'NomeDoIcone';
-
-        $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($categoryId, $categoryName, $categoryIcon, true);
+        $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest(
+            '00000000-0000-0000-0000-000000000000',
+            'Categoria',
+            'NomeDoIcone',
+            true
+        );
 
         $this->updateCategoryUseCase->execute($updateCategoryUseCaseRequest);
     }
 
     public function testDeveSerCapazDeRetornarUmJsonSerializado(): void
     {
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone', true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone');
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
-        $categoryId = $createCategoryUseCaseResponse->categoryId();
-        $categoryName = 'Categoria 2';
-        $categoryIcon = 'NomeDoIcone2';
-
-        $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest($categoryId, $categoryName, $categoryIcon, true);
+        $updateCategoryUseCaseRequest = new UpdateCategoryUseCaseRequest(
+            $createCategoryUseCaseResponse->categoryId(),
+            'Categoria 2',
+            'NomeDoIcone2',
+            true
+        );
 
         $updateCategoryUseCaseResponse = $this->updateCategoryUseCase->execute($updateCategoryUseCaseRequest);
 
@@ -78,6 +86,7 @@ final class UpdateCategoryUseCaseTest extends TestCase
             'name' => $updateCategoryUseCaseResponse->name(),
             'icon' => $updateCategoryUseCaseResponse->icon(),
             'active' => $updateCategoryUseCaseResponse->isActive(),
+            'createdAt' => $updateCategoryUseCaseResponse->createdAt(),
             'updatedAt' => $updateCategoryUseCaseResponse->updatedAt(),
         ]);
 

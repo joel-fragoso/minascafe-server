@@ -33,26 +33,25 @@ final class ShowAllProductsUseCaseTest extends TestCase
 
     public function testDeveSerCapazDeListarTodosOsProdutos(): void
     {
-        $categoryName = 'Categoria';
-        $categoryIcon = 'NomeDoIcone';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone');
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
-        $categoryId1 = $createCategoryUseCaseResponse->categoryId();
-        $productName1 = 'Produto 1';
-        $productPrice1 = 1.00;
-
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId1, $productName1, $productPrice1, true);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest(
+            $createCategoryUseCaseResponse->categoryId(),
+            'Produto 1',
+            1.00,
+            true
+        );
 
         $this->createProductUseCase->execute($createProductUseCaseRequest);
 
-        $categoryId2 = $createCategoryUseCaseResponse->categoryId();
-        $productName2 = 'Produto 2';
-        $productPrice2 = 1.00;
-
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId2, $productName2, $productPrice2, true);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest(
+            $createCategoryUseCaseResponse->categoryId(),
+            'Produto 2',
+            1.00,
+            true
+        );
 
         $this->createProductUseCase->execute($createProductUseCaseRequest);
 
@@ -66,26 +65,25 @@ final class ShowAllProductsUseCaseTest extends TestCase
 
     public function testDeveSerCapazDeListarTodosOsProdutosAtivos(): void
     {
-        $categoryName = 'Categoria';
-        $categoryIcon = 'NomeDoIcone';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone');
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
-        $categoryId1 = $createCategoryUseCaseResponse->categoryId();
-        $productName1 = 'Produto 1';
-        $productPrice1 = 1.00;
-
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId1, $productName1, $productPrice1, false);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest(
+            $createCategoryUseCaseResponse->categoryId(),
+            'Produto 1',
+            1.00,
+            false
+        );
 
         $this->createProductUseCase->execute($createProductUseCaseRequest);
 
-        $categoryId2 = $createCategoryUseCaseResponse->categoryId();
-        $productName2 = 'Produto 2';
-        $productPrice2 = 1.00;
-
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId2, $productName2, $productPrice2, true);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest(
+            $createCategoryUseCaseResponse->categoryId(),
+            'Produto 2',
+            1.00,
+            true
+        );
 
         $this->createProductUseCase->execute($createProductUseCaseRequest);
 
@@ -99,26 +97,25 @@ final class ShowAllProductsUseCaseTest extends TestCase
 
     public function testDeveSerCapazDeListarTodosOsProdutosInativos(): void
     {
-        $categoryName = 'Categoria';
-        $categoryIcon = 'NomeDoIcone';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone');
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
-        $categoryId1 = $createCategoryUseCaseResponse->categoryId();
-        $productName1 = 'Produto 1';
-        $productPrice1 = 1.00;
-
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId1, $productName1, $productPrice1, false);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest(
+            $createCategoryUseCaseResponse->categoryId(),
+            'Produto 1',
+            1.00,
+            false
+        );
 
         $this->createProductUseCase->execute($createProductUseCaseRequest);
 
-        $categoryId2 = $createCategoryUseCaseResponse->categoryId();
-        $productName2 = 'Produto 2';
-        $productPrice2 = 1.00;
-
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId2, $productName2, $productPrice2, true);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest(
+            $createCategoryUseCaseResponse->categoryId(),
+            'Produto 2',
+            1.00,
+            true
+        );
 
         $this->createProductUseCase->execute($createProductUseCaseRequest);
 
@@ -132,26 +129,25 @@ final class ShowAllProductsUseCaseTest extends TestCase
 
     public function testDeveSerCapazDeRetornarUmJsonSerializado(): void
     {
-        $categoryName = 'Categoria';
-        $categoryIcon = 'NomeDoIcone';
-
-        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest($categoryName, $categoryIcon, true);
+        $createCategoryUseCaseRequest = new CreateCategoryUseCaseRequest('Categoria', 'NomeDoIcone');
 
         $createCategoryUseCaseResponse = $this->createCategoryUseCase->execute($createCategoryUseCaseRequest);
 
-        $categoryId1 = $createCategoryUseCaseResponse->categoryId();
-        $productName1 = 'Produto 1';
-        $productPrice1 = 1.00;
-
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId1, $productName1, $productPrice1, true);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest(
+            $createCategoryUseCaseResponse->categoryId(),
+            'Produto 1',
+            1.00,
+            true
+        );
 
         $this->createProductUseCase->execute($createProductUseCaseRequest);
 
-        $categoryId2 = $createCategoryUseCaseResponse->categoryId();
-        $productName2 = 'Produto 2';
-        $productPrice2 = 1.00;
-
-        $createProductUseCaseRequest = new CreateProductUseCaseRequest($categoryId2, $productName2, $productPrice2, true);
+        $createProductUseCaseRequest = new CreateProductUseCaseRequest(
+            $createCategoryUseCaseResponse->categoryId(),
+            'Produto 2',
+            1.00,
+            true
+        );
 
         $this->createProductUseCase->execute($createProductUseCaseRequest);
 

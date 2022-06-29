@@ -29,13 +29,23 @@ final class Category
     #[Column(type: 'datetime', nullable: true)]
     private DateTimeInterface $createdAt;
 
-    public function __construct(string $id, string $name, string $icon, bool $active, DateTimeInterface $createdAt)
-    {
+    #[Column(type: 'datetime', nullable: true)]
+    private ?DateTimeInterface $updatedAt;
+
+    public function __construct(
+        string $id,
+        string $name,
+        string $icon,
+        bool $active,
+        DateTimeInterface $createdAt,
+        ?DateTimeInterface $updatedAt
+    ) {
         $this->id = $id;
         $this->name = $name;
         $this->icon = $icon;
         $this->active = $active;
         $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
     }
 
     public function setId(string $id): void
@@ -86,5 +96,15 @@ final class Category
     public function getCreatedAt(): DateTimeInterface
     {
         return $this->createdAt;
+    }
+
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    public function getUpdatedAt(): ?DateTimeInterface
+    {
+        return $this->updatedAt;
     }
 }

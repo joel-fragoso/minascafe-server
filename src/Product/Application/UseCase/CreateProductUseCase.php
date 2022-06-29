@@ -16,6 +16,7 @@ use Minascafe\Product\Domain\ValueObject\ProductCreatedAt;
 use Minascafe\Product\Domain\ValueObject\ProductId;
 use Minascafe\Product\Domain\ValueObject\ProductName;
 use Minascafe\Product\Domain\ValueObject\ProductPrice;
+use Minascafe\Product\Domain\ValueObject\ProductUpdatedAt;
 
 final class CreateProductUseCase
 {
@@ -52,7 +53,8 @@ final class CreateProductUseCase
             new ProductName($productName),
             new ProductPrice($createProductUseCaseRequest->price()),
             new ProductActive($createProductUseCaseRequest->isActive() ?? true),
-            new ProductCreatedAt(new DateTimeImmutable())
+            new ProductCreatedAt(new DateTimeImmutable()),
+            new ProductUpdatedAt(null)
         );
 
         $this->productRepository->create($product);
@@ -63,7 +65,8 @@ final class CreateProductUseCase
             $product->name()->value(),
             $product->price()->value(),
             $product->isActive()->value(),
-            $product->createdAt()->value()
+            $product->createdAt()->value(),
+            $product->updatedAt()->value()
         );
     }
 }

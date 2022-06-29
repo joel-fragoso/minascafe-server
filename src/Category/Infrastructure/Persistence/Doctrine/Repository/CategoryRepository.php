@@ -94,6 +94,7 @@ class CategoryRepository extends EntityRepository implements CategoryRepositoryI
         $findCategory->setName($entityCategory->getName());
         $findCategory->setIcon($entityCategory->getIcon());
         $findCategory->setActive($entityCategory->isActive());
+        $findCategory->setUpdatedAt($entityCategory->getUpdatedAt());
 
         $this->_em->flush();
     }

@@ -16,7 +16,8 @@ final class UpdateProductUseCaseResponse implements JsonSerializable
         private string $name,
         private float $price,
         private bool $active,
-        private DateTimeInterface $createdAt
+        private DateTimeInterface $createdAt,
+        private ?DateTimeInterface $updatedAt
     ) {
     }
 
@@ -50,6 +51,11 @@ final class UpdateProductUseCaseResponse implements JsonSerializable
         return $this->createdAt;
     }
 
+    public function updatedAt(): ?DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -61,6 +67,7 @@ final class UpdateProductUseCaseResponse implements JsonSerializable
             'price' => $this->price(),
             'active' => $this->isActive(),
             'createdAt' => $this->createdAt(),
+            'updatedAt' => $this->updatedAt(),
             'category' => $this->category()->toArray(),
         ];
     }

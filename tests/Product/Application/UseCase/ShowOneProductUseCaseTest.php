@@ -98,6 +98,7 @@ final class ShowOneProductUseCaseTest extends TestCase
             'price' => $showOneProductUseCaseResponse->price(),
             'active' => $showOneProductUseCaseResponse->isActive(),
             'createdAt' => $showOneProductUseCaseResponse->createdAt(),
+            'updatedAt' => $showOneProductUseCaseResponse->updatedAt(),
             'category' => $showOneProductUseCaseResponse->category()->toArray(),
         ]);
 

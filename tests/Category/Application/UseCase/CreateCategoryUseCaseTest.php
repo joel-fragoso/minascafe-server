@@ -60,6 +60,7 @@ final class CreateCategoryUseCaseTest extends TestCase
             'icon' => $createCategoryUseCaseResponse->icon(),
             'active' => $createCategoryUseCaseResponse->isActive(),
             'createdAt' => $createCategoryUseCaseResponse->createdAt(),
+            'updatedAt' => $createCategoryUseCaseResponse->updatedAt(),
         ]);
 
         self::assertEquals($expectedJsonSerialize, json_encode($createCategoryUseCaseResponse));

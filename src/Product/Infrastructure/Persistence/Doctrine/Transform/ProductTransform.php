@@ -11,6 +11,7 @@ use Minascafe\Product\Domain\ValueObject\ProductCreatedAt;
 use Minascafe\Product\Domain\ValueObject\ProductId;
 use Minascafe\Product\Domain\ValueObject\ProductName;
 use Minascafe\Product\Domain\ValueObject\ProductPrice;
+use Minascafe\Product\Domain\ValueObject\ProductUpdatedAt;
 use Minascafe\Product\Infrastructure\Persistence\Doctrine\Entity\Product as EntityProduct;
 
 final class ProductTransform
@@ -23,7 +24,8 @@ final class ProductTransform
             new ProductName($entityProduct->getName()),
             new ProductPrice($entityProduct->getPrice()),
             new ProductActive($entityProduct->isActive()),
-            new ProductCreatedAt($entityProduct->getCreatedAt())
+            new ProductCreatedAt($entityProduct->getCreatedAt()),
+            new ProductUpdatedAt($entityProduct->getUpdatedAt())
         );
     }
 
@@ -35,7 +37,8 @@ final class ProductTransform
             $domainProduct->name()->value(),
             $domainProduct->price()->value(),
             $domainProduct->isActive()->value(),
-            $domainProduct->createdAt()->value()
+            $domainProduct->createdAt()->value(),
+            $domainProduct->updatedAt()->value()
         );
     }
 }

@@ -11,6 +11,7 @@ use Minascafe\Category\Domain\ValueObject\CategoryCreatedAt;
 use Minascafe\Category\Domain\ValueObject\CategoryIcon;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
 use Minascafe\Category\Domain\ValueObject\CategoryName;
+use Minascafe\Category\Domain\ValueObject\CategoryUpdatedAt;
 use PHPUnit\Framework\TestCase;
 
 final class CategoryTest extends TestCase
@@ -27,7 +28,8 @@ final class CategoryTest extends TestCase
             new CategoryName($categoryName),
             new CategoryIcon($categoryIcon),
             new CategoryActive(true),
-            new CategoryCreatedAt($categoryCreatedAt)
+            new CategoryCreatedAt($categoryCreatedAt),
+            new CategoryUpdatedAt(null)
         );
 
         self::assertEquals($categoryId, $category->id()->value());
@@ -50,6 +52,7 @@ final class CategoryTest extends TestCase
             'icon' => $categoryIcon,
             'active' => true,
             'createdAt' => $categoryCreatedAt,
+            'updatedAt' => null,
         ];
 
         $category = Category::fromArray($payload);
@@ -59,6 +62,7 @@ final class CategoryTest extends TestCase
         self::assertEquals($categoryIcon, $category->icon()->value());
         self::assertTrue($category->isActive()->value());
         self::assertEquals($categoryCreatedAt, $category->createdAt()->value());
+        self::assertNull($category->updatedAt()->value());
     }
 
     public function testDeveSerCapazDeRetornarUmArrayDeCategoria(): void
@@ -73,7 +77,8 @@ final class CategoryTest extends TestCase
             new CategoryName($categoryName),
             new CategoryIcon($categoryIcon),
             new CategoryActive(true),
-            new CategoryCreatedAt($categoryCreatedAt)
+            new CategoryCreatedAt($categoryCreatedAt),
+            new CategoryUpdatedAt(null)
         );
 
         $categoryData = $category->toArray();
@@ -84,5 +89,6 @@ final class CategoryTest extends TestCase
         self::assertEquals($categoryIcon, $categoryData['icon']);
         self::assertTrue($categoryData['active']);
         self::assertEquals($categoryCreatedAt, $categoryData['createdAt']);
+        self::assertNull($categoryData['updatedAt']);
     }
 }

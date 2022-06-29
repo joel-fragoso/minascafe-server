@@ -10,6 +10,7 @@ use Minascafe\Category\Domain\ValueObject\CategoryCreatedAt;
 use Minascafe\Category\Domain\ValueObject\CategoryIcon;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
 use Minascafe\Category\Domain\ValueObject\CategoryName;
+use Minascafe\Category\Domain\ValueObject\CategoryUpdatedAt;
 use Minascafe\Category\Infrastructure\Persistence\Doctrine\Entity\Category as EntityCategory;
 
 final class CategoryTransform
@@ -21,7 +22,8 @@ final class CategoryTransform
             new CategoryName($entityCategory->getName()),
             new CategoryIcon($entityCategory->getIcon()),
             new CategoryActive($entityCategory->isActive()),
-            new CategoryCreatedAt($entityCategory->getCreatedAt())
+            new CategoryCreatedAt($entityCategory->getCreatedAt()),
+            new CategoryUpdatedAt($entityCategory->getUpdatedAt())
         );
     }
 
@@ -32,7 +34,8 @@ final class CategoryTransform
             $domainCategory->name()->value(),
             $domainCategory->icon()->value(),
             $domainCategory->isActive()->value(),
-            $domainCategory->createdAt()->value()
+            $domainCategory->createdAt()->value(),
+            $domainCategory->updatedAt()->value()
         );
     }
 }

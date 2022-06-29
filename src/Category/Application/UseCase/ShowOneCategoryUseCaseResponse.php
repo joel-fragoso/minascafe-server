@@ -14,7 +14,8 @@ final class ShowOneCategoryUseCaseResponse implements JsonSerializable
         private string $name,
         private string $icon,
         private bool $active,
-        private DateTimeInterface $createdAt
+        private DateTimeInterface $createdAt,
+        private ?DateTimeInterface $updatedAt
     ) {
     }
 
@@ -43,6 +44,11 @@ final class ShowOneCategoryUseCaseResponse implements JsonSerializable
         return $this->createdAt;
     }
 
+    public function updatedAt(): ?DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -54,6 +60,7 @@ final class ShowOneCategoryUseCaseResponse implements JsonSerializable
             'icon' => $this->icon(),
             'active' => $this->isActive(),
             'createdAt' => $this->createdAt(),
+            'updatedAt' => $this->updatedAt(),
         ];
     }
 }

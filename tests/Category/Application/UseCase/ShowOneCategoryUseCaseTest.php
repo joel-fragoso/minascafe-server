@@ -74,6 +74,7 @@ final class ShowOneCategoryUseCaseTest extends TestCase
             'icon' => $showOneCategoryUseCaseResponse->icon(),
             'active' => $showOneCategoryUseCaseResponse->isActive(),
             'createdAt' => $showOneCategoryUseCaseResponse->createdAt(),
+            'updatedAt' => $showOneCategoryUseCaseResponse->updatedAt(),
         ]);
 
         self::assertEquals($expectedJsonSerialize, json_encode($showOneCategoryUseCaseResponse));

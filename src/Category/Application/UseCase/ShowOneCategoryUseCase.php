@@ -34,7 +34,8 @@ final class ShowOneCategoryUseCase
             $findCategory->name()->value(),
             $findCategory->icon()->value(),
             $findCategory->isActive()->value(),
-            $findCategory->createdAt()->value()
+            $findCategory->createdAt()->value(),
+            $findCategory->updatedAt()->value()
         );
     }
 }

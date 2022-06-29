@@ -10,6 +10,7 @@ use Minascafe\Product\Domain\ValueObject\ProductCreatedAt;
 use Minascafe\Product\Domain\ValueObject\ProductId;
 use Minascafe\Product\Domain\ValueObject\ProductName;
 use Minascafe\Product\Domain\ValueObject\ProductPrice;
+use Minascafe\Product\Domain\ValueObject\ProductUpdatedAt;
 
 final class Product
 {
@@ -19,7 +20,8 @@ final class Product
         private ProductName $name,
         private ProductPrice $price,
         private ProductActive $active,
-        private ProductCreatedAt $createdAt
+        private ProductCreatedAt $createdAt,
+        private ProductUpdatedAt $updatedAt
     ) {
     }
 
@@ -29,9 +31,10 @@ final class Product
         ProductName $name,
         ProductPrice $price,
         ProductActive $active,
-        ProductCreatedAt $createdAt
+        ProductCreatedAt $createdAt,
+        ProductUpdatedAt $updatedAt
     ): self {
-        return new self($id, $category, $name, $price, $active, $createdAt);
+        return new self($id, $category, $name, $price, $active, $createdAt, $updatedAt);
     }
 
     public function id(): ProductId
@@ -64,6 +67,11 @@ final class Product
         return $this->createdAt;
     }
 
+    public function updatedAt(): ProductUpdatedAt
+    {
+        return $this->updatedAt;
+    }
+
     /**
      * @param array<string, mixed> $data
      */
@@ -75,7 +83,8 @@ final class Product
             new ProductName($data['name']),
             new ProductPrice($data['price']),
             new ProductActive($data['active']),
-            new ProductCreatedAt($data['createdAt'])
+            new ProductCreatedAt($data['createdAt']),
+            new ProductUpdatedAt($data['updatedAt'])
         );
     }
 
@@ -91,6 +100,7 @@ final class Product
             'price' => $this->price()->value(),
             'active' => $this->isActive()->value(),
             'createdAt' => $this->createdAt()->value(),
+            'updatedAt' => $this->updatedAt()->value(),
         ];
     }
 }

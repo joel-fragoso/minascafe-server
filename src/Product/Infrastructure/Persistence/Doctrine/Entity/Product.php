@@ -35,13 +35,17 @@ final class Product
     #[Column(type: 'datetime', nullable: true)]
     private DateTimeInterface $createdAt;
 
+    #[Column(type: 'datetime', nullable: true)]
+    private ?DateTimeInterface $updatedAt;
+
     public function __construct(
         string $id,
         Category $category,
         string $name,
         float $price,
         bool $active,
-        DateTimeInterface $createdAt
+        DateTimeInterface $createdAt,
+        ?DateTimeInterface $updatedAt
     ) {
         $this->id = $id;
         $this->category = $category;
@@ -49,6 +53,7 @@ final class Product
         $this->price = $price;
         $this->active = $active;
         $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
     }
 
     public function setId(string $id): void
@@ -101,8 +106,23 @@ final class Product
         return $this->active;
     }
 
+    public function setCreatedAt(DateTimeInterface $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
     public function getCreatedAt(): DateTimeInterface
     {
         return $this->createdAt;
+    }
+
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    public function getUpdatedAt(): ?DateTimeInterface
+    {
+        return $this->updatedAt;
     }
 }

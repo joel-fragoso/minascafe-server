@@ -13,6 +13,7 @@ use Minascafe\Category\Domain\ValueObject\CategoryCreatedAt;
 use Minascafe\Category\Domain\ValueObject\CategoryIcon;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
 use Minascafe\Category\Domain\ValueObject\CategoryName;
+use Minascafe\Category\Domain\ValueObject\CategoryUpdatedAt;
 
 final class CreateCategoryUseCase
 {
@@ -40,7 +41,8 @@ final class CreateCategoryUseCase
             new CategoryName($categoryName),
             new CategoryIcon($createCategoryUseCaseRequest->icon()),
             new CategoryActive($createCategoryUseCaseRequest->isActive() ?? true),
-            new CategoryCreatedAt(new DateTimeImmutable())
+            new CategoryCreatedAt(new DateTimeImmutable()),
+            new CategoryUpdatedAt(null)
         );
 
         $this->categoryRepository->create($category);
@@ -50,7 +52,8 @@ final class CreateCategoryUseCase
             $category->name()->value(),
             $category->icon()->value(),
             $category->isActive()->value(),
-            $category->createdAt()->value()
+            $category->createdAt()->value(),
+            $category->updatedAt()->value()
         );
     }
 }

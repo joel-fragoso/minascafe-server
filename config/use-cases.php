@@ -14,6 +14,7 @@ use Minascafe\Product\Application\UseCase\DeleteProductUseCase;
 use Minascafe\Product\Application\UseCase\ShowAllProductsUseCase;
 use Minascafe\Product\Application\UseCase\ShowOneProductUseCase;
 use Minascafe\Product\Application\UseCase\UpdateProductUseCase;
+use Minascafe\User\Application\UseCase\CreateUserUseCase;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
@@ -27,5 +28,6 @@ return function (ContainerBuilder $containerBuilder) {
         ShowOneProductUseCase::class => autowire(ShowOneProductUseCase::class),
         UpdateProductUseCase::class => autowire(UpdateProductUseCase::class),
         DeleteProductUseCase::class => autowire(DeleteProductUseCase::class),
+        CreateUserUseCase::class => autowire(CreateUserUseCase::class),
     ]);
 };

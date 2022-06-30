@@ -18,6 +18,7 @@ return function (ContainerBuilder $containerBuilder) {
                 'metadata_dirs' => [
                     __DIR__.'/../src/Category/Infrastructure/Persistence/Doctrine/Entity',
                     __DIR__.'/../src/Product/Infrastructure/Persistence/Doctrine/Entity',
+                    __DIR__.'/../src/User/Infrastructure/Persistence/Doctrine/Entity',
                 ],
                 'connection' => [
                     'driver' => $_ENV['DOCTRINE_DRIVER'],

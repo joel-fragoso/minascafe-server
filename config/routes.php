@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Minascafe\Category\Infrastructure\Http\Controller\CategoryController;
 use Minascafe\Product\Infrastructure\Http\Controller\ProductController;
+use Minascafe\User\Infrastructure\Http\Controller\UserController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -30,6 +31,14 @@ return function (App $app) {
         $group->get('/{id}', [ProductController::class, 'show']);
         $group->put('/{id}', [ProductController::class, 'update']);
         $group->delete('/{id}', [ProductController::class, 'destroy']);
+    });
+
+    $app->group('/usuarios', function (RouteCollectorProxy $group) {
+        $group->get('', [UserController::class, 'index']);
+        $group->post('', [UserController::class, 'create']);
+        $group->get('/{id}', [UserController::class, 'show']);
+        $group->put('/{id}', [UserController::class, 'update']);
+        $group->delete('/{id}', [UserController::class, 'destroy']);
     });
 
     /*

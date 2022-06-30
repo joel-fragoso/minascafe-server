@@ -2,26 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Minascafe\Category\Infrastructure\Persistence\Doctrine\Entity;
+namespace Minascafe\User\Infrastructure\Persistence\Doctrine\Entity;
 
 use DateTimeInterface;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
-use Minascafe\Category\Infrastructure\Persistence\Doctrine\Repository\CategoryRepository;
+use Minascafe\User\Infrastructure\Persistence\Doctrine\Repository\UserRepository;
 
-#[Entity(repositoryClass: CategoryRepository::class), Table(name: 'categories')]
-final class Category
+#[Entity(repositoryClass: UserRepository::class), Table(name: 'users')]
+final class User
 {
     #[Id, Column(type: 'guid', length: 36)]
     private string $id;
 
-    #[Column(type: 'string', unique: true, length: 45)]
+    #[Column(type: 'string', length: 45)]
     private string $name;
 
-    #[Column(type: 'string', length: 45)]
-    private string $icon;
+    #[Column(type: 'string', unique: true, length: 60)]
+    private string $email;
+
+    #[Column(type: 'string', length: 60)]
+    private string $password;
 
     #[Column(type: 'boolean', options: ['default' => 0])]
     private bool $active;
@@ -35,14 +38,16 @@ final class Category
     public function __construct(
         string $id,
         string $name,
-        string $icon,
+        string $email,
+        string $password,
         bool $active,
         DateTimeInterface $createdAt,
         ?DateTimeInterface $updatedAt
     ) {
         $this->id = $id;
         $this->name = $name;
-        $this->icon = $icon;
+        $this->email = $email;
+        $this->password = $password;
         $this->active = $active;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
@@ -68,14 +73,24 @@ final class Category
         return $this->name;
     }
 
-    public function setIcon(string $icon): void
+    public function setEmail(string $email): void
     {
-        $this->icon = $icon;
+        $this->email = $email;
     }
 
-    public function getIcon(): string
+    public function getEmail(): string
     {
-        return $this->icon;
+        return $this->email;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 
     public function setActive(bool $active): void

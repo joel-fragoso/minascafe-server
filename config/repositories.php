@@ -8,6 +8,8 @@ use Minascafe\Category\Domain\Repository\CategoryRepositoryInterface;
 use Minascafe\Category\Infrastructure\Persistence\Doctrine\Entity\Category;
 use Minascafe\Product\Domain\Repository\ProductRepositoryInterface;
 use Minascafe\Product\Infrastructure\Persistence\Doctrine\Entity\Product;
+use Minascafe\User\Domain\Repository\UserRepositoryInterface;
+use Minascafe\User\Infrastructure\Persistence\Doctrine\Entity\User;
 use Psr\Container\ContainerInterface;
 
 return function (ContainerBuilder $containerBuilder) {
@@ -17,6 +19,9 @@ return function (ContainerBuilder $containerBuilder) {
         },
         ProductRepositoryInterface::class => function (ContainerInterface $c) {
             return $c->get(EntityManagerInterface::class)->getRepository(Product::class);
+        },
+        UserRepositoryInterface::class => function (ContainerInterface $c) {
+            return $c->get(EntityManagerInterface::class)->getRepository(User::class);
         },
     ]);
 };

@@ -32,7 +32,7 @@ final class Product
     #[Column(type: 'boolean', options: ['default' => 0])]
     private bool $active;
 
-    #[Column(type: 'datetime', nullable: true)]
+    #[Column(type: 'datetime')]
     private DateTimeInterface $createdAt;
 
     #[Column(type: 'datetime', nullable: true)]

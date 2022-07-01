@@ -66,7 +66,11 @@ final class CategoryController extends BaseController
     public function create(Request $request, Response $response): Response
     {
         try {
-            ['name' => $name, 'icon' => $icon, 'active' => $active] = $request->getParsedBody();
+            $data = $request->getParsedBody();
+
+            $name = $data['name'] ?? null;
+            $icon = $data['icon'] ?? null;
+            $active = $data['active'] ?? null;
 
             $validation = new ValidationResult();
 
@@ -151,7 +155,11 @@ final class CategoryController extends BaseController
     public function update(Request $request, Response $response, string $id): Response
     {
         try {
-            ['name' => $name, 'icon' => $icon, 'active' => $active] = $request->getParsedBody();
+            $data = $request->getParsedBody();
+
+            $name = $data['name'] ?? null;
+            $icon = $data['icon'] ?? null;
+            $active = $data['active'] ?? null;
 
             $validation = new ValidationResult();
 

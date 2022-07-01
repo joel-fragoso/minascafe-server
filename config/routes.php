@@ -25,18 +25,18 @@ return function (App $app) {
 
     $app->group('/categorias', function (RouteCollectorProxy $group) {
         $group->get('', [CategoryController::class, 'index']);
-        $group->post('', [CategoryController::class, 'create']);
-        $group->get('/{id}', [CategoryController::class, 'show']);
-        $group->put('/{id}', [CategoryController::class, 'update']);
-        $group->delete('/{id}', [CategoryController::class, 'destroy']);
+        $group->post('', [CategoryController::class, 'create'])->add(AuthorizationMiddleware::class);
+        $group->get('/{id}', [CategoryController::class, 'show'])->add(AuthorizationMiddleware::class);
+        $group->put('/{id}', [CategoryController::class, 'update'])->add(AuthorizationMiddleware::class);
+        $group->delete('/{id}', [CategoryController::class, 'destroy'])->add(AuthorizationMiddleware::class);
     });
 
     $app->group('/produtos', function (RouteCollectorProxy $group) {
         $group->get('', [ProductController::class, 'index']);
-        $group->post('', [ProductController::class, 'create']);
-        $group->get('/{id}', [ProductController::class, 'show']);
-        $group->put('/{id}', [ProductController::class, 'update']);
-        $group->delete('/{id}', [ProductController::class, 'destroy']);
+        $group->post('', [ProductController::class, 'create'])->add(AuthorizationMiddleware::class);
+        $group->get('/{id}', [ProductController::class, 'show'])->add(AuthorizationMiddleware::class);
+        $group->put('/{id}', [ProductController::class, 'update'])->add(AuthorizationMiddleware::class);
+        $group->delete('/{id}', [ProductController::class, 'destroy'])->add(AuthorizationMiddleware::class);
     });
 
     $app->group('/usuarios', function (RouteCollectorProxy $group) {

@@ -46,6 +46,10 @@ $app->addRoutingMiddleware();
 
 $app->addBodyParsingMiddleware();
 
-$app->addErrorMiddleware($displayErrorDetails, $logError, $logErrorDetails);
+$error = require 'config/error.php';
+$errorHandler = $error($app);
+
+$errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, $logError, $logErrorDetails);
+$errorMiddleware->setDefaultErrorHandler($errorHandler);
 
 return $app;

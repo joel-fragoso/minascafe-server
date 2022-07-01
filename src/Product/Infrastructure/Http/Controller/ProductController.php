@@ -66,12 +66,12 @@ final class ProductController extends BaseController
     public function create(Request $request, Response $response): Response
     {
         try {
-            [
-                'categoryId' => $categoryId,
-                'name' => $name,
-                'price' => $price,
-                'active' => $active,
-            ] = $request->getParsedBody();
+            $data = $request->getParsedBody();
+
+            $categoryId = $data['categoryId'] ?? null;
+            $name = $data['name'] ?? null;
+            $price = $data['price'] ?? null;
+            $active = $data['active'] ?? null;
 
             $validation = new ValidationResult();
 
@@ -160,12 +160,12 @@ final class ProductController extends BaseController
     public function update(Request $request, Response $response, string $id): Response
     {
         try {
-            [
-                'categoryId' => $categoryId,
-                'name' => $name,
-                'price' => $price,
-                'active' => $active,
-            ] = $request->getParsedBody();
+            $data = $request->getParsedBody();
+
+            $categoryId = $data['categoryId'] ?? null;
+            $name = $data['name'] ?? null;
+            $price = $data['price'] ?? null;
+            $active = $data['active'] ?? null;
 
             $validation = new ValidationResult();
 

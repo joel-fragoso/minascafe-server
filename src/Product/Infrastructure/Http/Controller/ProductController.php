@@ -18,17 +18,19 @@ use Minascafe\Product\Application\UseCase\UpdateProductUseCaseRequest;
 use Minascafe\Shared\Infrastructure\Http\Controller\BaseController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Log\LoggerInterface;
 use Selective\Validation\Exception\ValidationException;
 use Selective\Validation\ValidationResult;
 
 final class ProductController extends BaseController
 {
     public function __construct(
-        private readonly ShowAllProductsUseCase $showAllProductsUseCase,
-        private readonly CreateProductUseCase $createProductUseCase,
-        private readonly ShowOneProductUseCase $showOneProductUseCase,
-        private readonly UpdateProductUseCase $updateProductUseCase,
-        private readonly DeleteProductUseCase $deleteProductUseCase
+        private LoggerInterface $logger,
+        private ShowAllProductsUseCase $showAllProductsUseCase,
+        private CreateProductUseCase $createProductUseCase,
+        private ShowOneProductUseCase $showOneProductUseCase,
+        private UpdateProductUseCase $updateProductUseCase,
+        private DeleteProductUseCase $deleteProductUseCase
     ) {
     }
 
@@ -58,6 +60,8 @@ final class ProductController extends BaseController
                     'message' => $exception->getMessage(),
                 ],
             ];
+
+            $this->logger->error($exception->getMessage());
 
             return $this->jsonResponse($response, $payload, $exception->getCode());
         }
@@ -120,6 +124,8 @@ final class ProductController extends BaseController
                 ],
             ];
 
+            $this->logger->error('Erro de validação', $payload);
+
             return $this->jsonResponse($response, $payload, $exception->getCode());
         } catch (Exception $exception) {
             $payload = [
@@ -128,6 +134,8 @@ final class ProductController extends BaseController
                     'message' => $exception->getMessage(),
                 ],
             ];
+
+            $this->logger->error($exception->getMessage());
 
             return $this->jsonResponse($response, $payload, $exception->getCode());
         }
@@ -152,6 +160,8 @@ final class ProductController extends BaseController
                     'message' => $exception->getMessage(),
                 ],
             ];
+
+            $this->logger->error($exception->getMessage());
 
             return $this->jsonResponse($response, $payload, $exception->getCode());
         }
@@ -214,6 +224,8 @@ final class ProductController extends BaseController
                 ],
             ];
 
+            $this->logger->error('Erro de validação', $payload);
+
             return $this->jsonResponse($response, $payload, $exception->getCode());
         } catch (Exception $exception) {
             $payload = [
@@ -222,6 +234,8 @@ final class ProductController extends BaseController
                     'message' => $exception->getMessage(),
                 ],
             ];
+
+            $this->logger->error($exception->getMessage());
 
             return $this->jsonResponse($response, $payload, $exception->getCode());
         }
@@ -244,6 +258,8 @@ final class ProductController extends BaseController
                     'message' => $exception->getMessage(),
                 ],
             ];
+
+            $this->logger->error($exception->getMessage());
 
             return $this->jsonResponse($response, $payload, $exception->getCode());
         }

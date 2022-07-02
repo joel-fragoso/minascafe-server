@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use DI\ContainerBuilder;
+use Monolog\Logger;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
@@ -11,6 +12,11 @@ return function (ContainerBuilder $containerBuilder) {
                 'display_error_details' => true,
                 'log_error' => false,
                 'log_error_details' => false,
+                'logger' => [
+                    'name' => 'minascafe-server',
+                    'path' => __DIR__.'/../var/logs/app.log',
+                    'level' => Logger::DEBUG,
+                ],
             ],
             'doctrine' => [
                 'dev_mode' => true,

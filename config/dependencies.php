@@ -6,8 +6,12 @@ use DI\ContainerBuilder;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMSetup;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Log\LoggerInterface;
 use Selective\Validation\Encoder\JsonEncoder;
 use Selective\Validation\Middleware\ValidationExceptionMiddleware;
 use Selective\Validation\Transformer\ErrorDetailsResultTransformer;
@@ -45,6 +49,19 @@ return function (ContainerBuilder $containerBuilder) {
             AppFactory::setContainer($c);
 
             return AppFactory::create();
+        },
+        LoggerInterface::class => function (ContainerInterface $c) {
+            $settings = $c->get('settings')['slim']['logger'];
+
+            $logger = new Logger($settings['name']);
+
+            $processor = new UidProcessor();
+            $logger->pushProcessor($processor);
+
+            $handler = new StreamHandler($settings['path'], $settings['level']);
+            $logger->pushHandler($handler);
+
+            return $logger;
         },
     ]);
 };

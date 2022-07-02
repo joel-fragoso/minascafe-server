@@ -18,12 +18,14 @@ use Minascafe\Category\Application\UseCase\UpdateCategoryUseCaseRequest;
 use Minascafe\Shared\Infrastructure\Http\Controller\BaseController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Log\LoggerInterface;
 use Selective\Validation\Exception\ValidationException;
 use Selective\Validation\ValidationResult;
 
 final class CategoryController extends BaseController
 {
     public function __construct(
+        private LoggerInterface $logger,
         private ShowAllCategoriesUseCase $showAllCategoriesUseCase,
         private CreateCategoryUseCase $createCategoryUseCase,
         private ShowOneCategoryUseCase $showOneCategoryUseCase,
@@ -58,6 +60,8 @@ final class CategoryController extends BaseController
                     'message' => $exception->getMessage(),
                 ],
             ];
+
+            $this->logger->error($exception->getMessage());
 
             return $this->jsonResponse($response, $payload, $exception->getCode());
         }
@@ -115,6 +119,8 @@ final class CategoryController extends BaseController
                 ],
             ];
 
+            $this->logger->error('Erro de validação', $payload);
+
             return $this->jsonResponse($response, $payload, $exception->getCode());
         } catch (Exception $exception) {
             $payload = [
@@ -123,6 +129,8 @@ final class CategoryController extends BaseController
                     'message' => $exception->getMessage(),
                 ],
             ];
+
+            $this->logger->error($exception->getMessage());
 
             return $this->jsonResponse($response, $payload, $exception->getCode());
         }
@@ -147,6 +155,8 @@ final class CategoryController extends BaseController
                     'message' => $exception->getMessage(),
                 ],
             ];
+
+            $this->logger->error($exception->getMessage());
 
             return $this->jsonResponse($response, $payload, $exception->getCode());
         }
@@ -204,6 +214,8 @@ final class CategoryController extends BaseController
                 ],
             ];
 
+            $this->logger->error('Erro de validação', $payload);
+
             return $this->jsonResponse($response, $payload, $exception->getCode());
         } catch (Exception $exception) {
             $payload = [
@@ -212,6 +224,8 @@ final class CategoryController extends BaseController
                     'message' => $exception->getMessage(),
                 ],
             ];
+
+            $this->logger->error($exception->getMessage());
 
             return $this->jsonResponse($response, $payload, $exception->getCode());
         }
@@ -232,6 +246,8 @@ final class CategoryController extends BaseController
                     'message' => $exception->getMessage(),
                 ],
             ];
+
+            $this->logger->error($exception->getMessage());
 
             return $this->jsonResponse($response, $payload, $exception->getCode());
         }

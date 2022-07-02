@@ -18,12 +18,14 @@ use Minascafe\User\Application\UseCase\UpdateUserUseCase;
 use Minascafe\User\Application\UseCase\UpdateUserUseCaseRequest;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Log\LoggerInterface;
 use Selective\Validation\Exception\ValidationException;
 use Selective\Validation\ValidationResult;
 
 final class UserController extends BaseController
 {
     public function __construct(
+        private LoggerInterface $logger,
         private ShowAllUsersUseCase $showAllUsersUseCase,
         private CreateUserUseCase $createUserUseCase,
         private ShowOneUserUseCase $showOneUserUseCase,
@@ -58,6 +60,8 @@ final class UserController extends BaseController
                     'message' => $exception->getMessage(),
                 ],
             ];
+
+            $this->logger->error($exception->getMessage());
 
             return $this->jsonResponse($response, $payload, $exception->getCode());
         }
@@ -120,6 +124,8 @@ final class UserController extends BaseController
                 ],
             ];
 
+            $this->logger->error('Erro de validação', $payload);
+
             return $this->jsonResponse($response, $payload, $exception->getCode());
         } catch (Exception $exception) {
             $payload = [
@@ -128,6 +134,8 @@ final class UserController extends BaseController
                     'message' => $exception->getMessage(),
                 ],
             ];
+
+            $this->logger->error($exception->getMessage());
 
             return $this->jsonResponse($response, $payload, $exception->getCode());
         }
@@ -152,6 +160,8 @@ final class UserController extends BaseController
                     'message' => $exception->getMessage(),
                 ],
             ];
+
+            $this->logger->error($exception->getMessage());
 
             return $this->jsonResponse($response, $payload, $exception->getCode());
         }
@@ -204,6 +214,8 @@ final class UserController extends BaseController
                 ],
             ];
 
+            $this->logger->error('Erro de validação', $payload);
+
             return $this->jsonResponse($response, $payload, $exception->getCode());
         } catch (Exception $exception) {
             $payload = [
@@ -212,6 +224,8 @@ final class UserController extends BaseController
                     'message' => $exception->getMessage(),
                 ],
             ];
+
+            $this->logger->error($exception->getMessage());
 
             return $this->jsonResponse($response, $payload, $exception->getCode());
         }
@@ -232,6 +246,8 @@ final class UserController extends BaseController
                     'message' => $exception->getMessage(),
                 ],
             ];
+
+            $this->logger->error($exception->getMessage());
 
             return $this->jsonResponse($response, $payload, $exception->getCode());
         }

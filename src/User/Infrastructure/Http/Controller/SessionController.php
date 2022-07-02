@@ -10,11 +10,14 @@ use Minascafe\User\Application\UseCase\AuthenticateUserUseCase;
 use Minascafe\User\Application\UseCase\AuthenticateUserUseCaseRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 
 final class SessionController extends BaseController
 {
-    public function __construct(private AuthenticateUserUseCase $authenticateUserUseCase)
-    {
+    public function __construct(
+        private LoggerInterface $logger,
+        private AuthenticateUserUseCase $authenticateUserUseCase
+    ) {
     }
 
     public function create(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
@@ -36,6 +39,8 @@ final class SessionController extends BaseController
             return $this->jsonResponse($response, $payload);
         } catch (Exception $exception) {
             $payload = ['message' => $exception->getMessage()];
+
+            $this->logger->error($exception->getMessage());
 
             return $this->jsonResponse($response, $payload, $exception->getCode());
         }

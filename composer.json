@@ -34,6 +34,7 @@
         "doctrine/orm": "^2.12",
         "doctrine/sql-formatter": "^1.1",
         "firebase/php-jwt": "^6.2",
+        "monolog/monolog": "^3.1",
         "php-di/php-di": "^6.4",
         "php-di/slim-bridge": "^3.2",
         "ramsey/uuid": "^4.3",

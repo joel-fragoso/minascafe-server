@@ -6,6 +6,8 @@ use DI\ContainerBuilder;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMSetup;
+use GuzzleHttp\Client;
+use Minascafe\Shared\Infrastructure\Logger\Monolog\Handler\DiscordHandler as HandlerDiscordHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
@@ -51,15 +53,20 @@ return function (ContainerBuilder $containerBuilder) {
             return AppFactory::create();
         },
         LoggerInterface::class => function (ContainerInterface $c) {
-            $settings = $c->get('settings')['slim']['logger'];
+            $loggerSettings = $c->get('settings')['slim']['logger'];
+            $discordSettings = $c->get('settings')['slim']['discord'];
 
-            $logger = new Logger($settings['name']);
+            $logger = new Logger($loggerSettings['name']);
 
             $processor = new UidProcessor();
             $logger->pushProcessor($processor);
 
-            $handler = new StreamHandler($settings['path'], $settings['level']);
-            $logger->pushHandler($handler);
+            $client = new Client();
+            $discordHandler = new HandlerDiscordHandler($client, $discordSettings['url'], $discordSettings['name']);
+            $logger->pushHandler($discordHandler);
+
+            $streamHandler = new StreamHandler($loggerSettings['path'], $loggerSettings['level']);
+            $logger->pushHandler($streamHandler);
 
             return $logger;
         },

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use DI\ContainerBuilder;
-use Monolog\Logger;
+use Monolog\Level;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
@@ -15,7 +15,14 @@ return function (ContainerBuilder $containerBuilder) {
                 'logger' => [
                     'name' => 'minascafe-server',
                     'path' => __DIR__.'/../var/logs/app.log',
-                    'level' => Logger::DEBUG,
+                    'level' => Level::Debug,
+                ],
+                'discord' => [
+                    'url' => $_ENV['DISCORD_WEBHOOK_URL'],
+                    'name' => 'minascafe-server',
+                    'subname' => '',
+                    'level' => Level::Debug,
+                    'bubble' => true,
                 ],
             ],
             'doctrine' => [

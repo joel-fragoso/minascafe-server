@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Minascafe\Category\Infrastructure\Http\Controller\CategoryController;
 use Minascafe\Product\Infrastructure\Http\Controller\ProductController;
+use Minascafe\User\Infrastructure\Http\Controller\ForgotPasswordController;
+use Minascafe\User\Infrastructure\Http\Controller\ResetPasswordController;
 use Minascafe\User\Infrastructure\Http\Controller\SessionController;
 use Minascafe\User\Infrastructure\Http\Controller\UserController;
 use Minascafe\User\Infrastructure\Http\Middleware\AuthorizationMiddleware;
@@ -21,6 +23,11 @@ return function (App $app) {
 
     $app->group('/autenticacao', function (RouteCollectorProxy $group) {
         $group->post('', [SessionController::class, 'create']);
+    });
+
+    $app->group('/senha', function (RouteCollectorProxy $group) {
+        $group->post('/esqueci', [ForgotPasswordController::class, 'create']);
+        $group->post('/reseta', [ResetPasswordController::class, 'create']);
     });
 
     $app->group('/categorias', function (RouteCollectorProxy $group) {

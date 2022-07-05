@@ -50,6 +50,6 @@ $error = require 'config/error.php';
 $errorHandler = $error($app);
 
 $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, $logError, $logErrorDetails);
-$errorMiddleware->setDefaultErrorHandler($errorHandler);
+// $errorMiddleware->setDefaultErrorHandler($errorHandler);
 
 return $app;

@@ -16,6 +16,7 @@ use Minascafe\Product\Application\UseCase\ShowOneProductUseCase;
 use Minascafe\Product\Application\UseCase\UpdateProductUseCase;
 use Minascafe\User\Application\UseCase\CreateSessionUseCase;
 use Minascafe\User\Application\UseCase\CreateUserUseCase;
+use Minascafe\User\Application\UseCase\SendForgotPasswordUseCase;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
@@ -31,5 +32,6 @@ return function (ContainerBuilder $containerBuilder) {
         DeleteProductUseCase::class => autowire(DeleteProductUseCase::class),
         CreateUserUseCase::class => autowire(CreateUserUseCase::class),
         CreateSessionUseCase::class => autowire(CreateSessionUseCase::class),
+        SendForgotPasswordUseCase::class => autowire(SendForgotPasswordUseCase::class),
     ]);
 };

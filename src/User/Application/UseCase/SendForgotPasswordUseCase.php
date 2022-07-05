@@ -51,7 +51,7 @@ final class SendForgotPasswordUseCase
             'forgot-password.twig',
             [
                 'name' => $createdUserToken->user()->name()->value(),
-                'link' => "{$_ENV['APP_WEB_URL']}/senha/reseta?token={$createdUserToken->token()->value()}",
+                'link' => "{$_ENV['APP_PANEL_URL']}/senha/reseta?token={$createdUserToken->token()->value()}",
             ],
         );
 

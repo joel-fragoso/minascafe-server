@@ -7,11 +7,14 @@ namespace Minascafe\Product\Application\UseCase;
 use Minascafe\Product\Domain\Exception\ProductNotFoundException;
 use Minascafe\Product\Domain\Repository\ProductRepositoryInterface;
 use Minascafe\Product\Domain\ValueObject\ProductId;
+use Minascafe\Shared\Application\Adapter\CacheAdapterInterface;
 
 final class DeleteProductUseCase
 {
-    public function __construct(private readonly ProductRepositoryInterface $productRepository)
-    {
+    public function __construct(
+        private ProductRepositoryInterface $productRepository,
+        private CacheAdapterInterface $cacheAdapter,
+    ) {
     }
 
     public function execute(DeleteProductUseCaseRequest $deleteProductUseCaseRequest): void
@@ -25,5 +28,7 @@ final class DeleteProductUseCase
         }
 
         $this->productRepository->delete($findProduct);
+
+        $this->cacheAdapter->delete('show-all-products');
     }
 }

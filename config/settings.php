@@ -43,6 +43,16 @@ return function (ContainerBuilder $containerBuilder) {
                     'charset' => $_ENV['DOCTRINE_CHARSET'],
                 ],
             ],
+            'memcached' => [
+                'host' => $_ENV['MEMCACHED_HOST'],
+                'port' => $_ENV['MEMCACHED_PORT'],
+                'expire' => $_ENV['MEMCACHED_EXPIRE'],
+            ],
+            'redis' => [
+                'host' => $_ENV['REDIS_HOST'],
+                'port' => $_ENV['REDIS_PORT'],
+                'expire' => $_ENV['REDIS_EXPIRE'],
+            ],
             'phpmailer' => [
                 'host' => $_ENV['PHPMAILER_HOST'],
                 'smtp_auth' => $_ENV['PHPMAILER_SMTP_AUTH'],

@@ -17,13 +17,15 @@ use Minascafe\Product\Domain\ValueObject\ProductId;
 use Minascafe\Product\Domain\ValueObject\ProductName;
 use Minascafe\Product\Domain\ValueObject\ProductPrice;
 use Minascafe\Product\Domain\ValueObject\ProductUpdatedAt;
+use Minascafe\Shared\Application\Adapter\CacheAdapterInterface;
 
 final class UpdateProductUseCase
 {
     public function __construct(
-        private readonly CategoryRepositoryInterface $categoryRepository,
-        private readonly ProductRepositoryInterface $productRepository)
-    {
+        private CategoryRepositoryInterface $categoryRepository,
+        private ProductRepositoryInterface $productRepository,
+        private CacheAdapterInterface $cacheAdapter,
+    ) {
     }
 
     public function execute(UpdateProductUseCaseRequest $updateProductUseCaseRequest): UpdateProductUseCaseResponse
@@ -56,6 +58,8 @@ final class UpdateProductUseCase
         );
 
         $this->productRepository->update($product);
+
+        $this->cacheAdapter->delete('show-all-products');
 
         return new UpdateProductUseCaseResponse(
             $product->id()->value(),

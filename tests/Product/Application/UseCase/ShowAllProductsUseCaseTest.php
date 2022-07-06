@@ -12,6 +12,7 @@ use Minascafe\Product\Application\UseCase\CreateProductUseCaseRequest;
 use Minascafe\Product\Application\UseCase\ShowAllProductsUseCase;
 use Minascafe\Product\Application\UseCase\ShowAllProductsUseCaseRequest;
 use Minascafe\Product\Infrastructure\Persistence\InMemory\Repository\ProductRepository;
+use Minascafe\Shared\Infrastructure\Adapter\InMemoryCacheAdapter;
 use PHPUnit\Framework\TestCase;
 
 final class ShowAllProductsUseCaseTest extends TestCase
@@ -25,10 +26,15 @@ final class ShowAllProductsUseCaseTest extends TestCase
     protected function setUp(): void
     {
         $inMemoryCategoryRepository = new CategoryRepository();
+        $inMemoryCacheAdapter = new InMemoryCacheAdapter();
         $inMemoryProductRepository = new ProductRepository();
-        $this->createCategoryUseCase = new CreateCategoryUseCase($inMemoryCategoryRepository);
-        $this->createProductUseCase = new CreateProductUseCase($inMemoryCategoryRepository, $inMemoryProductRepository);
-        $this->showAllProductsUseCase = new ShowAllProductsUseCase($inMemoryProductRepository);
+        $this->createCategoryUseCase = new CreateCategoryUseCase($inMemoryCategoryRepository, $inMemoryCacheAdapter);
+        $this->createProductUseCase = new CreateProductUseCase(
+            $inMemoryCategoryRepository,
+            $inMemoryProductRepository,
+            $inMemoryCacheAdapter,
+        );
+        $this->showAllProductsUseCase = new ShowAllProductsUseCase($inMemoryProductRepository, $inMemoryCacheAdapter);
     }
 
     public function testDeveSerCapazDeListarTodosOsProdutos(): void

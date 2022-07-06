@@ -7,6 +7,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMSetup;
 use GuzzleHttp\Client;
+use Minascafe\Shared\Application\Adapter\CacheAdapterInterface;
+use Minascafe\Shared\Infrastructure\Adapter\RedisCacheAdapter;
 use Minascafe\Shared\Infrastructure\Logger\Monolog\Handler\DiscordHandler as HandlerDiscordHandler;
 use Minascafe\User\Application\Adapter\MailAdapterInterface;
 use Minascafe\User\Application\Adapter\TemplateAdapterInterface;
@@ -79,6 +81,9 @@ return function (ContainerBuilder $containerBuilder) {
         },
         TemplateAdapterInterface::class => function (ContainerInterface $c) {
             return $c->get(TwigAdapter::class);
+        },
+        CacheAdapterInterface::class => function (ContainerInterface $c) {
+            return $c->get(RedisCacheAdapter::class);
         },
     ]);
 };

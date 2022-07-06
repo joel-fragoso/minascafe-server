@@ -14,11 +14,14 @@ use Minascafe\Category\Domain\ValueObject\CategoryIcon;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
 use Minascafe\Category\Domain\ValueObject\CategoryName;
 use Minascafe\Category\Domain\ValueObject\CategoryUpdatedAt;
+use Minascafe\Shared\Application\Adapter\CacheAdapterInterface;
 
 final class CreateCategoryUseCase
 {
-    public function __construct(private CategoryRepositoryInterface $categoryRepository)
-    {
+    public function __construct(
+        private CategoryRepositoryInterface $categoryRepository,
+        private CacheAdapterInterface $cacheAdapter,
+    ) {
     }
 
     /**
@@ -46,6 +49,8 @@ final class CreateCategoryUseCase
         );
 
         $this->categoryRepository->create($category);
+
+        $this->cacheAdapter->delete('show-all-categories');
 
         return new CreateCategoryUseCaseResponse(
             $category->id()->value(),

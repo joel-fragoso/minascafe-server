@@ -11,6 +11,7 @@ use Minascafe\Category\Application\UseCase\DeleteCategoryUseCaseRequest;
 use Minascafe\Category\Domain\Exception\CategoryNotFoundException;
 use Minascafe\Category\Domain\Repository\CategoryRepositoryInterface;
 use Minascafe\Category\Infrastructure\Persistence\InMemory\Repository\CategoryRepository;
+use Minascafe\Shared\Infrastructure\Adapter\InMemoryCacheAdapter;
 use PHPUnit\Framework\TestCase;
 
 final class DeleteCategoryUseCaseTest extends TestCase
@@ -24,8 +25,15 @@ final class DeleteCategoryUseCaseTest extends TestCase
     protected function setUp(): void
     {
         $this->inMemoryCategoryRepository = new CategoryRepository();
-        $this->createCategoryUseCase = new CreateCategoryUseCase($this->inMemoryCategoryRepository);
-        $this->deleteCategoryUseCase = new DeleteCategoryUseCase($this->inMemoryCategoryRepository);
+        $inMemoryCacheAdapter = new InMemoryCacheAdapter();
+        $this->createCategoryUseCase = new CreateCategoryUseCase(
+            $this->inMemoryCategoryRepository,
+            $inMemoryCacheAdapter,
+        );
+        $this->deleteCategoryUseCase = new DeleteCategoryUseCase(
+            $this->inMemoryCategoryRepository,
+            $inMemoryCacheAdapter,
+        );
     }
 
     public function testDeveSerCapazDeRemoverUmaCategoria(): void

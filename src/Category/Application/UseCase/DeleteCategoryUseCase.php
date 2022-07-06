@@ -7,11 +7,14 @@ namespace Minascafe\Category\Application\UseCase;
 use Minascafe\Category\Domain\Exception\CategoryNotFoundException;
 use Minascafe\Category\Domain\Repository\CategoryRepositoryInterface;
 use Minascafe\Category\Domain\ValueObject\CategoryId;
+use Minascafe\Shared\Application\Adapter\CacheAdapterInterface;
 
 final class DeleteCategoryUseCase
 {
-    public function __construct(private CategoryRepositoryInterface $categoryRepository)
-    {
+    public function __construct(
+        private CategoryRepositoryInterface $categoryRepository,
+        private CacheAdapterInterface $cacheAdapter,
+    ) {
     }
 
     /**
@@ -28,5 +31,7 @@ final class DeleteCategoryUseCase
         }
 
         $this->categoryRepository->delete($findCategory);
+
+        $this->cacheAdapter->delete('show-all-categories');
     }
 }

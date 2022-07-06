@@ -75,6 +75,7 @@ final class UserController extends BaseController
             $name = $data['name'] ?? null;
             $email = $data['email'] ?? null;
             $password = $data['password'] ?? null;
+            $passwordConfirmation = $data['passwordConfirmation'] ?? null;
             $active = $data['active'] ?? null;
 
             $validation = new ValidationResult();
@@ -89,6 +90,14 @@ final class UserController extends BaseController
 
             if (null === $password || empty($password)) {
                 $validation->addError('password', "O campo 'password' é obrigatório");
+            }
+
+            if (null === $passwordConfirmation || empty($passwordConfirmation)) {
+                $validation->addError('passwordConfirmation', "O campo 'passwordConfirmation' é obrigatório");
+            }
+
+            if ($passwordConfirmation !== $password) {
+                $validation->addError('passwordConfirmation', 'As senhas não conferem');
             }
 
             if (null !== $active && '' === $active) {

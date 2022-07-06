@@ -43,6 +43,19 @@ return function (ContainerBuilder $containerBuilder) {
                     'charset' => $_ENV['DOCTRINE_CHARSET'],
                 ],
             ],
+            'phpmailer' => [
+                'host' => $_ENV['PHPMAILER_HOST'],
+                'smtp_auth' => $_ENV['PHPMAILER_SMTP_AUTH'],
+                'username' => $_ENV['PHPMAILER_USERNAME'],
+                'password' => $_ENV['PHPMAILER_PASSWORD'],
+                'port' => $_ENV['PHPMAILER_PORT'],
+            ],
+            'twig' => [
+                'path' => [
+                    __DIR__.'/../src/User/Infrastructure/View',
+                ],
+                'cache' => false,
+            ],
         ],
     ]);
 };

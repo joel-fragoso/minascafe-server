@@ -8,6 +8,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMSetup;
 use GuzzleHttp\Client;
 use Minascafe\Shared\Infrastructure\Logger\Monolog\Handler\DiscordHandler as HandlerDiscordHandler;
+use Minascafe\User\Application\Adapter\MailAdapterInterface;
+use Minascafe\User\Application\Adapter\TemplateAdapterInterface;
+use Minascafe\User\Infrastructure\Adapter\PHPMailerAdapter;
+use Minascafe\User\Infrastructure\Adapter\TwigAdapter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
@@ -69,6 +73,12 @@ return function (ContainerBuilder $containerBuilder) {
             $logger->pushHandler($streamHandler);
 
             return $logger;
+        },
+        MailAdapterInterface::class => function (ContainerInterface $c) {
+            return $c->get(PHPMailerAdapter::class);
+        },
+        TemplateAdapterInterface::class => function (ContainerInterface $c) {
+            return $c->get(TwigAdapter::class);
         },
     ]);
 };

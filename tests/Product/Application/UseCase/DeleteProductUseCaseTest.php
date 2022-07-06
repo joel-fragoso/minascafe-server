@@ -14,6 +14,7 @@ use Minascafe\Product\Application\UseCase\DeleteProductUseCaseRequest;
 use Minascafe\Product\Domain\Exception\ProductNotFoundException;
 use Minascafe\Product\Domain\Repository\ProductRepositoryInterface;
 use Minascafe\Product\Infrastructure\Persistence\InMemory\Repository\ProductRepository;
+use Minascafe\Shared\Infrastructure\Adapter\InMemoryCacheAdapter;
 use PHPUnit\Framework\TestCase;
 
 final class DeleteProductUseCaseTest extends TestCase
@@ -29,10 +30,18 @@ final class DeleteProductUseCaseTest extends TestCase
     protected function setUp(): void
     {
         $inMemoryCategoryRepository = new CategoryRepository();
+        $inMemoryCacheAdapter = new InMemoryCacheAdapter();
         $this->inMemoryProductRepository = new ProductRepository();
-        $this->createCategoryUseCase = new CreateCategoryUseCase($inMemoryCategoryRepository);
-        $this->createProductUseCase = new CreateProductUseCase($inMemoryCategoryRepository, $this->inMemoryProductRepository);
-        $this->deleteProductUseCase = new DeleteProductUseCase($this->inMemoryProductRepository);
+        $this->createCategoryUseCase = new CreateCategoryUseCase($inMemoryCategoryRepository, $inMemoryCacheAdapter);
+        $this->createProductUseCase = new CreateProductUseCase(
+            $inMemoryCategoryRepository,
+            $this->inMemoryProductRepository,
+            $inMemoryCacheAdapter,
+        );
+        $this->deleteProductUseCase = new DeleteProductUseCase(
+            $this->inMemoryProductRepository,
+            $inMemoryCacheAdapter,
+        );
     }
 
     public function testDeveSerCapazDeRemoverUmProduto(): void

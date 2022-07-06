@@ -13,6 +13,7 @@ use Minascafe\Product\Application\UseCase\CreateProductUseCase;
 use Minascafe\Product\Application\UseCase\CreateProductUseCaseRequest;
 use Minascafe\Product\Domain\Exception\DuplicateProductException;
 use Minascafe\Product\Infrastructure\Persistence\InMemory\Repository\ProductRepository;
+use Minascafe\Shared\Infrastructure\Adapter\InMemoryCacheAdapter;
 use PHPUnit\Framework\TestCase;
 
 final class CreateProductUseCaseTest extends TestCase
@@ -24,9 +25,14 @@ final class CreateProductUseCaseTest extends TestCase
     protected function setUp(): void
     {
         $inMemoryCategoryRepository = new CategoryRepository();
+        $inMemoryCacheAdapter = new InMemoryCacheAdapter();
         $inMemoryProductRepository = new ProductRepository();
-        $this->createCategoryUseCase = new CreateCategoryUseCase($inMemoryCategoryRepository);
-        $this->createProductUseCase = new CreateProductUseCase($inMemoryCategoryRepository, $inMemoryProductRepository);
+        $this->createCategoryUseCase = new CreateCategoryUseCase($inMemoryCategoryRepository, $inMemoryCacheAdapter);
+        $this->createProductUseCase = new CreateProductUseCase(
+            $inMemoryCategoryRepository,
+            $inMemoryProductRepository,
+            $inMemoryCacheAdapter,
+        );
     }
 
     public function testDeveSerCapazDeCriarUmProduto(): void

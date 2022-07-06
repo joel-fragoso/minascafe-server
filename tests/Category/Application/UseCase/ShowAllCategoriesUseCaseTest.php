@@ -9,6 +9,7 @@ use Minascafe\Category\Application\UseCase\CreateCategoryUseCaseRequest;
 use Minascafe\Category\Application\UseCase\ShowAllCategoriesUseCase;
 use Minascafe\Category\Application\UseCase\ShowAllCategoriesUseCaseRequest;
 use Minascafe\Category\Infrastructure\Persistence\InMemory\Repository\CategoryRepository;
+use Minascafe\Shared\Infrastructure\Adapter\InMemoryCacheAdapter;
 use PHPUnit\Framework\TestCase;
 
 final class ShowAllCategoriesUseCaseTest extends TestCase
@@ -20,8 +21,9 @@ final class ShowAllCategoriesUseCaseTest extends TestCase
     protected function setUp(): void
     {
         $inMemoryCategoryRepository = new CategoryRepository();
-        $this->createCategoryUseCase = new CreateCategoryUseCase($inMemoryCategoryRepository);
-        $this->showAllCategoriesUseCase = new ShowAllCategoriesUseCase($inMemoryCategoryRepository);
+        $inMemoryCacheAdapter = new InMemoryCacheAdapter();
+        $this->createCategoryUseCase = new CreateCategoryUseCase($inMemoryCategoryRepository, $inMemoryCacheAdapter);
+        $this->showAllCategoriesUseCase = new ShowAllCategoriesUseCase($inMemoryCategoryRepository, $inMemoryCacheAdapter);
     }
 
     public function testDeveSerCapazDeListarTodasAsCategorias(): void

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Minascafe\User\Application\UseCase;
 
 use DateTimeImmutable;
+use Minascafe\Shared\Application\Adapter\CacheAdapterInterface;
 use Minascafe\User\Domain\Entity\User;
 use Minascafe\User\Domain\Exception\DuplicatedUserException;
 use Minascafe\User\Domain\Repository\UserRepositoryInterface;
@@ -18,8 +19,10 @@ use Minascafe\User\Domain\ValueObject\UserUpdatedAt;
 
 final class CreateUserUseCase
 {
-    public function __construct(private UserRepositoryInterface $userRepository)
-    {
+    public function __construct(
+        private UserRepositoryInterface $userRepository,
+        private CacheAdapterInterface $cacheAdapter,
+    ) {
     }
 
     public function execute(CreateUserUseCaseRequest $createUserUseCaseRequest): CreateUserUseCaseResponse
@@ -43,6 +46,8 @@ final class CreateUserUseCase
         );
 
         $this->userRepository->create($user);
+
+        $this->cacheAdapter->delete('show-all-users');
 
         return new CreateUserUseCaseResponse(
             $user->id()->value(),

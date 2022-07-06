@@ -15,6 +15,7 @@ use Minascafe\Product\Application\UseCase\UpdateProductUseCase;
 use Minascafe\Product\Application\UseCase\UpdateProductUseCaseRequest;
 use Minascafe\Product\Domain\Exception\ProductNotFoundException;
 use Minascafe\Product\Infrastructure\Persistence\InMemory\Repository\ProductRepository;
+use Minascafe\Shared\Infrastructure\Adapter\InMemoryCacheAdapter;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateProductUseCaseTest extends TestCase
@@ -28,10 +29,19 @@ final class UpdateProductUseCaseTest extends TestCase
     protected function setUp(): void
     {
         $inMemoryCategoryRepository = new CategoryRepository();
+        $inMemoryCacheAdapter = new InMemoryCacheAdapter();
         $inMemoryProductRepository = new ProductRepository();
-        $this->createCategoryUseCase = new CreateCategoryUseCase($inMemoryCategoryRepository);
-        $this->createProductUseCase = new CreateProductUseCase($inMemoryCategoryRepository, $inMemoryProductRepository);
-        $this->updateProductUseCase = new UpdateProductUseCase($inMemoryCategoryRepository, $inMemoryProductRepository);
+        $this->createCategoryUseCase = new CreateCategoryUseCase($inMemoryCategoryRepository, $inMemoryCacheAdapter);
+        $this->createProductUseCase = new CreateProductUseCase(
+            $inMemoryCategoryRepository,
+            $inMemoryProductRepository,
+            $inMemoryCacheAdapter,
+        );
+        $this->updateProductUseCase = new UpdateProductUseCase(
+            $inMemoryCategoryRepository,
+            $inMemoryProductRepository,
+            $inMemoryCacheAdapter,
+        );
     }
 
     public function testDeveSerCapazDeAtualizarUmProduto(): void

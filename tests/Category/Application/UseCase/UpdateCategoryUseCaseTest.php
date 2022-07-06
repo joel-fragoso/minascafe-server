@@ -11,6 +11,7 @@ use Minascafe\Category\Application\UseCase\UpdateCategoryUseCase;
 use Minascafe\Category\Application\UseCase\UpdateCategoryUseCaseRequest;
 use Minascafe\Category\Domain\Exception\CategoryNotFoundException;
 use Minascafe\Category\Infrastructure\Persistence\InMemory\Repository\CategoryRepository;
+use Minascafe\Shared\Infrastructure\Adapter\InMemoryCacheAdapter;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateCategoryUseCaseTest extends TestCase
@@ -22,8 +23,9 @@ final class UpdateCategoryUseCaseTest extends TestCase
     protected function setUp(): void
     {
         $inMemoryCategoryRepository = new CategoryRepository();
-        $this->createCategoryUseCase = new CreateCategoryUseCase($inMemoryCategoryRepository);
-        $this->updateCategoryUseCase = new UpdateCategoryUseCase($inMemoryCategoryRepository);
+        $inMemoryCacheAdapter = new InMemoryCacheAdapter();
+        $this->createCategoryUseCase = new CreateCategoryUseCase($inMemoryCategoryRepository, $inMemoryCacheAdapter);
+        $this->updateCategoryUseCase = new UpdateCategoryUseCase($inMemoryCategoryRepository, $inMemoryCacheAdapter);
     }
 
     public function testDeveSerCapazDeAtualizarUmaCategoria(): void

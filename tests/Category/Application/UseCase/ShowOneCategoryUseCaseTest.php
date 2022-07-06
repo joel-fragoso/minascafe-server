@@ -11,6 +11,7 @@ use Minascafe\Category\Application\UseCase\ShowOneCategoryUseCase;
 use Minascafe\Category\Application\UseCase\ShowOneCategoryUseCaseRequest;
 use Minascafe\Category\Domain\Exception\CategoryNotFoundException;
 use Minascafe\Category\Infrastructure\Persistence\InMemory\Repository\CategoryRepository;
+use Minascafe\Shared\Infrastructure\Adapter\InMemoryCacheAdapter;
 use PHPUnit\Framework\TestCase;
 
 final class ShowOneCategoryUseCaseTest extends TestCase
@@ -22,7 +23,8 @@ final class ShowOneCategoryUseCaseTest extends TestCase
     protected function setUp(): void
     {
         $inMemoryCategoryRepository = new CategoryRepository();
-        $this->createCategoryUseCase = new CreateCategoryUseCase($inMemoryCategoryRepository);
+        $inMemoryCacheAdapter = new InMemoryCacheAdapter();
+        $this->createCategoryUseCase = new CreateCategoryUseCase($inMemoryCategoryRepository, $inMemoryCacheAdapter);
         $this->showOneCategoryUseCase = new ShowOneCategoryUseCase($inMemoryCategoryRepository);
     }
 

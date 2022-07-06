@@ -17,12 +17,14 @@ use Minascafe\Product\Domain\ValueObject\ProductId;
 use Minascafe\Product\Domain\ValueObject\ProductName;
 use Minascafe\Product\Domain\ValueObject\ProductPrice;
 use Minascafe\Product\Domain\ValueObject\ProductUpdatedAt;
+use Minascafe\Shared\Application\Adapter\CacheAdapterInterface;
 
 final class CreateProductUseCase
 {
     public function __construct(
         private CategoryRepositoryInterface $categoryRepository,
-        private ProductRepositoryInterface $productRepository
+        private ProductRepositoryInterface $productRepository,
+        private CacheAdapterInterface $cacheAdapter,
     ) {
     }
 
@@ -58,6 +60,8 @@ final class CreateProductUseCase
         );
 
         $this->productRepository->create($product);
+
+        $this->cacheAdapter->delete('show-all-products');
 
         return new CreateProductUseCaseResponse(
             $product->id()->value(),

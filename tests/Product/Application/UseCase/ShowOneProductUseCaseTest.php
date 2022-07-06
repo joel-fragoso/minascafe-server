@@ -14,6 +14,7 @@ use Minascafe\Product\Application\UseCase\ShowOneProductUseCase;
 use Minascafe\Product\Application\UseCase\ShowOneProductUseCaseRequest;
 use Minascafe\Product\Domain\Exception\ProductNotFoundException;
 use Minascafe\Product\Infrastructure\Persistence\InMemory\Repository\ProductRepository;
+use Minascafe\Shared\Infrastructure\Adapter\InMemoryCacheAdapter;
 use PHPUnit\Framework\TestCase;
 
 final class ShowOneProductUseCaseTest extends TestCase
@@ -27,11 +28,13 @@ final class ShowOneProductUseCaseTest extends TestCase
     protected function setUp(): void
     {
         $inMemoryCategoryRepository = new CategoryRepository();
+        $inMemoryCacheAdapter = new InMemoryCacheAdapter();
         $inMemoryProductRepository = new ProductRepository();
-        $this->createCategoryUseCase = new CreateCategoryUseCase($inMemoryCategoryRepository);
+        $this->createCategoryUseCase = new CreateCategoryUseCase($inMemoryCategoryRepository, $inMemoryCacheAdapter);
         $this->createProductUseCase = new CreateProductUseCase(
             $inMemoryCategoryRepository,
-            $inMemoryProductRepository
+            $inMemoryProductRepository,
+            $inMemoryCacheAdapter,
         );
         $this->showOneProductUseCase = new ShowOneProductUseCase($inMemoryProductRepository);
     }

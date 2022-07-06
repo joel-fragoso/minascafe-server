@@ -14,7 +14,7 @@
 
 ---
 
-### 💿️ Como clonar o projeto:
+### Como clonar o projeto:
 ```bash
 # SSH
 $ git clone git@github.com:joel-fragoso/minascafe-server.git
@@ -23,42 +23,42 @@ $ git clone git@github.com:joel-fragoso/minascafe-server.git
 $ git clone https://github.com/joel-fragoso/minascafe-server.git
 ```
 
-### 🎉️ Como instalar as dependências:
+### Como instalar as dependências:
 ```bash
 $ composer install
 ```
 
-### 🚀️ Como executar a aplicação:
+### Como executar a aplicação:
 ```bash
 $ composer dev
 ```
 
-### ♻️ Como limpar o cache do Doctrine ORM:
+### Como limpar o cache do Doctrine ORM:
 ```bash
 $ composer orm:clear-cache
 ```
 
-### 💽️ Como executar as migrações:
+### Como executar as migrações:
 ```bash
 $ composer migrations:migrate
 ```
 
-### 🚀️ Como executar o analisador de código:
+### Como executar o analisador de código:
 ```bash
 $ composer analyse
 ```
 
-### 🚀️ Como executar o estilizador de código:
+### Como executar o estilizador de código:
 ```bash
 $ composer cs-check
 ```
 
-### 🚀️ Como executar suite de testes:
+### Como executar suite de testes:
 ```bash
 $ composer test
 ```
 
-### 🚀️ Como executar suite de testes com coverage:
+### Como executar suite de testes com coverage:
 ```bash
 $ composer test:coverage
 ```

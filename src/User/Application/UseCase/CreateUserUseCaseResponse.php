@@ -13,6 +13,7 @@ final class CreateUserUseCaseResponse implements JsonSerializable
         private string $userId,
         private string $name,
         private string $email,
+        private string|null $avatar,
         private bool $active,
         private DateTimeInterface $createdAt,
         private ?DateTimeInterface $updatedAt
@@ -32,6 +33,11 @@ final class CreateUserUseCaseResponse implements JsonSerializable
     public function email(): string
     {
         return $this->email;
+    }
+
+    public function avatar(): string|null
+    {
+        return $this->avatar;
     }
 
     public function isActive(): bool
@@ -58,6 +64,7 @@ final class CreateUserUseCaseResponse implements JsonSerializable
             'id' => $this->userId(),
             'name' => $this->name(),
             'email' => $this->email(),
+            'avatar' => $this->avatar(),
             'active' => $this->isActive(),
             'createdAt' => $this->createdAt(),
             'updatedAt' => $this->updatedAt(),

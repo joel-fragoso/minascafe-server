@@ -2,5 +2,6 @@
 /coverage/
 /var/cache/*
 /var/logs/*
+/var/uploads/*
 /vendor/
 .env

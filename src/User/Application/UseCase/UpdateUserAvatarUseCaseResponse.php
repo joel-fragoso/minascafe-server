@@ -7,16 +7,17 @@ namespace Minascafe\User\Application\UseCase;
 use DateTimeInterface;
 use JsonSerializable;
 
-final class UpdateUserUseCaseResponse implements JsonSerializable
+final class UpdateUserAvatarUseCaseResponse implements JsonSerializable
 {
     public function __construct(
         private string $userId,
         private string $name,
         private string $email,
         private string|null $avatar,
+        private string|null $avatarUrl,
         private bool $active,
         private DateTimeInterface $createdAt,
-        private ?DateTimeInterface $updatedAt,
+        private DateTimeInterface|null $updatedAt,
     ) {
     }
 
@@ -35,9 +36,14 @@ final class UpdateUserUseCaseResponse implements JsonSerializable
         return $this->email;
     }
 
-    public function avatar(): string|null
+    public function avatar(): string
     {
         return $this->avatar;
+    }
+
+    public function avatarUrl(): string
+    {
+        return $this->avatarUrl;
     }
 
     public function isActive(): bool
@@ -50,7 +56,7 @@ final class UpdateUserUseCaseResponse implements JsonSerializable
         return $this->createdAt;
     }
 
-    public function updatedAt(): ?DateTimeInterface
+    public function updatedAt(): DateTimeInterface|null
     {
         return $this->updatedAt;
     }
@@ -65,6 +71,7 @@ final class UpdateUserUseCaseResponse implements JsonSerializable
             'name' => $this->name(),
             'email' => $this->email(),
             'avatar' => $this->avatar(),
+            'avatarUrl' => $this->avatarUrl(),
             'active' => $this->isActive(),
             'createdAt' => $this->createdAt(),
             'updatedAt' => $this->updatedAt(),

@@ -93,6 +93,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
 
         $findUser->setName($entityUser->getName());
         $findUser->setPassword($entityUser->getPassword());
+        $findUser->setAvatar($entityUser->getAvatar());
         $findUser->setActive($entityUser->isActive());
         $findUser->setUpdatedAt($entityUser->getUpdatedAt());
 

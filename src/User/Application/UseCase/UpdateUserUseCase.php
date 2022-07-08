@@ -10,6 +10,7 @@ use Minascafe\User\Domain\Entity\User;
 use Minascafe\User\Domain\Exception\UserNotFoundException;
 use Minascafe\User\Domain\Repository\UserRepositoryInterface;
 use Minascafe\User\Domain\ValueObject\UserActive;
+use Minascafe\User\Domain\ValueObject\UserAvatar;
 use Minascafe\User\Domain\ValueObject\UserCreatedAt;
 use Minascafe\User\Domain\ValueObject\UserEmail;
 use Minascafe\User\Domain\ValueObject\UserId;
@@ -40,6 +41,7 @@ final class UpdateUserUseCase
             new UserName($updateUserUseCaseRequest->name() ?? $findUser->name()->value()),
             new UserEmail($findUser->email()->value()),
             new UserPassword($findUser->password()->value()),
+            new UserAvatar(null),
             new UserActive($updateUserUseCaseRequest->isActive() ?? $findUser->isActive()->value()),
             new UserCreatedAt($findUser->createdAt()->value()),
             new UserUpdatedAt(new DateTimeImmutable())
@@ -53,9 +55,10 @@ final class UpdateUserUseCase
             $user->id()->value(),
             $user->name()->value(),
             $user->email()->value(),
+            $user->avatar()->value(),
             $user->isActive()->value(),
             $user->createdAt()->value(),
-            $user->updatedAt()->value()
+            $user->updatedAt()->value(),
         );
     }
 }

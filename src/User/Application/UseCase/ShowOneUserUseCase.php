@@ -31,9 +31,10 @@ final class ShowOneUserUseCase
             $findUser->id()->value(),
             $findUser->name()->value(),
             $findUser->email()->value(),
+            $findUser->avatar()->value(),
             $findUser->isActive()->value(),
             $findUser->createdAt()->value(),
-            $findUser->updatedAt()->value()
+            $findUser->updatedAt()->value(),
         );
     }
 }

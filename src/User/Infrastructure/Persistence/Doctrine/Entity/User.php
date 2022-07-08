@@ -26,6 +26,9 @@ final class User
     #[Column(type: 'string', length: 60)]
     private string $password;
 
+    #[Column(type: 'string', nullable: true)]
+    private string|null $avatar;
+
     #[Column(type: 'boolean', options: ['default' => 0])]
     private bool $active;
 
@@ -40,6 +43,7 @@ final class User
         string $name,
         string $email,
         string $password,
+        string|null $avatar,
         bool $active,
         DateTimeInterface $createdAt,
         ?DateTimeInterface $updatedAt
@@ -48,6 +52,7 @@ final class User
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
+        $this->avatar = $avatar;
         $this->active = $active;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
@@ -91,6 +96,16 @@ final class User
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    public function setAvatar(string|null $avatar): void
+    {
+        $this->avatar = $avatar;
+    }
+
+    public function getAvatar(): string|null
+    {
+        return $this->avatar;
     }
 
     public function setActive(bool $active): void

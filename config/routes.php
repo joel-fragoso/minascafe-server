@@ -7,6 +7,7 @@ use Minascafe\Product\Infrastructure\Http\Controller\ProductController;
 use Minascafe\User\Infrastructure\Http\Controller\ForgotPasswordController;
 use Minascafe\User\Infrastructure\Http\Controller\ResetPasswordController;
 use Minascafe\User\Infrastructure\Http\Controller\SessionController;
+use Minascafe\User\Infrastructure\Http\Controller\UserAvatarController;
 use Minascafe\User\Infrastructure\Http\Controller\UserController;
 use Minascafe\User\Infrastructure\Http\Middleware\AuthorizationMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -19,6 +20,24 @@ return function (App $app) {
     $app->options('/{routes:.+}', function (Request $request, Response $response): Response {
         // CORS Pre-Flight OPTIONS Request Handler
         return $response;
+    });
+
+    $app->get('/arquivos/{image}', function (Request $request, Response $response, string $image): Response {
+        $imagePath = __DIR__."/../var/uploads/{$image}";
+
+        if (!file_exists($imagePath)) {
+            throw new HttpNotFoundException($request);
+        }
+
+        $contentsFile = file_get_contents($imagePath);
+
+        if (!$contentsFile) {
+            throw new HttpNotFoundException($request);
+        }
+
+        $response->getBody()->write($contentsFile);
+
+        return $response->withHeader('Content-type', \FILEINFO_MIME_TYPE);
     });
 
     $app->group('/autenticacao', function (RouteCollectorProxy $group) {
@@ -51,6 +70,7 @@ return function (App $app) {
         $group->post('', [UserController::class, 'create']);
         $group->get('/{id}', [UserController::class, 'show']);
         $group->put('/{id}', [UserController::class, 'update']);
+        $group->post('/avatar/{id}', [UserAvatarController::class, 'update']);
         $group->delete('/{id}', [UserController::class, 'destroy']);
     })->add(AuthorizationMiddleware::class);
 

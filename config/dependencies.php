@@ -8,6 +8,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMSetup;
 use GuzzleHttp\Client;
 use Minascafe\Shared\Application\Adapter\CacheAdapterInterface;
+use Minascafe\Shared\Application\Adapter\StorageAdapterInterface;
+use Minascafe\Shared\Infrastructure\Adapter\DiskStorageAdapter;
 use Minascafe\Shared\Infrastructure\Adapter\RedisCacheAdapter;
 use Minascafe\Shared\Infrastructure\Logger\Monolog\Handler\DiscordHandler as HandlerDiscordHandler;
 use Minascafe\User\Application\Adapter\MailAdapterInterface;
@@ -84,6 +86,9 @@ return function (ContainerBuilder $containerBuilder) {
         },
         CacheAdapterInterface::class => function (ContainerInterface $c) {
             return $c->get(RedisCacheAdapter::class);
+        },
+        StorageAdapterInterface::class => function (ContainerInterface $c) {
+            return $c->get(DiskStorageAdapter::class);
         },
     ]);
 };

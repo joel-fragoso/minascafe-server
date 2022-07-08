@@ -10,6 +10,7 @@ use Minascafe\User\Domain\Entity\User;
 use Minascafe\User\Domain\Exception\DuplicatedUserException;
 use Minascafe\User\Domain\Repository\UserRepositoryInterface;
 use Minascafe\User\Domain\ValueObject\UserActive;
+use Minascafe\User\Domain\ValueObject\UserAvatar;
 use Minascafe\User\Domain\ValueObject\UserCreatedAt;
 use Minascafe\User\Domain\ValueObject\UserEmail;
 use Minascafe\User\Domain\ValueObject\UserId;
@@ -40,9 +41,10 @@ final class CreateUserUseCase
             new UserName($createUserUseCaseRequest->name()),
             new UserEmail($userEmail),
             new UserPassword(UserPassword::generate($createUserUseCaseRequest->password())),
+            new UserAvatar(null),
             new UserActive(true),
             new UserCreatedAt(new DateTimeImmutable()),
-            new UserUpdatedAt(null)
+            new UserUpdatedAt(null),
         );
 
         $this->userRepository->create($user);
@@ -53,9 +55,10 @@ final class CreateUserUseCase
             $user->id()->value(),
             $user->name()->value(),
             $user->email()->value(),
+            $user->avatar()->value(),
             $user->isActive()->value(),
             $user->createdAt()->value(),
-            $user->updatedAt()->value()
+            $user->updatedAt()->value(),
         );
     }
 }

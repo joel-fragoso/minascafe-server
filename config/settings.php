@@ -24,6 +24,9 @@ return function (ContainerBuilder $containerBuilder) {
                     'level' => Level::Debug,
                     'bubble' => true,
                 ],
+                'upload' => [
+                    'path' => __DIR__.'/../var/uploads',
+                ],
             ],
             'doctrine' => [
                 'dev_mode' => true,

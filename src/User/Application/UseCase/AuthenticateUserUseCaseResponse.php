@@ -29,6 +29,10 @@ final class AuthenticateUserUseCaseResponse implements JsonSerializable
     public function jsonSerialize(): array
     {
         $userData = $this->user()->toArray();
+        $userData['avatarUrl'] = $this->user->avatar()->value()
+            ? "{$_ENV['APP_SERVER_URL']}/arquivos/{$this->user->avatar()->value()}"
+            : null;
+
         unset($userData['password']);
 
         return [

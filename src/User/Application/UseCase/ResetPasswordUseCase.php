@@ -57,7 +57,7 @@ final class ResetPasswordUseCase
             new UserName($findUser->name()->value()),
             new UserEmail($findUser->email()->value()),
             new UserPassword(UserPassword::generate($resetPasswordUseCaseRequest->password())),
-            new UserAvatar(null),
+            new UserAvatar($findUser->avatar()->value()),
             new UserActive($findUser->isActive()->value()),
             new UserCreatedAt($findUser->createdAt()->value()),
             new UserUpdatedAt(new DateTimeImmutable()),

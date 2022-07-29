@@ -69,7 +69,7 @@ return function (ContainerBuilder $containerBuilder) {
             $processor = new UidProcessor();
             $logger->pushProcessor($processor);
 
-            $client = new Client();
+            $client = new Client(['verify' => false]);
             $discordHandler = new HandlerDiscordHandler($client, $discordSettings['url'], $discordSettings['name']);
             $logger->pushHandler($discordHandler);
 

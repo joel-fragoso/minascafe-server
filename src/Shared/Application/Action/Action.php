@@ -28,6 +28,7 @@ abstract class Action
 
     /**
      * @param array<mixed> $args
+     *
      * @throws HttpNotFoundException
      * @throws HttpBadRequestException
      */
@@ -50,16 +51,12 @@ abstract class Action
      */
     abstract protected function action(): Response;
 
-    /**
-     * @return mixed
-     */
     protected function getFormData(): mixed
     {
         return $this->request->getParsedBody();
     }
 
     /**
-     * @return mixed
      * @throws HttpBadRequestException
      */
     protected function resolveArg(string $name): mixed
@@ -80,7 +77,7 @@ abstract class Action
 
     protected function respond(ActionPayload $payload): Response
     {
-        $json = json_encode($payload, JSON_PRETTY_PRINT);
+        $json = json_encode($payload, \JSON_PRETTY_PRINT);
         $this->response->getBody()->write($json);
 
         return $this->response

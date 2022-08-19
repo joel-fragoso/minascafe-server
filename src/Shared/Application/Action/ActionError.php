@@ -33,6 +33,7 @@ class ActionError implements JsonSerializable
     public function setType(string $type): self
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -44,6 +45,7 @@ class ActionError implements JsonSerializable
     public function setDescription(?string $description = null): self
     {
         $this->description = $description;
+
         return $this;
     }
 

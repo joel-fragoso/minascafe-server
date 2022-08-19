@@ -18,7 +18,7 @@ $dotenv->load();
 $containerBuilder = new ContainerBuilder();
 
 if (false) { // Should be set to true in production
-	$containerBuilder->enableCompilation('var/cache');
+    $containerBuilder->enableCompilation('var/cache');
 }
 
 $settings = require 'config/settings.php';

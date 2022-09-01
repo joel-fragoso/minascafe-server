@@ -20,7 +20,13 @@ final class ShowAllCategoriesUseCase
     ): ShowAllCategoriesUseCaseResponse {
         $categories = $this->cacheAdapter->recover('show-all-categories');
 
-        if (!$categories) {
+        if (
+            null !== $showAllCategoriesUseCaseRequest->active()
+            || null !== $showAllCategoriesUseCaseRequest->order()
+            || null !== $showAllCategoriesUseCaseRequest->limit()
+            || null !== $showAllCategoriesUseCaseRequest->offset()
+            || !$categories
+        ) {
             $categories = $this->categoryRepository->findAll(
                 $showAllCategoriesUseCaseRequest->active(),
                 $showAllCategoriesUseCaseRequest->order(),

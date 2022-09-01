@@ -20,7 +20,13 @@ final class ShowAllUsersUseCase
     ): ShowAllUsersUseCaseResponse {
         $users = $this->cacheAdapter->recover('show-all-users');
 
-        if (!$users) {
+        if (
+            null !== $showAllUsersUseCaseRequest->active()
+            || null !== $showAllUsersUseCaseRequest->order()
+            || null !== $showAllUsersUseCaseRequest->limit()
+            || null !== $showAllUsersUseCaseRequest->offset()
+            || !$users
+        ) {
             $users = $this->userRepository->findAll(
                 $showAllUsersUseCaseRequest->active(),
                 $showAllUsersUseCaseRequest->order(),

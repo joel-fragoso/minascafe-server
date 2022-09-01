@@ -20,7 +20,13 @@ final class ShowAllProductsUseCase
     ): ShowAllProductsUseCaseResponse {
         $products = $this->cacheAdapter->recover('show-all-products');
 
-        if (!$products) {
+        if (
+            null !== $showAllProductsUseCaseRequest->active()
+            || null !== $showAllProductsUseCaseRequest->order()
+            || null !== $showAllProductsUseCaseRequest->limit()
+            || null !== $showAllProductsUseCaseRequest->offset()
+            || !$products
+        ) {
             $products = $this->productRepository->findAll(
                 $showAllProductsUseCaseRequest->active(),
                 $showAllProductsUseCaseRequest->order(),

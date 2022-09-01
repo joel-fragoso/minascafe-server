@@ -18,6 +18,15 @@ final class ShowAllCategoriesUseCase
     public function execute(
         ShowAllCategoriesUseCaseRequest $showAllCategoriesUseCaseRequest
     ): ShowAllCategoriesUseCaseResponse {
+        if (
+            null === $showAllCategoriesUseCaseRequest->active()
+            || null === $showAllCategoriesUseCaseRequest->order()
+            || null === $showAllCategoriesUseCaseRequest->limit()
+            || null === $showAllCategoriesUseCaseRequest->offset()
+        ) {
+            $this->cacheAdapter->delete('show-all-categories');
+        }
+
         $categories = $this->cacheAdapter->recover('show-all-categories');
 
         if (

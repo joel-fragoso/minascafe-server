@@ -20,7 +20,22 @@ final class ShowAllUsersUseCase
     ): ShowAllUsersUseCaseResponse {
         $users = $this->cacheAdapter->recover('show-all-users');
 
-        if (!$users) {
+        if (
+            null !== $showAllUsersUseCaseRequest->active()
+            || null !== $showAllUsersUseCaseRequest->order()
+            || null !== $showAllUsersUseCaseRequest->limit()
+            || null !== $showAllUsersUseCaseRequest->offset()
+            || !$users
+        ) {
+            $users = $this->userRepository->findAll(
+                $showAllUsersUseCaseRequest->active(),
+                $showAllUsersUseCaseRequest->order(),
+                $showAllUsersUseCaseRequest->limit(),
+                $showAllUsersUseCaseRequest->offset(),
+            );
+
+            $this->cacheAdapter->save('show-all-users', $users);
+        } else {
             $users = $this->userRepository->findAll(
                 $showAllUsersUseCaseRequest->active(),
                 $showAllUsersUseCaseRequest->order(),

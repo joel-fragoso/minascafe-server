@@ -18,15 +18,6 @@ final class ShowAllUsersUseCase
     public function execute(
         ShowAllUsersUseCaseRequest $showAllUsersUseCaseRequest
     ): ShowAllUsersUseCaseResponse {
-        if (
-            null === $showAllUsersUseCaseRequest->active()
-            || null === $showAllUsersUseCaseRequest->order()
-            || null === $showAllUsersUseCaseRequest->limit()
-            || null === $showAllUsersUseCaseRequest->offset()
-        ) {
-            $this->cacheAdapter->delete('show-all-users');
-        }
-
         $users = $this->cacheAdapter->recover('show-all-users');
 
         if (
@@ -36,6 +27,15 @@ final class ShowAllUsersUseCase
             || null !== $showAllUsersUseCaseRequest->offset()
             || !$users
         ) {
+            $users = $this->userRepository->findAll(
+                $showAllUsersUseCaseRequest->active(),
+                $showAllUsersUseCaseRequest->order(),
+                $showAllUsersUseCaseRequest->limit(),
+                $showAllUsersUseCaseRequest->offset(),
+            );
+
+            $this->cacheAdapter->save('show-all-users', $users);
+        } else {
             $users = $this->userRepository->findAll(
                 $showAllUsersUseCaseRequest->active(),
                 $showAllUsersUseCaseRequest->order(),

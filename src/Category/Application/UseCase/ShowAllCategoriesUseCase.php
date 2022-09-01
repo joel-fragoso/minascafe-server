@@ -18,15 +18,6 @@ final class ShowAllCategoriesUseCase
     public function execute(
         ShowAllCategoriesUseCaseRequest $showAllCategoriesUseCaseRequest
     ): ShowAllCategoriesUseCaseResponse {
-        if (
-            null === $showAllCategoriesUseCaseRequest->active()
-            || null === $showAllCategoriesUseCaseRequest->order()
-            || null === $showAllCategoriesUseCaseRequest->limit()
-            || null === $showAllCategoriesUseCaseRequest->offset()
-        ) {
-            $this->cacheAdapter->delete('show-all-categories');
-        }
-
         $categories = $this->cacheAdapter->recover('show-all-categories');
 
         if (
@@ -36,6 +27,15 @@ final class ShowAllCategoriesUseCase
             || null !== $showAllCategoriesUseCaseRequest->offset()
             || !$categories
         ) {
+            $categories = $this->categoryRepository->findAll(
+                $showAllCategoriesUseCaseRequest->active(),
+                $showAllCategoriesUseCaseRequest->order(),
+                $showAllCategoriesUseCaseRequest->limit(),
+                $showAllCategoriesUseCaseRequest->offset(),
+            );
+
+            $this->cacheAdapter->save('show-all-categories', $categories);
+        } else {
             $categories = $this->categoryRepository->findAll(
                 $showAllCategoriesUseCaseRequest->active(),
                 $showAllCategoriesUseCaseRequest->order(),

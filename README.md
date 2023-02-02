@@ -62,7 +62,3 @@ $ composer test
 ```bash
 $ composer test:coverage
 ```
-
----
-
-Desenvolvido com ❤️ por Fragoso Brothers.
